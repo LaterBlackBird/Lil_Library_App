@@ -2,14 +2,15 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core';
 
 
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const navigation = useNavigation();
 
 
@@ -34,24 +35,27 @@ const Login = () => {
     });
   });
 
-  const handleLogin = () => {
+
+  const handleSignup = () => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        // ...
-        console.log(`${user.email} logged in`)
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
+    if (password === passwordConfirmation) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          alert(errorMessage);
+        });
+    } else alert('Passwords Do Not Match')
   };
 
-  const goToSignup = () => {
-    navigation.replace("SignUp")
+  const goToLogin = () => {
+    navigation.replace("Login")
   }
 
   return (
@@ -73,21 +77,27 @@ const Login = () => {
           style={styles.input}
           secureTextEntry
         />
+        <TextInput
+          placeholder='Confirm Password'
+          value={ passwordConfirmation }
+          onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation) }
+          style={styles.input}
+          secureTextEntry
+        />
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.button}
+          onPress={handleSignup}
+          style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonOutlineText}>SignUp</Text>
         </TouchableOpacity>
-
         <Text
           style={styles.signupText}
-          onPress={goToSignup}
+          onPress={goToLogin}
         >
-          or Create an Account
+          or Login To Your Account
         </Text>
       </View>
 
@@ -95,7 +105,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register
 
 const styles = StyleSheet.create({
   container: {

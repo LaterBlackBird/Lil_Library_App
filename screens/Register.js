@@ -63,6 +63,8 @@ const Register = () => {
       style={styles.container}
       behavior= {(Platform.OS === 'ios')? "padding" : null}
     >
+      <Text style={styles.lilText}>Lil Library App 📚</Text>
+
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Email'
@@ -154,5 +156,10 @@ const styles = StyleSheet.create({
   },
   signupText: {
     marginTop: 15,
-  }
+  },
+  lilText: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    paddingBottom: 35,
+  },
 })

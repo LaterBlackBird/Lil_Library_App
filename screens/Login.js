@@ -6,6 +6,7 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 import { useNavigation } from '@react-navigation/core';
 
 
+export const app = initializeApp(firebaseConfig);
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,9 +15,9 @@ const Login = () => {
 
 
   // Initialize Firebase
-  useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-  }, []);
+  // useEffect(() => {
+  //   const app = initializeApp(firebaseConfig);
+  // }, []);
 
   // Watch for user Login or Logout
   useEffect(() => {
@@ -97,7 +98,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
 
 const styles = StyleSheet.create({
   container: {

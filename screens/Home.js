@@ -1,16 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { app } from './Login'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
-
+import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
 
 const Home = () => {
 
   const auth = getAuth();
   const user = auth.currentUser;
   const navigation = useNavigation();
+  const db = getFirestore(app);
+
   const [location, setLocation] = useState(null);
 
 
@@ -20,6 +23,21 @@ const Home = () => {
 
   useEffect(() => {
     resetLocation();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const docRef = doc(db, "libraries", "MNHFVWn6IgxGSbz4OfJ0");
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }
+    getData();
   }, []);
 
 
@@ -42,8 +60,6 @@ const Home = () => {
     let location = await Location.getCurrentPositionAsync({});
     setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05});
   }
-
-  console.log(location);
   
   return (
     <View style={styles.container}>

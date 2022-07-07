@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { app } from './Login'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
 
@@ -15,7 +15,7 @@ const Home = () => {
   const db = getFirestore(app);
 
   const [location, setLocation] = useState(null);
-
+  const [mark, setMark] = useState();
 
   useEffect(() => {
     if (!user) navigation.replace("login")
@@ -31,7 +31,7 @@ const Home = () => {
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        setMark(docSnap.data());
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
@@ -60,7 +60,7 @@ const Home = () => {
     let location = await Location.getCurrentPositionAsync({});
     setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05});
   }
-  
+
   return (
     <View style={styles.container}>
       <MapView
@@ -71,7 +71,13 @@ const Home = () => {
         zoomControlEnabled={true}
         showsCompass={true}
         onRegionChangeComplete={resetLocation}
-      />
+      >
+        {mark &&
+          <Marker
+            coordinate={{ latitude: mark.location.latitude, longitude: mark.location.longitude }}
+          />
+        }
+        </MapView>  
       <TouchableOpacity
         style={styles.button}
         onPress={handleSignout}

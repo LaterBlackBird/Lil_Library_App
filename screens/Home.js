@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const Home = () => {
 
@@ -16,6 +16,7 @@ const Home = () => {
 
   const [location, setLocation] = useState(null);
   const [mark, setMark] = useState();
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     if (!user) navigation.replace("login")
@@ -23,23 +24,8 @@ const Home = () => {
 
   useEffect(() => {
     resetLocation();
+    retreiveLibraries();
   }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      const docRef = doc(db, "libraries", "MNHFVWn6IgxGSbz4OfJ0");
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
-        setMark(docSnap.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }
-    getData();
-  }, []);
-
 
   const handleSignout = () => {
     signOut(auth).then(() => {
@@ -58,7 +44,17 @@ const Home = () => {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05});
+    setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
+    
+    retreiveLibraries();
+  }
+
+  const retreiveLibraries = async () => {
+    const querySnapshot = await getDocs(collection(db, "libraries"));
+    querySnapshot.forEach((doc) => {
+      const info = doc.data();
+      setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
+    });
   }
 
   return (
@@ -72,10 +68,16 @@ const Home = () => {
         showsCompass={true}
         onRegionChangeComplete={resetLocation}
       >
-        {mark &&
-          <Marker
-            coordinate={{ latitude: mark.location.latitude, longitude: mark.location.longitude }}
-          />
+        {markers &&
+          // <Marker
+          //   coordinate={{ latitude: mark.location.latitude, longitude: mark.location.longitude }}
+          // />
+          markers.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={marker.latlng}
+            />
+          ))
         }
         </MapView>  
       <TouchableOpacity

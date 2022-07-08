@@ -1,17 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { fireApp, fireAuth, fireDB } from '../utils'
-import { getAuth, signOut } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/core';
+import { fireAuth, fireDB } from '../utils'
+import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const Home = () => {
-  //TODO:
-  //markers array keeps growing with each render
 
-  const navigation = useNavigation();
 
   const [location, setLocation] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -39,16 +35,17 @@ const Home = () => {
     let location = await Location.getCurrentPositionAsync({});
     setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
     
-    // retreiveLibraries();
+    retreiveLibraries();
   }
 
-  // const retreiveLibraries = async () => {
-  //   const querySnapshot = await getDocs(collection(fireDB, "libraries"));
-  //   querySnapshot.forEach((doc) => {
-  //     const info = doc.data();
-  //     setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
-  //   });
-  // }
+  const retreiveLibraries = async () => {
+    setMarkers([]);
+    const querySnapshot = await getDocs(collection(fireDB, "libraries"));
+    querySnapshot.forEach((doc) => {
+      const info = doc.data();
+      setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -59,16 +56,16 @@ const Home = () => {
         rotateEnabled={false}
         zoomControlEnabled={true}
         showsCompass={true}
-        onRegionChangeComplete={resetLocation}
+        // onRegionChangeComplete={resetLocation}
       >
-        {/* {markers &&
+        {markers &&
           markers.map((marker, index) => (
             <Marker
               key={index}
               coordinate={marker.latlng}
             />
           ))
-        } */}
+        }
         </MapView>  
       <TouchableOpacity
         style={styles.button}

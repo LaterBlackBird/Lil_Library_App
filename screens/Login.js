@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
+ 
   const handleLogin = () => {
     signInWithEmailAndPassword(fireAuth, email, password)
       .then((userCredential) => {
@@ -17,7 +18,7 @@ const Login = () => {
         const user = userCredential.user;
         // ...
         console.log(`${user.email} logged in`)
-        navigation.replace("Home");
+        // navigation.replace("Home");
       })
       .catch((error) => {
         const errorCode = error.code;

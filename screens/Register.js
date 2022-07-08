@@ -19,12 +19,10 @@ const Register = () => {
           // Signed in 
           const user = userCredential.user;
           console.log(`${user.email} signed up`)
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
           alert(errorMessage);
         });
     } else alert('Passwords Do Not Match')

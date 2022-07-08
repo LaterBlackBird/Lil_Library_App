@@ -24,7 +24,6 @@ const Home = () => {
   const handleSignout = () => {
     signOut(fireAuth).then(() => {
       // Sign-out successful.
-      navigation.replace("Login")
     }).catch((error) => {
       // An error happened.
     });

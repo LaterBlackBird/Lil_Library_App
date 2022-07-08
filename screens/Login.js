@@ -1,22 +1,29 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { initializeApp, FirebaseApp, getApps, getApp } from 'firebase/app';
 import firebaseConfig from '../firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { Auth, getAuth, initializeAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getReactNativePersistence } from 'firebase/auth/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core';
 
 
+// export const app = initializeApp(firebaseConfig);
+let app, fireAuth;
+if (getApps().length < 1) {
+  app = initializeApp(firebaseConfig);
+  fireAuth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage),
+  });
+} else {
+  app = getApp();
+  fireAuth = getAuth();
+}
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-
-
-  // Initialize Firebase
-  useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-  }, []);
 
   // Watch for user Login or Logout
   useEffect(() => {
@@ -32,7 +39,7 @@ const Login = () => {
         // ...
       }
     });
-  });
+  }, []);
 
   const handleLogin = () => {
     const auth = getAuth();
@@ -97,7 +104,8 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
+export { app, fireAuth };
 
 const styles = StyleSheet.create({
   container: {

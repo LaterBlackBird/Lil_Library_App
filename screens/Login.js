@@ -1,54 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { initializeApp, FirebaseApp, getApps, getApp } from 'firebase/app';
-import firebaseConfig from '../firebaseConfig'
-import { Auth, getAuth, initializeAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { getReactNativePersistence } from 'firebase/auth/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { fireAuth } from '../utils';
 import { useNavigation } from '@react-navigation/core';
 
-
-// export const app = initializeApp(firebaseConfig);
-let app, fireAuth;
-if (getApps().length < 1) {
-  app = initializeApp(firebaseConfig);
-  fireAuth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage),
-  });
-} else {
-  app = getApp();
-  fireAuth = getAuth();
-}
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  // Watch for user Login or Logout
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        // ...
-        navigation.replace("Home")
-      } else {
-        // User is signed out
-        // ...
-      }
-    });
-  }, []);
-
   const handleLogin = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(fireAuth, email, password)
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
         // ...
         console.log(`${user.email} logged in`)
+        navigation.replace("Home");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -58,7 +27,7 @@ const Login = () => {
   };
 
   const goToSignup = () => {
-    navigation.replace("SignUp")
+    navigation.replace("SignUp");
   }
 
   return (
@@ -105,7 +74,6 @@ const Login = () => {
 }
 
 export default Login;
-export { app, fireAuth };
 
 const styles = StyleSheet.create({
   container: {

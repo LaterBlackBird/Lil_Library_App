@@ -6,7 +6,6 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { useNavigation } from '@react-navigation/core';
 
 
-
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,10 +13,10 @@ const Register = () => {
   const navigation = useNavigation();
 
 
-  // Initialize Firebase
-  useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-  }, []);
+  // // Initialize Firebase
+  // useEffect(() => {
+  //   const app = initializeApp(firebaseConfig);
+  // }, []);
 
   // Watch for user Login or Logout
   useEffect(() => {

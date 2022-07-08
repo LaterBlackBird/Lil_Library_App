@@ -8,6 +8,10 @@ import * as Location from 'expo-location';
 import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const Home = () => {
+  //TODO:
+  //get rid of async error
+  //locate memory leak from sign in screen
+  //markers array keeps growing with each render
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -15,7 +19,6 @@ const Home = () => {
   const db = getFirestore(app);
 
   const [location, setLocation] = useState(null);
-  const [mark, setMark] = useState();
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
@@ -69,9 +72,6 @@ const Home = () => {
         onRegionChangeComplete={resetLocation}
       >
         {markers &&
-          // <Marker
-          //   coordinate={{ latitude: mark.location.latitude, longitude: mark.location.longitude }}
-          // />
           markers.map((marker, index) => (
             <Marker
               key={index}

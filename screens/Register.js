@@ -1,6 +1,7 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { fireAuth } from '../utils';
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -11,36 +12,17 @@ const Register = () => {
   const navigation = useNavigation();
 
 
-  // If user is already signed in, show home screen
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        // ...
-        navigation.replace("Home")
-      } else {
-        // User is signed out
-        // ...
-      }
-    });
-  }, []);
-
-
   const handleSignup = () => {
-    const auth = getAuth();
     if (password === passwordConfirmation) {
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(fireAuth, email, password)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          // ...
+          console.log(`${user.email} signed up`)
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
           alert(errorMessage);
         });
     } else alert('Passwords Do Not Match')

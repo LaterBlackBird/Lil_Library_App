@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { app } from './Login'
+import { fireApp, fireAuth, fireDB } from '../utils'
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -11,10 +11,7 @@ const Home = () => {
   //TODO:
   //markers array keeps growing with each render
 
-  const auth = getAuth();
-  const user = auth.currentUser;
   const navigation = useNavigation();
-  const db = getFirestore(app);
 
   const [location, setLocation] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -25,9 +22,8 @@ const Home = () => {
   }, []);
 
   const handleSignout = () => {
-    signOut(auth).then(() => {
+    signOut(fireAuth).then(() => {
       // Sign-out successful.
-      navigation.replace("Login")
     }).catch((error) => {
       // An error happened.
     });
@@ -47,7 +43,7 @@ const Home = () => {
   }
 
   // const retreiveLibraries = async () => {
-  //   const querySnapshot = await getDocs(collection(db, "libraries"));
+  //   const querySnapshot = await getDocs(collection(fireDB, "libraries"));
   //   querySnapshot.forEach((doc) => {
   //     const info = doc.data();
   //     setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);

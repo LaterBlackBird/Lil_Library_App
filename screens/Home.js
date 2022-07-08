@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { app } from './Login'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/core';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -9,8 +9,6 @@ import { getFirestore, collection, doc, getDoc, getDocs } from 'firebase/firesto
 
 const Home = () => {
   //TODO:
-  //get rid of async error
-  //locate memory leak from sign in screen
   //markers array keeps growing with each render
 
   const auth = getAuth();
@@ -22,12 +20,8 @@ const Home = () => {
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
-    if (!user) navigation.replace("login")
-  }, [onAuthStateChanged]);
-
-  useEffect(() => {
     resetLocation();
-    retreiveLibraries();
+    // retreiveLibraries();
   }, []);
 
   const handleSignout = () => {
@@ -49,16 +43,16 @@ const Home = () => {
     let location = await Location.getCurrentPositionAsync({});
     setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
     
-    retreiveLibraries();
+    // retreiveLibraries();
   }
 
-  const retreiveLibraries = async () => {
-    const querySnapshot = await getDocs(collection(db, "libraries"));
-    querySnapshot.forEach((doc) => {
-      const info = doc.data();
-      setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
-    });
-  }
+  // const retreiveLibraries = async () => {
+  //   const querySnapshot = await getDocs(collection(db, "libraries"));
+  //   querySnapshot.forEach((doc) => {
+  //     const info = doc.data();
+  //     setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
+  //   });
+  // }
 
   return (
     <View style={styles.container}>
@@ -71,14 +65,14 @@ const Home = () => {
         showsCompass={true}
         onRegionChangeComplete={resetLocation}
       >
-        {markers &&
+        {/* {markers &&
           markers.map((marker, index) => (
             <Marker
               key={index}
               coordinate={marker.latlng}
             />
           ))
-        }
+        } */}
         </MapView>  
       <TouchableOpacity
         style={styles.button}

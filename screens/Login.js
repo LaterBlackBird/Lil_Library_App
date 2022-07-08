@@ -16,7 +16,7 @@ if (getApps().length < 1) {
     persistence: getReactNativePersistence(AsyncStorage),
   });
 } else {
-  firebaseApp = getApp();
+  app = getApp();
   fireAuth = getAuth();
 }
 
@@ -24,12 +24,6 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-
-
-  // Initialize Firebase
-  // useEffect(() => {
-  //   const app = initializeApp(firebaseConfig);
-  // }, []);
 
   // Watch for user Login or Logout
   useEffect(() => {
@@ -45,7 +39,7 @@ const Login = () => {
         // ...
       }
     });
-  });
+  }, []);
 
   const handleLogin = () => {
     const auth = getAuth();

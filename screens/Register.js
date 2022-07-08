@@ -1,8 +1,6 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
-import firebaseConfig from '../firebaseConfig'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -13,12 +11,7 @@ const Register = () => {
   const navigation = useNavigation();
 
 
-  // // Initialize Firebase
-  // useEffect(() => {
-  //   const app = initializeApp(firebaseConfig);
-  // }, []);
-
-  // Watch for user Login or Logout
+  // If user is already signed in, show home screen
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -32,7 +25,7 @@ const Register = () => {
         // ...
       }
     });
-  });
+  }, []);
 
 
   const handleSignup = () => {

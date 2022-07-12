@@ -1,20 +1,20 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { GOOGLE_MAP_API } from '@env';
 
 const Home = () => {
 
-
   const [location, setLocation] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState('');
 
   useEffect(() => {
     resetLocation();
-    // retreiveLibraries();
   }, []);
 
   const handleSignout = () => {
@@ -35,7 +35,7 @@ const Home = () => {
     let location = await Location.getCurrentPositionAsync({});
     setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
     
-    retreiveLibraries();
+    // retreiveLibraries();
   }
 
   const retreiveLibraries = async () => {
@@ -45,6 +45,18 @@ const Home = () => {
       const info = doc.data();
       setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
     });
+  };
+
+
+  const newSearch = (searchText) => {
+    setSearchCriteria(searchText);
+    fetchGeoLocation();
+  }
+
+  const fetchGeoLocation = async () => {
+    const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${searchCriteria}&key=${GOOGLE_MAP_API}`)
+    const data = await res.json();
+    setLocation({ latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng, latitudeDelta: 0.02, longitudeDelta: 0.05 });
   }
 
   return (
@@ -53,6 +65,7 @@ const Home = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={location}
+        region={location}
         rotateEnabled={false}
         zoomControlEnabled={true}
         showsCompass={true}
@@ -61,12 +74,19 @@ const Home = () => {
         {markers &&
           markers.map((marker, index) => (
             <Marker
-              key={index}
-              coordinate={marker.latlng}
+            key={index}
+            coordinate={marker.latlng}
             />
-          ))
-        }
+            ))
+          }
         </MapView>  
+      <TextInput
+        placeholder='Search'
+        // value={ searchCriteria.toString() }
+        onChangeText={text => setSearchCriteria(text)}
+        style={ styles.searchBox }
+        onSubmitEditing={newSearch}
+      />
       <TouchableOpacity
         style={styles.button}
         onPress={handleSignout}
@@ -81,19 +101,16 @@ export default Home
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
   },
   button: {
-    position: 'absolute',
     backgroundColor: '#83A0DF',
     width: '60%',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    bottom: 50,
   },
   buttonText: {
     color: 'white',
@@ -102,6 +119,15 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '100%',
+    height: '92%',
+  },
+  searchBox: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    width: '80%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    top: 50,
   },
 })

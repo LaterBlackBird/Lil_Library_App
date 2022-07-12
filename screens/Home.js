@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { GOOGLE_MAP_API } from '@env';
 
 const Home = () => {
@@ -12,9 +12,11 @@ const Home = () => {
   const [location, setLocation] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
+  const map = useRef();
 
   useEffect(() => {
     resetLocation();
+    retreiveLibraries();
   }, []);
 
   const handleSignout = () => {
@@ -40,9 +42,15 @@ const Home = () => {
 
   const retreiveLibraries = async () => {
     setMarkers([]);
-    const querySnapshot = await getDocs(collection(fireDB, "libraries"));
+    const mapBoundries = await map.current.getMapBoundaries();
+    const northEast = mapBoundries.northEast;
+    const southWest = mapBoundries.southWest;
+    const libraryRef = collection(fireDB, 'libraries');
+    const visibleLibraries = query(libraryRef, where("location.latitude", "==", "36.260294"));
+    const querySnapshot = await getDocs(visibleLibraries);
     querySnapshot.forEach((doc) => {
       const info = doc.data();
+      console.log(info)
       setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
     });
   };
@@ -50,7 +58,7 @@ const Home = () => {
 
   const newSearch = (searchText) => {
     setSearchCriteria(searchText);
-    fetchGeoLocation();
+    // fetchGeoLocation();
   }
 
   const fetchGeoLocation = async () => {
@@ -59,17 +67,21 @@ const Home = () => {
     setLocation({ latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng, latitudeDelta: 0.02, longitudeDelta: 0.05 });
   }
 
+  console.log("libraries ", markers);
+
   return (
     <View style={styles.container}>
       <MapView
+        ref={map}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={location}
         region={location}
         rotateEnabled={false}
         zoomControlEnabled={true}
-        showsCompass={true}
-        // onRegionChangeComplete={resetLocation}
+        showsPointsOfInterest={false}
+        onRegionChangeComplete={retreiveLibraries}
+        
       >
         {markers &&
           markers.map((marker, index) => (
@@ -82,9 +94,9 @@ const Home = () => {
         </MapView>  
       <TextInput
         placeholder='Search'
-        // value={ searchCriteria.toString() }
         onChangeText={text => setSearchCriteria(text)}
-        style={ styles.searchBox }
+        style={styles.searchBox}
+        blurOnSubmit={true}
         onSubmitEditing={newSearch}
       />
       <TouchableOpacity

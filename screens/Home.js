@@ -4,8 +4,9 @@ import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt } from 'firebase/firestore';
 import { GOOGLE_MAP_API } from '@env';
+import * as geofire from 'geofire-common';
 
 const Home = () => {
 
@@ -15,8 +16,8 @@ const Home = () => {
   const map = useRef();
 
   useEffect(() => {
-    resetLocation();
-    retreiveLibraries();
+    setInitialLocation();
+    retreiveNearbyLibraries();
   }, []);
 
   const handleSignout = () => {
@@ -27,7 +28,7 @@ const Home = () => {
     });
   };
 
-  const resetLocation = async () => {
+  const setInitialLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Permission to access location was denied');
@@ -36,29 +37,34 @@ const Home = () => {
 
     let location = await Location.getCurrentPositionAsync({});
     setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
-    
-    // retreiveLibraries();
   }
 
-  const retreiveLibraries = async () => {
+  const retreiveNearbyLibraries = async () => {
     setMarkers([]);
-    const mapBoundries = await map.current.getMapBoundaries();
-    const northEast = mapBoundries.northEast;
-    const southWest = mapBoundries.southWest;
-    const libraryRef = collection(fireDB, 'libraries');
-    const visibleLibraries = query(libraryRef, where("location.latitude", "==", "36.260294"));
-    const querySnapshot = await getDocs(visibleLibraries);
-    querySnapshot.forEach((doc) => {
-      const info = doc.data();
-      console.log(info)
-      setMarkers(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
-    });
+
+    // Find cities within 50km
+    const center = [location.latitude, location.longitude];
+    const radiusInM = 10 * 1000;
+
+    // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+    // a separate query for each pair. There can be up to 9 pairs of bounds
+    // depending on overlap, but in most cases there are 4.
+    const bounds = geofire.geohashQueryBounds(center, radiusInM);
+    const dbRef = collection(fireDB, 'libraries');
+
+    for (const b of bounds) {
+      const q = query(dbRef, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        setMarkers(prevState => [...prevState, { name: doc.data().name, latlng: { latitude: doc.data().location.latitude, longitude: doc.data().location.longitude } }]);
+      })
+    }
   };
 
 
   const newSearch = (searchText) => {
     setSearchCriteria(searchText);
-    // fetchGeoLocation();
+    fetchGeoLocation();
   }
 
   const fetchGeoLocation = async () => {
@@ -67,7 +73,7 @@ const Home = () => {
     setLocation({ latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng, latitudeDelta: 0.02, longitudeDelta: 0.05 });
   }
 
-  console.log("libraries ", markers);
+  console.log(markers)
 
   return (
     <View style={styles.container}>
@@ -80,8 +86,7 @@ const Home = () => {
         rotateEnabled={false}
         zoomControlEnabled={true}
         showsPointsOfInterest={false}
-        onRegionChangeComplete={retreiveLibraries}
-        
+        onRegionChangeComplete={retreiveNearbyLibraries}
       >
         {markers &&
           markers.map((marker, index) => (

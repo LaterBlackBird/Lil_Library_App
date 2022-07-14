@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
@@ -33,7 +33,7 @@ const Home = () => {
 
 
   useEffect(() => {
-    if (mapCenter !== null) retreiveNearbyLibraries();
+    // if (mapCenter !== null) retreiveNearbyLibraries();
   }, []);
 
 
@@ -66,6 +66,7 @@ const Home = () => {
     const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${searchCriteria}&key=${GOOGLE_MAP_API}`)
     const data = await res.json();
     setMapCenter({ latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng, latitudeDelta: 0.02, longitudeDelta: 0.05 });
+    //calling the retreiveNearbyLibraries function is not required here as it will be called with the onRegionChangeComplete method from the MapView
   };
   
   const updateMapFromMove = async (region) => {
@@ -107,9 +108,9 @@ const Home = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={mapCenter}
-        onRegionChangeComplete={updateMapFromMove}
+        // onRegionChangeComplete={updateMapFromMove}
         rotateEnabled={false}
-        zoomControlEnabled={true}
+        zoomControlEnabled={false}
         showsPointsOfInterest={false}
         moveOnMarkerPress={false}
       >
@@ -128,14 +129,22 @@ const Home = () => {
         onChangeText={text => setSearchCriteria(text)}
         style={styles.searchBox}
         blurOnSubmit={true}
-        onSubmitEditing={updateMapFromSearch}
+        // onSubmitEditing={updateMapFromSearch}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={handleSignout}
       >
         <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <View style={styles.userActionsContainer}>
+        <Pressable>
+          <Text>Add</Text>
+        </Pressable>
+        <Pressable>
+          <Text>Add</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -162,7 +171,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '92%',
+    height: '100%',
   },
   searchBox: {
     position: 'absolute',
@@ -173,4 +182,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     top: 50,
   },
+  userActionsContainer: {
+    position: 'absolute',
+    bottom: 0,
+    height: 70,
+    width: '100%',
+    backgroundColor: 'white',
+    opacity: 0.90,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  }
 })

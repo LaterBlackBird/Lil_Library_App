@@ -7,6 +7,8 @@ import * as Location from 'expo-location';
 import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt } from 'firebase/firestore';
 import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCirclePlus, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
 
@@ -138,11 +140,13 @@ const Home = () => {
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity> */}
       <View style={styles.userActionsContainer}>
-        <Pressable>
-          <Text>Add</Text>
+        <Pressable style={styles.userActionButton}>
+          <FontAwesomeIcon icon={faCirclePlus} style={styles.userButtonIcon} color='#4A7CFA' size={40}/>
+          <Text style={[styles.userButtonText, {color:'#4A7CFA'}]}>Add</Text>
         </Pressable>
-        <Pressable>
-          <Text>Add</Text>
+        <Pressable style={styles.userActionButton}>
+          <FontAwesomeIcon icon={faUser} style={styles.userButtonIcon} color='#FA7F64' size={40}/>
+          <Text style={[styles.userButtonText, {color:'#FA7F64'}]}>User</Text>
         </Pressable>
       </View>
     </View>
@@ -192,5 +196,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },
+  userActionButton: {
+    alignItems: 'center'
+  },
+  userButtonIcon: {
+  },
+  userButtonText: {
   }
 })

@@ -8,7 +8,7 @@ import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt
 import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCirclePlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
 
@@ -133,20 +133,17 @@ const Home = () => {
         blurOnSubmit={true}
         // onSubmitEditing={updateMapFromSearch}
       />
-      {/* <TouchableOpacity
-        style={styles.button}
-        onPress={handleSignout}
-      >
-        <Text style={styles.buttonText}>Sign Out</Text>
-      </TouchableOpacity> */}
       <View style={styles.userActionsContainer}>
         <Pressable style={styles.userActionButton}>
           <FontAwesomeIcon icon={faCirclePlus} style={styles.userButtonIcon} color='#4A7CFA' size={40}/>
           <Text style={[styles.userButtonText, {color:'#4A7CFA'}]}>Add</Text>
         </Pressable>
-        <Pressable style={styles.userActionButton}>
-          <FontAwesomeIcon icon={faUser} style={styles.userButtonIcon} color='#FA7F64' size={40}/>
-          <Text style={[styles.userButtonText, {color:'#FA7F64'}]}>User</Text>
+        <Pressable
+          style={styles.userActionButton}
+          onPress={handleSignout}
+        >
+          <FontAwesomeIcon icon={faCircleUser} style={styles.userButtonIcon} color='#FA7F64' size={40}/>
+          <Text style={[styles.userButtonText, {color:'#FA7F64'}]}>Sign Out</Text>
         </Pressable>
       </View>
     </View>

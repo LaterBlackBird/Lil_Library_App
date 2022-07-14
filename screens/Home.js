@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
@@ -16,6 +16,7 @@ const Home = () => {
   const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
   const mapComponentRef = useRef();
+  const [newMarker, setNewMarker] = useState(false);
 
   useEffect(() => {
     getInitialLocation();
@@ -74,7 +75,7 @@ const Home = () => {
   const updateMapFromMove = async (region) => {
     if (mapCenter.latitude !== region.latitude && mapCenter.longitude !== region.longitude) {
       setMapCenter(region);
-      await retreiveNearbyLibraries();
+      // await retreiveNearbyLibraries();
       return 'ok';
     } else return 'no update required';
   };
@@ -103,6 +104,14 @@ const Home = () => {
 
 
 
+  const AddLibraryMarker = () => {
+    setMapCenter({ latitude: mapCenter.latitude, longitude: mapCenter.longitude, latitudeDelta: 0.002, longitudeDelta: 0.005 });
+    Alert.alert('Move The Map or Long Press The Marker To Locate Your New Library')
+    setNewMarker(true);
+  }
+
+
+
   return (
     <View style={styles.container}>
       <MapView
@@ -110,7 +119,7 @@ const Home = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={mapCenter}
-        // onRegionChangeComplete={updateMapFromMove}
+        onRegionChangeComplete={updateMapFromMove}
         rotateEnabled={false}
         zoomControlEnabled={false}
         showsPointsOfInterest={false}
@@ -124,7 +133,14 @@ const Home = () => {
               title={library.name}
             />
             ))
-          }
+        }
+        {newMarker === true &&
+          <Marker
+            pinColor='blue'
+            coordinate={mapCenter}
+            draggable
+          />
+        }
         </MapView>  
       <TextInput
         placeholder='Search'
@@ -134,7 +150,10 @@ const Home = () => {
         // onSubmitEditing={updateMapFromSearch}
       />
       <View style={styles.userActionsContainer}>
-        <Pressable style={styles.userActionButton}>
+        <Pressable
+          style={styles.userActionButton}
+          onPress={AddLibraryMarker}
+        >
           <FontAwesomeIcon icon={faCirclePlus} style={styles.userButtonIcon} color='#4A7CFA' size={40}/>
           <Text style={[styles.userButtonText, {color:'#4A7CFA'}]}>Add</Text>
         </Pressable>

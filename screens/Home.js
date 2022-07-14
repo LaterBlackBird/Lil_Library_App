@@ -107,16 +107,18 @@ const Home = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={mapCenter}
+        onRegionChangeComplete={updateMapFromMove}
         rotateEnabled={false}
         zoomControlEnabled={true}
         showsPointsOfInterest={false}
-        onRegionChangeComplete={updateMapFromMove}
+        moveOnMarkerPress={false}
       >
         {librariesArray &&
-          librariesArray.map((marker, index) => (
+          librariesArray.map((library, index) => (
             <Marker
             key={index}
-            coordinate={marker.latlng}
+              coordinate={library.latlng}
+              title={library.name}
             />
             ))
           }

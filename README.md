@@ -9,9 +9,9 @@ Project is intended as a means to learn React Native, and will not be published 
 ## Features
 
 - User Auth
-- Library CRUD
+- IN_PROGRESS: Library CRUD
 - TODO: Library Profile, Inventory, and Checkout system
-- User CRUD
+- TODO: User CRUD
 - TODO: User history
 
 
@@ -34,5 +34,6 @@ Project is intended as a means to learn React Native, and will not be published 
 ## Demo
 
 Demo @ 7/14/22
-![demo](assets/demo220714)
+<!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif height="50%") -->
+<img src="https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif" alt="Demo #1" width="250"/>
 

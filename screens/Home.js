@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, Animated } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
@@ -17,6 +17,9 @@ const Home = () => {
   const [searchCriteria, setSearchCriteria] = useState('');
   const mapComponentRef = useRef();
   const [newMarker, setNewMarker] = useState(false);
+  const searchBoxPosition = useRef(new Animated.Value(50)).current;
+  const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
+  const [newLibraryName, setNewLibraryName] = useState('');
 
   useEffect(() => {
     getInitialLocation();
@@ -106,8 +109,66 @@ const Home = () => {
 
   const AddLibraryMarker = () => {
     setMapCenter({ latitude: mapCenter.latitude, longitude: mapCenter.longitude, latitudeDelta: 0.002, longitudeDelta: 0.005 });
-    Alert.alert('Move The Map or Long Press The Marker To Locate Your New Library')
+
+    Alert.alert(
+      "Locate Your New Library",
+      "Move The Map To Center Pin On Map or Long Press To Drag The Pin",
+      [
+        {
+          text: "OK",
+          onPress: () => switchInputsToShowLibraryNameBox(),
+        },
+      ],
+    );
+
     setNewMarker(true);
+  }
+
+  const moveSearchBoxOutOfView =
+    Animated.timing(searchBoxPosition, {
+      toValue: -100,
+      duration: 500,
+      useNativeDriver: false,
+    })
+
+  const moveSearchBoxIntoOfView =
+    Animated.timing(searchBoxPosition, {
+      toValue: 50,
+      duration: 500,
+      useNativeDriver: false,
+    })
+  
+  const moveLibraryNameBoxOutOfView =
+    Animated.timing(libraryNameBoxPosition, {
+      toValue: -100,
+      duration: 500,
+      useNativeDriver: false,
+    })
+
+  const moveLibraryNameBoxIntoOfView =
+    Animated.timing(libraryNameBoxPosition, {
+      toValue: 50,
+      duration: 500,
+      useNativeDriver: false,
+    })
+  
+  const switchInputsToShowLibraryNameBox = () => {
+    Animated.sequence([moveSearchBoxOutOfView, moveLibraryNameBoxIntoOfView]).start();
+  }
+
+  const switchInputsToShowSearchBox = () => {
+    Animated.sequence([moveLibraryNameBoxOutOfView, moveSearchBoxIntoOfView]).start();
+  }
+
+  const createNewLibrary = () => {
+    switchInputsToShowSearchBox();
+    setNewMarker(false);
+  }
+
+  const cancelNewLibrary = () => {
+    switchInputsToShowSearchBox();
+    setNewLibraryName('');
+    setNewMarker(false);
   }
 
 
@@ -141,14 +202,40 @@ const Home = () => {
             draggable
           />
         }
-        </MapView>  
-      <TextInput
-        placeholder='Search'
-        onChangeText={text => setSearchCriteria(text)}
-        style={styles.searchBox}
-        blurOnSubmit={true}
-        // onSubmitEditing={updateMapFromSearch}
-      />
+      </MapView>
+
+      <Animated.View style={[styles.searchBoxContainer, {top: searchBoxPosition}]}>
+        <TextInput
+          placeholder='Search'
+          onChangeText={text => setSearchCriteria(text)}
+          style={styles.searchBox}
+          blurOnSubmit={true}
+          // onSubmitEditing={updateMapFromSearch}
+        />
+      </Animated.View>
+
+      <Animated.View style={[styles.newLibraryNameContainer, {top: libraryNameBoxPosition}]}>
+        <TextInput
+          placeholder="Enter Your New Library's Name"
+          onChangeText={text => setNewLibraryName(text)}
+          style={styles.libraryNameBox}
+          blurOnSubmit={true}
+          onSubmitEditing={createNewLibrary}
+          placeholderTextColor='white'
+        />
+        <Pressable
+          style={styles.cancelNewLibraryButton}
+          onPress={cancelNewLibrary}
+        >
+          <Text
+            style={styles.cancelNewLibraryButtonText}
+          >
+            Cancel
+          </Text>
+        </Pressable>
+
+      </Animated.View>
+      
       <View style={styles.userActionsContainer}>
         <Pressable
           style={styles.userActionButton}
@@ -193,14 +280,28 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  searchBox: {
+  searchBoxContainer: {
     position: 'absolute',
-    backgroundColor: 'white',
     width: '80%',
+  },
+  searchBox: {
+    backgroundColor: 'white',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    top: 50,
+  },
+  newLibraryNameContainer: {
+    position: 'absolute',
+    width: '80%',
+    alignItems: 'center',
+  },
+  libraryNameBox: {
+    backgroundColor: '#4A7CFA',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '100%',
+    color: 'white',
   },
   userActionsContainer: {
     position: 'absolute',
@@ -219,5 +320,15 @@ const styles = StyleSheet.create({
   userButtonIcon: {
   },
   userButtonText: {
-  }
+  },
+  cancelNewLibraryButton: {
+    marginTop: 12,
+  },
+  cancelNewLibraryButtonText: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+
+
 })

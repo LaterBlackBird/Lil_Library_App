@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, 
 import React, { useEffect, useState, useRef } from 'react';
 import { fireAuth, fireDB } from '../utils'
 import {  signOut } from 'firebase/auth';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Animated as AnimatedMap } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt, addDoc, serverTimestamp, GeoPoint } from 'firebase/firestore';
 import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -124,6 +124,14 @@ const Home = () => {
     setNewMarker(true);
   }
 
+
+  const moveMapCenterToDragLocation = (e) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    console.log(`lat is ${latitude}`, `lng is ${longitude}`)
+    setMapCenter({ latitude: latitude, longitude: longitude, latitudeDelta: 0.002, longitudeDelta: 0.005 })
+  }
+
+
   const moveSearchBoxOutOfView =
     Animated.timing(searchBoxPosition, {
       toValue: -100,
@@ -160,15 +168,24 @@ const Home = () => {
     Animated.sequence([moveLibraryNameBoxOutOfView, moveSearchBoxIntoOfView]).start();
   }
 
-  const createNewLibrary = () => {
+  const createNewLibrary = async () => {
     switchInputsToShowSearchBox();
     setNewMarker(false);
+
+    // const newLibraryData = {
+    //   createdAt: serverTimestamp(),
+    //   geoHash: geofire.geohashForLocation([lat, lng]),
+    //   location: GeoPoint(lat, lng),
+    //   name: newLibraryName
+    // }
+
+    // const docRef = await addDoc(collection(fireDB, "libraries"), )
   }
 
   const cancelNewLibrary = () => {
     switchInputsToShowSearchBox();
-    setNewLibraryName('');
     setNewMarker(false);
+    setNewLibraryName('');
   }
 
 
@@ -200,6 +217,7 @@ const Home = () => {
             pinColor='blue'
             coordinate={mapCenter}
             draggable
+            onDragEnd={moveMapCenterToDragLocation}
           />
         }
       </MapView>

@@ -39,7 +39,7 @@ const Home = () => {
 
 
   useEffect(() => {
-    // if (mapCenter !== null) retreiveNearbyLibraries();
+    if (mapCenter !== null) retreiveNearbyLibraries();
   }, []);
 
 
@@ -78,23 +78,12 @@ const Home = () => {
   const updateMapFromMove = async (region) => {
     if (mapCenter.latitude !== region.latitude && mapCenter.longitude !== region.longitude) {
       setMapCenter(region);
-      // await retreiveNearbyLibraries();
+      await retreiveNearbyLibraries();
       return 'ok';
     } else return 'no update required';
   };
 
 
-  //Keep this code to use when adding new or editing libraries
-  const returnGeoHashes = async () => {
-    const querySnapshot = await getDocs(collection(fireDB, "libraries"));
-    querySnapshot.forEach((doc) => {
-      const info = doc.data();
-      const lat = info.location.latitude
-      const lng = info.location.longitude
-      const hash = geofire.geohashForLocation([lat, lng]);
-      setLibrariesArray(prevState => [...prevState, { name: info.name, latlng: { latitude: info.location.latitude, longitude: info.location.longitude } }]);
-    });
-  };
 
 
   const handleSignout = () => {
@@ -127,7 +116,6 @@ const Home = () => {
 
   const moveMapCenterToDragLocation = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
-    console.log(`lat is ${latitude}`, `lng is ${longitude}`)
     setMapCenter({ latitude: latitude, longitude: longitude, latitudeDelta: 0.002, longitudeDelta: 0.005 })
   }
 
@@ -172,14 +160,14 @@ const Home = () => {
     switchInputsToShowSearchBox();
     setNewMarker(false);
 
-    // const newLibraryData = {
-    //   createdAt: serverTimestamp(),
-    //   geoHash: geofire.geohashForLocation([lat, lng]),
-    //   location: GeoPoint(lat, lng),
-    //   name: newLibraryName
-    // }
+    const newLibraryData = {
+      createdAt: serverTimestamp(),
+      geoHash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),
+      location: new GeoPoint(mapCenter.latitude, mapCenter.longitude),
+      name: newLibraryName
+    }
 
-    // const docRef = await addDoc(collection(fireDB, "libraries"), )
+    await addDoc(collection(fireDB, "libraries"), newLibraryData)
   }
 
   const cancelNewLibrary = () => {
@@ -228,7 +216,7 @@ const Home = () => {
           onChangeText={text => setSearchCriteria(text)}
           style={styles.searchBox}
           blurOnSubmit={true}
-          // onSubmitEditing={updateMapFromSearch}
+          onSubmitEditing={updateMapFromSearch}
         />
       </Animated.View>
 

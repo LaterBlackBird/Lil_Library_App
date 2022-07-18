@@ -16,6 +16,7 @@ const Home = () => {
   const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
   const mapComponentRef = useRef();
+  const searchBoxRef = useRef();
   const [newMarker, setNewMarker] = useState(false);
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
@@ -72,6 +73,7 @@ const Home = () => {
     const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${searchCriteria}&key=${GOOGLE_MAP_API}`)
     const data = await res.json();
     setMapCenter({ latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng, latitudeDelta: 0.02, longitudeDelta: 0.05 });
+    searchBoxRef.current.clear();
     //calling the retreiveNearbyLibraries function is not required here as it will be called with the onRegionChangeComplete method from the MapView
   };
   
@@ -217,6 +219,7 @@ const Home = () => {
           style={styles.searchBox}
           blurOnSubmit={true}
           onSubmitEditing={updateMapFromSearch}
+          ref={searchBoxRef}
         />
       </Animated.View>
 

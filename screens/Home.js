@@ -164,7 +164,7 @@ const Home = () => {
 
     const newLibraryData = {
       createdAt: serverTimestamp(),
-      geoHash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),
+      geohash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),
       location: new GeoPoint(mapCenter.latitude, mapCenter.longitude),
       name: newLibraryName
     }

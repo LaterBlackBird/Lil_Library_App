@@ -169,7 +169,9 @@ const Home = () => {
       name: newLibraryName
     }
 
-    await addDoc(collection(fireDB, "libraries"), newLibraryData)
+    await addDoc(collection(fireDB, "libraries"), newLibraryData);
+
+    setLibrariesArray(prevState => [...prevState, { name: newLibraryData.name, latlng: { latitude: newLibraryData.location.latitude, longitude: newLibraryData.location.longitude } }]);
   }
 
   const cancelNewLibrary = () => {

@@ -54,19 +54,20 @@ export default function App() {
           :
           <>
             <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-              animationTypeForReplace: 'pop'
-            }}
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+                animationTypeForReplace: 'pop'
+              }}
             />
             <Stack.Screen
-            name="LibraryProfile"
-            component={LibraryProfile}
-            options={{
-              headerShown: false,
-            }}
+              name="LibraryProfile"
+              component={LibraryProfile}
+              options={{
+                headerShown: false,
+                animation: 'slide_from_right'
+              }}
             />
           </>
         }

@@ -15,8 +15,8 @@ const Home = ({ navigation }) => {
   const [mapCenter, setMapCenter] = useState(null);
   const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
-  const mapComponentRef = useRef();
-  const searchBoxRef = useRef();
+  const mapComponentRef = useRef(null);
+  const searchBoxRef = useRef(null);
   const [newMarker, setNewMarker] = useState(false);
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;

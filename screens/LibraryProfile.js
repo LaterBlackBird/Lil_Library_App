@@ -2,14 +2,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 const LibraryProfile = ({ route, navigation }) => {
-  const { name } = route.params;
-  console.log(name);
+  const { library } = route.params;
 
   return (
     <View
       style={styles.container}
     >
-      <Text>{name}</Text>
+      <Text>{library.id}</Text>
+      <Text>{library.name}</Text>
     </View>
   )
 }

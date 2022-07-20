@@ -61,7 +61,7 @@ const Home = ({ navigation }) => {
       const q = query(db, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
-        setLibrariesArray(prevState => [...prevState, { name: doc.data().name, latlng: { latitude: doc.data().location.latitude, longitude: doc.data().location.longitude } }]);
+        setLibrariesArray(prevState => [...prevState, { id: doc.id, name: doc.data().name, latlng: { latitude: doc.data().location.latitude, longitude: doc.data().location.longitude } }]);
       })
     }
     return 'ok';
@@ -169,9 +169,9 @@ const Home = ({ navigation }) => {
       name: newLibraryName
     }
 
-    await addDoc(collection(fireDB, "libraries"), newLibraryData);
+    const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
 
-    setLibrariesArray(prevState => [...prevState, { name: newLibraryData.name, latlng: { latitude: newLibraryData.location.latitude, longitude: newLibraryData.location.longitude } }]);
+    setLibrariesArray(prevState => [...prevState, { id: newDoc.id, name: newLibraryData.name, latlng: { latitude: newLibraryData.location.latitude, longitude: newLibraryData.location.longitude } }]);
   }
 
   const cancelNewLibrary = () => {
@@ -182,7 +182,7 @@ const Home = ({ navigation }) => {
 
 
   const goToLibraryProfile = (library) => {
-    navigation.navigate('LibraryProfile', {name: library.name})
+    navigation.navigate('LibraryProfile', {library})
   }
 
 

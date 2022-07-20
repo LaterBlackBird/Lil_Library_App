@@ -181,6 +181,11 @@ const Home = ({ navigation }) => {
   }
 
 
+  const goToLibraryProfile = (library) => {
+    navigation.navigate('LibraryProfile', {name: library.name})
+  }
+
+
 
   return (
     <View style={styles.container}>
@@ -201,9 +206,9 @@ const Home = ({ navigation }) => {
               key={index}
               coordinate={library.latlng}
               title={library.name}
-              onPress={() => navigation.push('LibraryProfile')}
+              onPress={() => goToLibraryProfile(library)}
             />
-            ))
+          ))
         }
         {newMarker === true &&
           <Marker

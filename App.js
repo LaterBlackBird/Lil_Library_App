@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
+import LibraryProfile from './screens/LibraryProfile';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -35,30 +36,39 @@ export default function App() {
         {userAuthroized === false ?
           <>
             <Stack.Screen
+              name="Login"
+              component={Login}
               options={{
                 headerShown: false,
               }}
-              name="Login"
-              component={Login}
             />
 
             <Stack.Screen
+              name="SignUp"
+              component={Register}
               options={{
                 headerShown: false,
               }}
-              name="SignUp"
-              component={Register}
             />
           </>
           :
-          <Stack.Screen
+          <>
+            <Stack.Screen
+            name="Home"
+            component={Home}
             options={{
               headerShown: false,
               animationTypeForReplace: 'pop'
             }}
-            name="Home"
-            component={Home}
-          />
+            />
+            <Stack.Screen
+            name="LibraryProfile"
+            component={LibraryProfile}
+            options={{
+              headerShown: false,
+            }}
+            />
+          </>
         }
 
       </Stack.Navigator>

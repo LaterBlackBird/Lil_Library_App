@@ -10,7 +10,7 @@ import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
-const Home = () => {
+const Home = ({ navigation }) => {
 
   const [mapCenter, setMapCenter] = useState(null);
   const [librariesArray, setLibrariesArray] = useState([]);
@@ -198,9 +198,10 @@ const Home = () => {
         {librariesArray &&
           librariesArray.map((library, index) => (
             <Marker
-            key={index}
+              key={index}
               coordinate={library.latlng}
               title={library.name}
+              onPress={() => navigation.push('LibraryProfile')}
             />
             ))
         }
@@ -209,7 +210,7 @@ const Home = () => {
             pinColor='blue'
             coordinate={mapCenter}
             draggable
-            onDragEnd={moveMapCenterToDragLocation}
+          onDragEnd={moveMapCenterToDragLocation}
           />
         }
       </MapView>

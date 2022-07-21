@@ -250,8 +250,9 @@ const Home = ({ navigation }) => {
         </Pressable>
 
       </Animated.View>
+
       
-      <View style={styles.userActionsContainer}>
+      {/* <View style={styles.userActionsContainer}>
         <Pressable
           style={styles.userActionButton}
           onPress={AddLibraryMarker}
@@ -266,7 +267,7 @@ const Home = ({ navigation }) => {
           <FontAwesomeIcon icon={faCircleUser} style={styles.userButtonIcon} color='#FA7F64' size={40}/>
           <Text style={[styles.userButtonText, {color:'#FA7F64'}]}>Sign Out</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   )
 }

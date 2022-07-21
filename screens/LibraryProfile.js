@@ -4,12 +4,13 @@ import React from 'react'
 const LibraryProfile = ({ route, navigation }) => {
   const { library } = route.params;
 
+
   return (
     <View
       style={styles.container}
     >
-      <Text>{library.id}</Text>
-      <Text>{library.name}</Text>
+      <Text style={styles.libraryNameText}>{library.name}</Text>
+      <Text style={styles.libraryEstablishedText}>Established {library.createdAt.toDate().toDateString()}</Text>
     </View>
   )
 }
@@ -22,5 +23,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+  },
+  libraryNameText: {
+    fontSize: 50,
+  },
+  libraryEstablishedText: {
+    fontSize: 10,
   },
 })

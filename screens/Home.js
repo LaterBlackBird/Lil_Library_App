@@ -23,20 +23,19 @@ const Home = ({ navigation }) => {
   const [newLibraryName, setNewLibraryName] = useState('');
 
   useEffect(() => {
+    const getInitialLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setMapCenter({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
+    };
+
     getInitialLocation();
   }, []);
-
-  const getInitialLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied');
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setMapCenter({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
-  };
-
 
 
   useEffect(() => {
@@ -61,7 +60,7 @@ const Home = ({ navigation }) => {
       const q = query(db, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
-        setLibrariesArray(prevState => [...prevState, { id: doc.id, name: doc.data().name, latlng: { latitude: doc.data().location.latitude, longitude: doc.data().location.longitude } }]);
+        setLibrariesArray(prevState => [...prevState, doc.data()]);
       })
     }
     return 'ok';
@@ -171,7 +170,7 @@ const Home = ({ navigation }) => {
 
     const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
 
-    setLibrariesArray(prevState => [...prevState, { id: newDoc.id, name: newLibraryData.name, latlng: { latitude: newLibraryData.location.latitude, longitude: newLibraryData.location.longitude } }]);
+    setLibrariesArray(prevState => [...prevState, newDoc.data()]);
   }
 
   const cancelNewLibrary = () => {
@@ -184,7 +183,6 @@ const Home = ({ navigation }) => {
   const goToLibraryProfile = (library) => {
     navigation.navigate('LibraryProfile', {library})
   }
-
 
 
   return (
@@ -204,7 +202,7 @@ const Home = ({ navigation }) => {
           librariesArray.map((library, index) => (
             <Marker
               key={index}
-              coordinate={library.latlng}
+              coordinate={{latitude: library.location.latitude, longitude: library.location.longitude}}
               title={library.name}
               onPress={() => goToLibraryProfile(library)}
             />

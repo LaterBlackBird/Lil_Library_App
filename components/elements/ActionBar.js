@@ -1,15 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import ActionButton from './ActionButton';
 
-const ActionBar = ({ options }) => {
+const ActionBar = ({ navigation, options }) => {
 
   return (
     <View style={styles.actionsContainer}>
-      {options && 
-        options.map(option => {
-          
-        })
-      }
+      {options.map(option => {
+        switch (option) {
+          case 'home':
+            return <ActionButton type={'home'} key='homeButton' navigation={navigation}/>
+          case 'addBook':
+            return <ActionButton type={'addBook'} key='bookButton' navigation={navigation}/>
+          case 'addLibrary':
+            return <ActionButton type={'addLibrary'} key='libraryButton' navigation={navigation}/>
+          case 'user':
+            return <ActionButton type={'user'} key='userButton' navigation={navigation}/>
+          default:
+            break;
+        }
+      })}
+
       {/* <actionButton buttonType/> */}
       {/* <Pressable
         style={styles.userActionButton}
@@ -38,7 +49,6 @@ const styles = StyleSheet.create({
     height: 70,
     width: '100%',
     backgroundColor: 'white',
-    opacity: 0.90,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',

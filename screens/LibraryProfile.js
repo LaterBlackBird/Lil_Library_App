@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import ActionBar from '../components/elements/ActionBar';
 
-const LibraryProfile = ({ route }) => {
+const LibraryProfile = ({ navigation, route }) => {
   const { library } = route.params;
 
 
@@ -30,7 +30,7 @@ const LibraryProfile = ({ route }) => {
         </Pressable>
       </View>
 
-      <ActionBar options={['home', 'bookAdd', 'user']} />
+      <ActionBar options={['home', 'addBook', 'user']} navigation={navigation} />
     </View>
   )
 }

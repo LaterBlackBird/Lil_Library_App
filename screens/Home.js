@@ -9,6 +9,8 @@ import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import ActionBar from '../components/elements/ActionBar';
+import ActionButton from '../components/elements/ActionButton';
 
 const Home = ({ navigation }) => {
 
@@ -35,11 +37,6 @@ const Home = ({ navigation }) => {
     };
 
     getInitialLocation();
-  }, []);
-
-
-  useEffect(() => {
-    if (mapCenter !== null) retreiveNearbyLibraries();
   }, []);
 
 
@@ -250,6 +247,8 @@ const Home = ({ navigation }) => {
         </Pressable>
 
       </Animated.View>
+
+      <ActionBar options={['addLibrary', 'user']} />
 
       
       {/* <View style={styles.userActionsContainer}>

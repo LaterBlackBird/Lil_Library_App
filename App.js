@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
-import Login from './screens/Login';
+import LoginForm from './components/organisms/LoginForm';
 import Register from './screens/Register';
 import Home from './screens/Home';
 import LibraryProfile from './screens/LibraryProfile';
@@ -37,7 +37,7 @@ export default function App() {
           <>
             <Stack.Screen
               name="Login"
-              component={Login}
+              component={LoginForm}
               options={{
                 headerShown: false,
               }}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import ActionBar from '../components/elements/ActionBar';
+import ActionBar from '../components/molecules/ActionBar';
 
 const LibraryProfile = ({ navigation, route }) => {
   const { library } = route.params;

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, Animated } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { fireAuth, fireDB } from '../utils'
+import { fireAuth, fireDB } from '../services/initializaiton'
 import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Animated as AnimatedMap } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -9,8 +9,8 @@ import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import ActionBar from '../components/elements/ActionBar';
-import ActionButton from '../components/elements/ActionButton';
+import ActionBar from '../components/molecules/ActionBar';
+import ActionButton from '../components/molecules/ActionButton';
 
 const Home = ({ navigation }) => {
 

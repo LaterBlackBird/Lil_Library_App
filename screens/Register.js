@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { fireAuth } from '../utils';
+import { fireAuth } from '../services/initializaiton';
 import { useNavigation } from '@react-navigation/core';
 import { signUp } from '../services/user';
 

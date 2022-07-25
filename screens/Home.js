@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
   const updateMapFromMove = async (region) => {
     if (mapCenter.latitude !== region.latitude && mapCenter.longitude !== region.longitude) {
       setMapCenter(region);
-      await retreiveNearbyLibraries();
+      // await retreiveNearbyLibraries();
       return 'ok';
     } else return 'no update required';
   };
@@ -248,7 +248,7 @@ const Home = ({ navigation }) => {
 
       </Animated.View>
 
-      <ActionBar options={['addLibrary', 'user']} />
+      <ActionBar navigation={navigation} options={['addLibrary', 'user']} />
 
       
       {/* <View style={styles.userActionsContainer}>

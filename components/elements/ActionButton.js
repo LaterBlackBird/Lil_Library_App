@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, Pressable } from 'react-native';
-import { signOut } from 'firebase/auth';
-import { fireAuth } from '../../utils';
+// import { signOut } from 'firebase/auth';
+// import { fireAuth } from '../../services/initializaiton';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faCircleUser, faMapLocation } from '@fortawesome/free-solid-svg-icons';
+import { signOutUser } from '../../services/user';
 
 const ActionButton = ({ navigation, type }) => {
 
@@ -63,11 +64,7 @@ const ActionButton = ({ navigation, type }) => {
       case 'home':
         return navigation.popToTop();
       case 'user':
-        signOut(fireAuth).then(() => {
-          // Sign-out successful.
-        }).catch((error) => {
-          // An error happened.
-        });
+        signOutUser();
       default:
         break;
     }

@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { fireAuth } from '../utils';
 import { useNavigation } from '@react-navigation/core';
+import { signUp } from '../services/user';
 
 
 const Register = () => {
@@ -13,20 +14,8 @@ const Register = () => {
 
 
   const handleSignup = () => {
-    if (password === passwordConfirmation) {
-      createUserWithEmailAndPassword(fireAuth, email, password)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          console.log(`${user.email} signed up`)
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert(errorMessage);
-        });
-    } else alert('Passwords Do Not Match')
-  };
+    signUp(email, password, passwordConfirmation);
+  }
 
   const goToLogin = () => {
     navigation.replace("Login")

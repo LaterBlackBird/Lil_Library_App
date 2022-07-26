@@ -26,7 +26,7 @@ export const librariesWithin10km = async (mapCenter) => {
 };
 
 
-export const addLibraryToDatabase = async (mapCenter, librariesArray) => {
+export const addLibraryToDatabase = async (mapCenter, librariesArray, newLibraryName) => {
   newLibraryData = {
     createdAt: serverTimestamp(),
     geohash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),

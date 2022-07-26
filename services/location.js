@@ -5,13 +5,13 @@ import { GOOGLE_MAP_API } from '@env';
 
 export const getInitialLocation = async () => {
   let { status } = await Location.requestForegroundPermissionsAsync();
-  console.log('status', status);
   if (status !== 'granted') {
     setErrorMsg('Permission to access location was denied');
     return;
+  } else {
+    const myLocation = await Location.getCurrentPositionAsync({})
+    return { latitude: myLocation.coords.latitude, longitude: myLocation.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 }
   }
-  const myLocation = Location.getCurrentPositionAsync({})
-  return { latitude: myLocation.coords.latitude, longitude: myLocation.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 }
 };
 
 

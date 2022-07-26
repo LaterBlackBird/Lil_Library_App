@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import LoginForm from './components/organisms/LoginForm';
 import SignUpForm from './components/organisms/SignUpForm';
 import Home from './screens/Home';
+import MainPage from './components/organisms/MainPage';
 import LibraryProfile from './screens/LibraryProfile';
 
 const Stack = createNativeStackNavigator();
@@ -55,7 +56,7 @@ export default function App() {
           <>
             <Stack.Screen
               name="Home"
-              component={Home}
+              component={MainPage}
               options={{
                 headerShown: false,
                 animationTypeForReplace: 'pop'

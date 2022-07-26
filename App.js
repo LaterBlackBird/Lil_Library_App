@@ -3,11 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import initialize, { fireAuth } from './utils';
+import initialize, { fireAuth } from './services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
-import Login from './screens/Login';
+import LoginForm from './components/organisms/LoginForm';
 import Register from './screens/Register';
 import Home from './screens/Home';
+import LibraryProfile from './screens/LibraryProfile';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -35,30 +36,40 @@ export default function App() {
         {userAuthroized === false ?
           <>
             <Stack.Screen
+              name="Login"
+              component={LoginForm}
               options={{
                 headerShown: false,
               }}
-              name="Login"
-              component={Login}
             />
 
             <Stack.Screen
+              name="SignUp"
+              component={Register}
               options={{
                 headerShown: false,
               }}
-              name="SignUp"
-              component={Register}
             />
           </>
           :
-          <Stack.Screen
-            options={{
-              headerShown: false,
-              animationTypeForReplace: 'pop'
-            }}
-            name="Home"
-            component={Home}
-          />
+          <>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+                animationTypeForReplace: 'pop'
+              }}
+            />
+            <Stack.Screen
+              name="LibraryProfile"
+              component={LibraryProfile}
+              options={{
+                headerShown: false,
+                animation: 'slide_from_right'
+              }}
+            />
+          </>
         }
 
       </Stack.Navigator>

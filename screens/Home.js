@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Alert, Animated } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { fireAuth, fireDB } from '../utils'
+import { fireAuth, fireDB } from '../services/initializaiton'
 import {  signOut } from 'firebase/auth';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion, Animated as AnimatedMap } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -9,38 +9,34 @@ import { GOOGLE_MAP_API } from '@env';
 import * as geofire from 'geofire-common';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import ActionBar from '../components/molecules/ActionBar';
+import ActionButton from '../components/molecules/ActionButton';
 
-const Home = () => {
+const Home = ({ navigation }) => {
 
   const [mapCenter, setMapCenter] = useState(null);
   const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState('');
-  const mapComponentRef = useRef();
-  const searchBoxRef = useRef();
+  const mapComponentRef = useRef(null);
+  const searchBoxRef = useRef(null);
   const [newMarker, setNewMarker] = useState(false);
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
   const [newLibraryName, setNewLibraryName] = useState('');
 
   useEffect(() => {
+    const getInitialLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setMapCenter({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
+    };
+
     getInitialLocation();
-  }, []);
-
-  const getInitialLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied');
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setMapCenter({ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 });
-  };
-
-
-
-  useEffect(() => {
-    if (mapCenter !== null) retreiveNearbyLibraries();
   }, []);
 
 
@@ -61,7 +57,7 @@ const Home = () => {
       const q = query(db, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
-        setLibrariesArray(prevState => [...prevState, { name: doc.data().name, latlng: { latitude: doc.data().location.latitude, longitude: doc.data().location.longitude } }]);
+        setLibrariesArray(prevState => [...prevState, doc.data()]);
       })
     }
     return 'ok';
@@ -80,7 +76,7 @@ const Home = () => {
   const updateMapFromMove = async (region) => {
     if (mapCenter.latitude !== region.latitude && mapCenter.longitude !== region.longitude) {
       setMapCenter(region);
-      await retreiveNearbyLibraries();
+      // await retreiveNearbyLibraries();
       return 'ok';
     } else return 'no update required';
   };
@@ -169,9 +165,9 @@ const Home = () => {
       name: newLibraryName
     }
 
-    await addDoc(collection(fireDB, "libraries"), newLibraryData);
+    const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
 
-    setLibrariesArray(prevState => [...prevState, { name: newLibraryData.name, latlng: { latitude: newLibraryData.location.latitude, longitude: newLibraryData.location.longitude } }]);
+    setLibrariesArray(prevState => [...prevState, newDoc.data()]);
   }
 
   const cancelNewLibrary = () => {
@@ -180,6 +176,10 @@ const Home = () => {
     setNewLibraryName('');
   }
 
+
+  const goToLibraryProfile = (library) => {
+    navigation.navigate('LibraryProfile', {library})
+  }
 
 
   return (
@@ -198,18 +198,19 @@ const Home = () => {
         {librariesArray &&
           librariesArray.map((library, index) => (
             <Marker
-            key={index}
-              coordinate={library.latlng}
+              key={index}
+              coordinate={{latitude: library.location.latitude, longitude: library.location.longitude}}
               title={library.name}
+              onPress={() => goToLibraryProfile(library)}
             />
-            ))
+          ))
         }
         {newMarker === true &&
           <Marker
             pinColor='blue'
             coordinate={mapCenter}
             draggable
-            onDragEnd={moveMapCenterToDragLocation}
+          onDragEnd={moveMapCenterToDragLocation}
           />
         }
       </MapView>
@@ -246,8 +247,11 @@ const Home = () => {
         </Pressable>
 
       </Animated.View>
+
+      <ActionBar navigation={navigation} options={['addLibrary', 'user']} />
+
       
-      <View style={styles.userActionsContainer}>
+      {/* <View style={styles.userActionsContainer}>
         <Pressable
           style={styles.userActionButton}
           onPress={AddLibraryMarker}
@@ -262,7 +266,7 @@ const Home = () => {
           <FontAwesomeIcon icon={faCircleUser} style={styles.userButtonIcon} color='#FA7F64' size={40}/>
           <Text style={[styles.userButtonText, {color:'#FA7F64'}]}>Sign Out</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   )
 }

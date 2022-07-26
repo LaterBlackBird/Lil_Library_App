@@ -4,10 +4,8 @@ import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt
 import { fireDB } from '../services/initializaiton'
 
 
-// Find libraries within 10km
 export const librariesWithin10km = async (mapCenter) => {
-  libraries = [];
-
+  let libraries = [];
   const searchCenter = [mapCenter.latitude, mapCenter.longitude];
   const searchRadius = 10000; //meters
 
@@ -26,3 +24,17 @@ export const librariesWithin10km = async (mapCenter) => {
   };
   return libraries;
 };
+
+
+export const addLibraryToDatabase = async (mapCenter, librariesArray) => {
+  newLibraryData = {
+    createdAt: serverTimestamp(),
+    geohash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),
+    location: new GeoPoint(mapCenter.latitude, mapCenter.longitude),
+    name: newLibraryName
+  }
+
+const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
+
+return newLibraryAdded = [...librariesArray, newDoc.data()];
+}

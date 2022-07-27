@@ -1,5 +1,5 @@
 import * as geofire from 'geofire-common';
-import { collection, doc, getDoc, getDocs, query, where, orderBy, startAt, endAt, addDoc, serverTimestamp, GeoPoint } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, query, orderBy, startAt, endAt, serverTimestamp, GeoPoint } from 'firebase/firestore';
 
 import { fireDB } from '../services/initializaiton'
 
@@ -27,14 +27,19 @@ export const librariesWithin10km = async (mapCenter) => {
 
 
 export const addLibraryToDatabase = async (mapCenter, librariesArray, newLibraryName) => {
-  newLibraryData = {
+  const newLibraryData = {
     createdAt: serverTimestamp(),
-    geohash: geofire.geohashForLocation([mapCenter.latitude, mapCenter.longitude]),
+    geohash: geofire.geohashForLocation([
+      mapCenter.latitude,
+      mapCenter.longitude,
+    ]),
     location: new GeoPoint(mapCenter.latitude, mapCenter.longitude),
-    name: newLibraryName
-  }
+    name: newLibraryName,
+  };
 
-const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
+  const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
+  const docRef = doc(fireDB, "libraries", newDoc.id);
+  const docSnap = await getDoc(docRef);
 
-return newLibraryAdded = [...librariesArray, newDoc.data()];
-}
+  return [...librariesArray, docSnap.data()];
+};

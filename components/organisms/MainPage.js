@@ -175,7 +175,7 @@ const MainPage = ({ navigation }) => {
       <AnimatedInput
         style={"primary"}
         position={{ top: searchBoxPosition }}
-        onChangeText={(text) => setSearchCriteria(text)}
+        onChangeText={text => setSearchCriteria(text)}
         onSubmitEditing={updateMapFromSearch}
         placeholder={"Search"}
         placeholderTextColor={"grey"}
@@ -184,6 +184,7 @@ const MainPage = ({ navigation }) => {
       <AnimatedInput
         style={"secondary"}
         position={{ top: libraryNameBoxPosition }}
+        onChangeText={text => setNewLibraryName(text)}
         onSubmitEditing={createNewLibrary}
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}

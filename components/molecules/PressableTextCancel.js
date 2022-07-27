@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Pressable } from 'react-native';
 
-const PressableTextCancel = (onPress, fontSize) => {
+const PressableTextCancel = ({ onPress }) => {
   return (
     <Pressable
       style={styles.pressable}

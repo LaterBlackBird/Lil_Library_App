@@ -8,6 +8,7 @@ import SecureField from '../atoms/SecureField';
 import Form from '../molecules/Form';
 import Button from '../atoms/Button';
 import Link from '../atoms/Link';
+import H1 from '../atoms/H1';
 
 
 const LoginForm = () => {
@@ -28,7 +29,9 @@ const LoginForm = () => {
     <Form
       children={
         <>
-          <Text style={styles.lilText}>Lil Library App 📚</Text>
+          <H1 
+            text={'Lil Library App 📚'}
+          />
 
           <TextField
             placeholder='Email'

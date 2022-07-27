@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     width: '80%',
+    alignItems: 'center',
   },
   input: {
     padding: 15,

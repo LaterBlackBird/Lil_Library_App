@@ -8,11 +8,17 @@ Project is intended as a means to learn React Native, and will not be published 
 
 ## Features
 
-- User Auth
-- IN_PROGRESS: Library CRUD
-- TODO: Library Profile, Inventory, and Checkout system
-- TODO: User CRUD
-- TODO: User history
+- [X] User Auth
+- [X] Library Create
+- [X] Library Read
+- [ ] Library Update/Edit
+- [ ] Library Deletion
+- [X] Library Profile
+- [ ] Library Inventory
+- [ ] Library Checkout system
+- [ ] User Update/Edit
+- [ ] User Deletion
+- [ ] User Checkout History
 
 
 ## Tech Stack

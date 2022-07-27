@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { login } from '../../services/user';
+
 import TextField from '../atoms/TextField';
 import SecureField from '../atoms/SecureField';
 import Form from '../molecules/Form';
 import Button from '../atoms/Button';
 import Link from '../atoms/Link';
+import H1 from '../atoms/H1';
 
 
 const LoginForm = () => {
@@ -27,19 +29,19 @@ const LoginForm = () => {
     <Form
       children={
         <>
-          <Text style={styles.lilText}>Lil Library App 📚</Text>
+          <H1 
+            text={'Lil Library App 📚'}
+          />
 
           <TextField
             placeholder='Email'
             value={ email }
             onChangeText={text => setEmail(text)}
-            style={styles.input}
           />
           <SecureField
             placeholder='Password'
             value={ password }
             onChangeText={password => setPassword(password) }
-            style={styles.input}
           />
 
           <Button onPress={handleLogin} text={'Login'} />

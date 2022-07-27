@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
 import LoginForm from './components/organisms/LoginForm';
-import Register from './screens/Register';
-import Home from './screens/Home';
-import LibraryProfile from './screens/LibraryProfile';
+import SignUpForm from './components/organisms/SignUpForm';
+import MainPage from './components/organisms/MainPage';
+import LibraryProfile from './components/organisms/LibraryProfile';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -45,7 +45,7 @@ export default function App() {
 
             <Stack.Screen
               name="SignUp"
-              component={Register}
+              component={SignUpForm}
               options={{
                 headerShown: false,
               }}
@@ -55,7 +55,7 @@ export default function App() {
           <>
             <Stack.Screen
               name="Home"
-              component={Home}
+              component={MainPage}
               options={{
                 headerShown: false,
                 animationTypeForReplace: 'pop'

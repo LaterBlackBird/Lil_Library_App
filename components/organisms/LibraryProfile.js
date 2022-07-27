@@ -1,12 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { signOutUser } from '../../services/user';
 
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
 import H1 from '../atoms/H1';
+import Link from '../atoms/Link';
 
 
 const LibraryProfile = ({ navigation, route }) => {
@@ -16,6 +15,10 @@ const LibraryProfile = ({ navigation, route }) => {
     navigation.popToTop();
   };
 
+  const goToLibraryEditOptions = () => {
+    //TODO
+    return;
+  }
   const addBook = () => {
     //TODO
     return;
@@ -30,13 +33,12 @@ const LibraryProfile = ({ navigation, route }) => {
           Established {library.createdAt.toDate().toDateString()}
         </Text>
 
-        <Pressable style={styles.editContainer}>
-          <FontAwesomeIcon
-            icon={faCircleExclamation}
-            style={styles.exlamationIcon}
-          />
-          <Text style={styles.edit}>Report A Problem</Text>
-        </Pressable>
+        <Link
+          icon={true}
+          text={'Report A Problem'}
+          onPress={goToLibraryEditOptions}
+        />
+
       </View>
 
         <ActionBar
@@ -70,18 +72,5 @@ const styles = StyleSheet.create({
   },
   libraryEstablishedText: {
     fontSize: 12,
-  },
-  editContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  edit: {
-    marginLeft: 5,
-    color: 'grey',
-  },
-  exlamationIcon: {
-    padding: 0,
-    color: 'grey',
   },
 })

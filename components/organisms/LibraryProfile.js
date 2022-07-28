@@ -16,13 +16,14 @@ const LibraryProfile = ({ navigation, route }) => {
   };
 
   const goToLibraryEditOptions = () => {
-    //TODO
+    navigation.navigate("LibraryOptions", { library });
     return;
   }
   const addBook = () => {
     //TODO
     return;
   };
+
 
   return (
     <View style={styles.container}>
@@ -35,7 +36,7 @@ const LibraryProfile = ({ navigation, route }) => {
 
         <Link
           icon={true}
-          text={'Report A Problem'}
+          text={'Edit This Library'}
           onPress={goToLibraryEditOptions}
         />
 

@@ -13,7 +13,7 @@ import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
 
-const MainPage = ({ navigation }) => {
+const MainPage = ({ navigation, route }) => {
   const [mapCenter, setMapCenter] = useState(null);
   const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("");
@@ -55,6 +55,15 @@ const MainPage = ({ navigation }) => {
     };
     setInitialMapCenter();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      retreiveNearbyLibraries();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
 
 
   //Find Libraries within 10km

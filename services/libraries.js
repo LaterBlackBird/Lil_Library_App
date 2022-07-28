@@ -1,5 +1,5 @@
 import * as geofire from 'geofire-common';
-import { collection, doc, getDoc, getDocs, addDoc, query, orderBy, startAt, endAt, serverTimestamp, GeoPoint } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, query, orderBy, startAt, endAt, serverTimestamp, GeoPoint, deleteDoc } from 'firebase/firestore';
 
 import { fireDB } from '../services/initializaiton'
 
@@ -19,9 +19,10 @@ export const librariesWithin10km = async (mapCenter) => {
     const q = query(db, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
-      libraries = [...libraries, doc.data()];
+      libraries = [...libraries, { id: doc.id, ...doc.data() }];
     });
   };
+
   return libraries;
 };
 
@@ -43,3 +44,12 @@ export const addLibraryToDatabase = async (mapCenter, librariesArray, newLibrary
 
   return [...librariesArray, docSnap.data()];
 };
+
+
+export const deleteLibraryFromDatabase = async (id) => {
+  try {
+    await deleteDoc(doc(fireDB, 'libraries', id));
+  } catch (error) {
+    return 'error'
+  }
+}

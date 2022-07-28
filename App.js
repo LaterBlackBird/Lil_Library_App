@@ -5,10 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
+
 import LoginForm from './components/organisms/LoginForm';
 import SignUpForm from './components/organisms/SignUpForm';
 import MainPage from './components/organisms/MainPage';
 import LibraryProfile from './components/organisms/LibraryProfile';
+import LibraryEdits from './components/organisms/LibraryEdits';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -64,6 +66,14 @@ export default function App() {
             <Stack.Screen
               name="LibraryProfile"
               component={LibraryProfile}
+              options={{
+                headerShown: false,
+                animation: 'slide_from_right'
+              }}
+            />
+            <Stack.Screen
+              name='LibraryOptions'
+              component={LibraryEdits}
               options={{
                 headerShown: false,
                 animation: 'slide_from_right'

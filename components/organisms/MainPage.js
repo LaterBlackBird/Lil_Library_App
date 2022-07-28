@@ -1,9 +1,10 @@
 import { StyleSheet, View, Alert, Animated } from "react-native";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 
 import { getInitialLocation, returnSearchLocation } from "../../services/location";
 import { addLibraryToDatabase, librariesWithin10km } from "../../services/libraries";
 import { signOutUser } from "../../services/user";
+import { libraryContext } from "../../context/libraryContext";
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -20,8 +21,12 @@ const MainPage = ({ navigation, route }) => {
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
 
+  const { libraryInfo } = useContext(libraryContext)
+
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
+
+  console.log(libraryInfo)
 
   const moveSearchBoxOutOfView = Animated.timing(searchBoxPosition, {
     toValue: -100,
@@ -56,19 +61,22 @@ const MainPage = ({ navigation, route }) => {
     setInitialMapCenter();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      retreiveNearbyLibraries();
-    });
+  // useEffect(() => {
+  //   const updateLibraryList = navigation.addListener('focus', () => {
+  //     if (libraryInfo) {
+  //       librariesArray.filter(library => library.id !== libraryInfo.id)
+  //     }
+  //   });
 
-    return unsubscribe;
-  }, [navigation]);
+  //   return updateLibraryList;
+  // }, [navigation]);
 
 
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
     setLibrariesArray(await librariesWithin10km(mapCenter));
+    return;
   };
 
 
@@ -81,6 +89,8 @@ const MainPage = ({ navigation, route }) => {
 
   //updates the map when moved programmatically or by user interaction
   const updateMapFromMove = async (region) => {
+    if (mapCenter === null) setMapCenter(region);
+
     if (mapCenter.latitude !== region.latitude) {
       setMapCenter(region);
       await retreiveNearbyLibraries();

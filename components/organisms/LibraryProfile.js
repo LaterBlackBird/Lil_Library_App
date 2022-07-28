@@ -1,6 +1,8 @@
+import { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { signOutUser } from '../../services/user';
+import { libraryContext } from '../../context/libraryContext';
 
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
@@ -10,6 +12,14 @@ import Link from '../atoms/Link';
 
 const LibraryProfile = ({ navigation, route }) => {
   const { library } = route.params;
+  const { libraryInfo, setLibraryInfo } = useContext(libraryContext)
+
+  useEffect(() => {
+    const updateContext = setLibraryInfo(library);
+  
+    return updateContext
+  }, [navigation])
+  
 
   const goHome = () => {
     navigation.popToTop();

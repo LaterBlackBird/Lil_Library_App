@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-import { deleteLibraryFromDatabase } from '../../services/libraries'
+import { deleteLibraryFromDatabase } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 
 import Button from '../atoms/Button'

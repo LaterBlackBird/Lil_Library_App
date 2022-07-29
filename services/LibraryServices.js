@@ -1,7 +1,7 @@
 import * as geofire from 'geofire-common';
 import { collection, doc, getDoc, getDocs, addDoc, query, orderBy, startAt, endAt, serverTimestamp, GeoPoint, deleteDoc } from 'firebase/firestore';
 
-import { fireDB } from '../services/initializaiton'
+import { fireDB } from './initializaiton'
 
 
 export const librariesWithin10km = async (mapCenter) => {

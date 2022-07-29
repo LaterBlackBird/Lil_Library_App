@@ -1,10 +1,11 @@
+import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { StyleSheet, View, Alert, Animated } from "react-native";
-import { useEffect, useState, useRef, useContext } from "react";
 
 import { getInitialLocation, returnSearchLocation } from "../../services/location";
-import { addLibraryToDatabase, librariesWithin10km } from "../../services/libraries";
+import { addLibraryToDatabase, librariesWithin10km } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
+import librariesReducer, { initialLibraryList } from "../../reducers/LibrariesReducer";
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -16,17 +17,15 @@ import ActionButton from "../molecules/ActionButton";
 
 const MainPage = ({ navigation, route }) => {
   const [mapCenter, setMapCenter] = useState(null);
-  const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
 
   const { libraryInfo } = useContext(libraryContext)
+  const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
-
-  console.log(libraryInfo)
 
   const moveSearchBoxOutOfView = Animated.timing(searchBoxPosition, {
     toValue: -100,
@@ -75,7 +74,8 @@ const MainPage = ({ navigation, route }) => {
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
-    setLibrariesArray(await librariesWithin10km(mapCenter));
+    const allLibraries = await librariesWithin10km(mapCenter);
+    dispatch({type:'allLibraries', library: allLibraries})
     return;
   };
 
@@ -167,8 +167,8 @@ const MainPage = ({ navigation, route }) => {
         onRegionChangeComplete={updateMapFromMove}
         children={
           <>
-            {librariesArray &&
-              librariesArray.map((library, index) => (
+            {visibleLibraries &&
+              visibleLibraries.map((library, index) => (
                 <MarkerStd
                   key={index}
                   coordinate={{

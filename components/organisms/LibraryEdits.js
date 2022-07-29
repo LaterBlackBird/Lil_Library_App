@@ -1,7 +1,10 @@
+import { useContext, useReducer } from 'react';
 import { StyleSheet, Text, View } from 'react-native'
 
 import { deleteLibraryFromDatabase } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
+import { libraryContext } from "../../context/libraryContext";
+import librariesReducer, { initialLibraryList } from "../../reducers/LibrariesReducer";
 
 import Button from '../atoms/Button'
 import H1 from '../atoms/H1';
@@ -10,7 +13,10 @@ import ActionButton from '../molecules/ActionButton';
 import PressableTextCancel from '../molecules/PressableTextCancel';
 
 const LibraryEdits = ({ navigation, route }) => {
-  const { library } = route.params;
+
+  const { libraryInfo, setLibraryInfo } = useContext(libraryContext)
+  const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
+
 
   const changeName = () => {
     //TODO
@@ -23,7 +29,8 @@ const LibraryEdits = ({ navigation, route }) => {
   }
 
   const deleteLibrary = async () => {
-    await deleteLibraryFromDatabase(library.id);
+    await deleteLibraryFromDatabase(libraryInfo.id);
+    dispatch({type: 'removeOneLibrary', library: libraryInfo})
     navigation.popToTop();
     return;
   }
@@ -40,7 +47,7 @@ const LibraryEdits = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <H1 text={library.name} />
+      <H1 text={libraryInfo.name} />
       <Button
         onPress={changeName}
         text={"Change Library Name"}

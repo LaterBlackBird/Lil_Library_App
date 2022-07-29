@@ -21,7 +21,7 @@ const MainPage = ({ navigation, route }) => {
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
 
-  const { libraryInfo } = useContext(libraryContext)
+  const { libraryInfo, setLibraryInfo } = useContext(libraryContext)
   const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
@@ -98,8 +98,6 @@ const MainPage = ({ navigation, route }) => {
   };
 
 
-  /*******   New Library Creation Section   ********/
-
   const AddLibraryMarker = () => {
     Alert.alert(
       "To Locate Your New Library",
@@ -152,13 +150,14 @@ const MainPage = ({ navigation, route }) => {
     setNewMarker(false);
     setNewLibraryName('');
   };
-
-  /*************************************************/
-
-
+  
+  
   const goToLibraryProfile = (library) => {
+    setLibraryInfo(library);
     navigation.navigate("LibraryProfile", { library });
   };
+
+  /*************************************************/
 
   return (
     <View style={styles.container}>

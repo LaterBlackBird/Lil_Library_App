@@ -1,4 +1,4 @@
-export const initialLibraryiesList = [];
+export const initialLibraryList = [];
 
 export default (state, action) => {
   switch (action.type) {

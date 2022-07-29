@@ -27,7 +27,7 @@ export const librariesWithin10km = async (mapCenter) => {
 };
 
 
-export const addLibraryToDatabase = async (mapCenter, librariesArray, newLibraryName) => {
+export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
   const newLibraryData = {
     createdAt: serverTimestamp(),
     geohash: geofire.geohashForLocation([
@@ -41,8 +41,8 @@ export const addLibraryToDatabase = async (mapCenter, librariesArray, newLibrary
   const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
   const docRef = doc(fireDB, "libraries", newDoc.id);
   const docSnap = await getDoc(docRef);
-
-  return [...librariesArray, docSnap.data()];
+  console.log("docSnap ===========>", docSnap)
+  return { id: doc.id, ...docSnap.data() };
 };
 
 
@@ -50,6 +50,6 @@ export const deleteLibraryFromDatabase = async (id) => {
   try {
     await deleteDoc(doc(fireDB, 'libraries', id));
   } catch (error) {
-    return 'error'
+    return 'error';
   }
 }

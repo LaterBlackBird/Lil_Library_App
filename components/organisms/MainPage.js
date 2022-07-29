@@ -140,16 +140,17 @@ const MainPage = ({ navigation, route }) => {
 
   const createNewLibrary = async () => {
     setNewMarker(false);
-    setLibrariesArray(
-      await addLibraryToDatabase(mapCenter, librariesArray, newLibraryName)
-    );
+    const newLibrary = await addLibraryToDatabase(mapCenter, newLibraryName);
+    dispatch({ type: 'addOneLibrary', library: newLibrary });
     switchInputsToShowSearchBox();
+    setNewLibraryName('');
+    return;
   };
 
   const cancelNewLibrary = () => {
     switchInputsToShowSearchBox();
     setNewMarker(false);
-    setNewLibraryName("");
+    setNewLibraryName('');
   };
 
   /*************************************************/
@@ -158,7 +159,6 @@ const MainPage = ({ navigation, route }) => {
   const goToLibraryProfile = (library) => {
     navigation.navigate("LibraryProfile", { library });
   };
-
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,6 @@
 import { TextInput, StyleSheet, Animated } from 'react-native'
 
-const AnimatedInput = ({ children, style, position, onSubmitEditing, placeholder, placeholderTextColor, onChangeText }) => {
+const AnimatedInput = ({ children, style, position, onSubmitEditing, placeholder, placeholderTextColor, onChangeText, value }) => {
   return (
     <Animated.View style={[styles.container, position]}>
       <TextInput
@@ -10,6 +10,7 @@ const AnimatedInput = ({ children, style, position, onSubmitEditing, placeholder
         style={[styles.input, style === 'primary' ? styles.primary : styles.secondary]}
         blurOnSubmit={true}
         onSubmitEditing={onSubmitEditing}
+        value={value}
       />
       {children &&
         children

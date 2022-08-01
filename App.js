@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
 
+import { LibraryProvider } from './context/libraryContext';
+
 import LoginForm from './components/organisms/LoginForm';
 import SignUpForm from './components/organisms/SignUpForm';
 import MainPage from './components/organisms/MainPage';
@@ -33,57 +35,58 @@ export default function App() {
   }, [onAuthStateChanged]);
     
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {userAuthroized === false ?
-          <>
-            <Stack.Screen
-              name="Login"
-              component={LoginForm}
-              options={{
-                headerShown: false,
-              }}
-            />
+    <LibraryProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {userAuthroized === false ? (
+            <>
+              <Stack.Screen
+                name="Login"
+                component={LoginForm}
+                options={{
+                  headerShown: false,
+                }}
+              />
 
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpForm}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </>
-          :
-          <>
-            <Stack.Screen
-              name="Home"
-              component={MainPage}
-              options={{
-                headerShown: false,
-                animationTypeForReplace: 'pop'
-              }}
-            />
-            <Stack.Screen
-              name="LibraryProfile"
-              component={LibraryProfile}
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right'
-              }}
-            />
-            <Stack.Screen
-              name='LibraryOptions'
-              component={LibraryEdits}
-              options={{
-                headerShown: false,
-                animation: 'slide_from_right'
-              }}
-            />
-          </>
-        }
-
-      </Stack.Navigator>
-    </NavigationContainer>
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpForm}
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="Home"
+                component={MainPage}
+                options={{
+                  headerShown: false,
+                  animationTypeForReplace: "pop",
+                }}
+              />
+              <Stack.Screen
+                name="LibraryProfile"
+                component={LibraryProfile}
+                options={{
+                  headerShown: false,
+                  animation: "slide_from_right",
+                }}
+              />
+              <Stack.Screen
+                name="LibraryOptions"
+                component={LibraryEdits}
+                options={{
+                  headerShown: false,
+                  animation: "slide_from_right",
+                }}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LibraryProvider>
   );
 }
 

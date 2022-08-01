@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { signOutUser } from '../../services/user';
+import { libraryContext } from '../../context/libraryContext';
 
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
@@ -9,14 +11,14 @@ import Link from '../atoms/Link';
 
 
 const LibraryProfile = ({ navigation, route }) => {
-  const { library } = route.params;
+  const { selectedLibraryContext, setSelectedLibraryContext } = useContext(libraryContext)
 
   const goHome = () => {
     navigation.popToTop();
   };
 
   const goToLibraryEditOptions = () => {
-    navigation.navigate("LibraryOptions", { library });
+    navigation.navigate("LibraryOptions");
     return;
   }
   const addBook = () => {
@@ -28,10 +30,10 @@ const LibraryProfile = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={{width: '90%', top: 50}}>
-        <H1 text={library.name} style={{ marginLeft: 20 }} />
+        <H1 text={selectedLibraryContext.name} style={{ marginLeft: 20 }} />
 
         <Text style={styles.libraryEstablishedText}>
-          Established {library.createdAt.toDate().toDateString()}
+          Established {selectedLibraryContext.createdAt.toDate().toDateString()}
         </Text>
 
         <Link
@@ -62,14 +64,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center'
-  },
-  libraryInfo: {
-    top: 50,
-    width: '90%',
-  },
-  libraryNameText: {
-    fontSize: 30,
-    fontWeight: 'bold',
   },
   libraryEstablishedText: {
     fontSize: 12,

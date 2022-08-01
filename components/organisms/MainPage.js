@@ -1,9 +1,10 @@
+import { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Alert, Animated } from "react-native";
-import { useEffect, useState, useRef } from "react";
 
 import { getInitialLocation, returnSearchLocation } from "../../services/location";
-import { addLibraryToDatabase, librariesWithin10km } from "../../services/libraries";
+import { addLibraryToDatabase, librariesWithin10km } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
+import { libraryContext } from "../../context/libraryContext";
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -13,12 +14,18 @@ import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
 
-const MainPage = ({ navigation, route }) => {
+const MainPage = ({ navigation }) => {
   const [mapCenter, setMapCenter] = useState(null);
-  const [librariesArray, setLibrariesArray] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
+
+  const {
+    selectedLibraryContext,
+    setSelectedLibraryContext,
+    allVisibleLibrariesContext,
+    setAllVisibleLibrariesContext,
+  } = useContext(libraryContext);
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
@@ -56,20 +63,16 @@ const MainPage = ({ navigation, route }) => {
     setInitialMapCenter();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      retreiveNearbyLibraries();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
 
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
-    setLibrariesArray(await librariesWithin10km(mapCenter));
+    const allLibraries = await librariesWithin10km(mapCenter);
+    await setAllVisibleLibrariesContext(allLibraries);
+    // dispatch({type:'allLibraries', library: allLibraries})
+    return;
   };
+
 
 
   const updateMapFromSearch = async () => {
@@ -81,14 +84,14 @@ const MainPage = ({ navigation, route }) => {
 
   //updates the map when moved programmatically or by user interaction
   const updateMapFromMove = async (region) => {
+    if (mapCenter === null) setMapCenter(region);
+
     if (mapCenter.latitude !== region.latitude) {
       setMapCenter(region);
       await retreiveNearbyLibraries();
     } else return;
   };
 
-
-  /*******   New Library Creation Section   ********/
 
   const AddLibraryMarker = () => {
     Alert.alert(
@@ -129,26 +132,31 @@ const MainPage = ({ navigation, route }) => {
   };
 
   const createNewLibrary = async () => {
+    const newLibrary = await addLibraryToDatabase(mapCenter, newLibraryName);
+    await setSelectedLibraryContext(newLibrary);
+    await setAllVisibleLibrariesContext([...allVisibleLibrariesContext, newLibrary])
     setNewMarker(false);
-    setLibrariesArray(
-      await addLibraryToDatabase(mapCenter, librariesArray, newLibraryName)
-    );
+    // dispatch({ type: 'addOneLibrary', library: newLibrary });
     switchInputsToShowSearchBox();
+    setNewLibraryName('');
+    navigation.navigate('LibraryProfile')
+    return;
   };
 
   const cancelNewLibrary = () => {
     switchInputsToShowSearchBox();
     setNewMarker(false);
-    setNewLibraryName("");
+    setNewLibraryName('');
   };
+  
 
-  /*************************************************/
-
-
-  const goToLibraryProfile = (library) => {
+  
+  const goToLibraryProfile = async (library) => {
+    await setSelectedLibraryContext(library);
     navigation.navigate("LibraryProfile", { library });
   };
 
+  /*************************************************/
 
   return (
     <View style={styles.container}>
@@ -157,15 +165,14 @@ const MainPage = ({ navigation, route }) => {
         onRegionChangeComplete={updateMapFromMove}
         children={
           <>
-            {librariesArray &&
-              librariesArray.map((library, index) => (
+            {allVisibleLibrariesContext &&
+              allVisibleLibrariesContext.map((library, index) => (
                 <MarkerStd
                   key={index}
                   coordinate={{
                     latitude: library.location.latitude,
                     longitude: library.location.longitude,
                   }}
-                  title={library.name}
                   onPress={() => goToLibraryProfile(library)}
                 />
               ))}
@@ -188,6 +195,7 @@ const MainPage = ({ navigation, route }) => {
         onSubmitEditing={updateMapFromSearch}
         placeholder={"Search"}
         placeholderTextColor={"grey"}
+        value={searchCriteria}
       />
 
       <AnimatedInput
@@ -198,6 +206,7 @@ const MainPage = ({ navigation, route }) => {
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}
         children={<PressableTextCancel onPress={cancelNewLibrary} />}
+        value={newLibraryName}
       />
 
       <ActionBar

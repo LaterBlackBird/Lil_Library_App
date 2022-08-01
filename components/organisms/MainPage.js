@@ -140,10 +140,12 @@ const MainPage = ({ navigation, route }) => {
   const createNewLibrary = async () => {
     const newLibrary = await addLibraryToDatabase(mapCenter, newLibraryName);
     await setSelectedLibraryContext(newLibrary);
+    await setAllVisibleLibrariesContext([...allVisibleLibrariesContext, newLibrary])
     setNewMarker(false);
     // dispatch({ type: 'addOneLibrary', library: newLibrary });
     switchInputsToShowSearchBox();
     setNewLibraryName('');
+    navigation.navigate('LibraryProfile')
     return;
   };
 

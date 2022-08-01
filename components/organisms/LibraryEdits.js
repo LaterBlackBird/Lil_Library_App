@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
-import { StyleSheet, View, Modal } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { deleteLibraryFromDatabase } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 import { libraryContext } from "../../context/libraryContext";
 
 import Button from '../atoms/Button'
+import ModalInput from '../molecules/ModalInput';
 import H1 from '../atoms/H1';
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
@@ -15,7 +16,6 @@ import TextField from '../atoms/TextField';
 const LibraryEdits = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [libraryRename, setLibraryRename] = useState('');
-
 
   const {
     selectedLibraryContext,
@@ -58,6 +58,10 @@ const LibraryEdits = ({ navigation }) => {
   const renameLibary = async () => {
     setModalVisible(false);
     setLibraryRename('');
+    const updateName = selectedLibraryContext;
+    updateName.name = libraryRename;
+    await setSelectedLibraryContext(updateName);
+    navigation.navigate('LibraryProfile');
   }
 
 
@@ -93,28 +97,20 @@ const LibraryEdits = ({ navigation }) => {
         }
       />
 
-      <Modal
-        animationType="slide"
-        transparent={false}
+      <ModalInput
+        title={'New Library Name'}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(!modalVisible)}
         onDismiss={renameLibary}
       >
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:'#efefef' }}>
-          <H1
-            text={'New Library Name'}
-          />
-          <TextField
-            placeholder={selectedLibraryContext.name}
-            value={libraryRename}
-            onChangeText={(text) => setLibraryRename(text)}
-            onSubmitEditing={renameLibary}
-          />
-          <PressableTextCancel
-            onPress={() => setModalVisible(false)}
-          />
-        </View>
-      </Modal>
+        <TextField
+          placeholder={selectedLibraryContext.name}
+          value={libraryRename}
+          onChangeText={(text) => setLibraryRename(text)}
+          onSubmitEditing={renameLibary}
+        />
+        <PressableTextCancel onPress={() => setModalVisible(false)} />
+      </ModalInput>
     </View>
   );
 }

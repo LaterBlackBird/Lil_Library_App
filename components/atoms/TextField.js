@@ -1,12 +1,13 @@
 import { TextInput, StyleSheet } from 'react-native'
 
-const TextField = ({ placeholder, value, onChangeText }) => {
+const TextField = ({ placeholder, value, onChangeText, onSubmitEditing }) => {
   return (
     <TextInput
       placeholder={placeholder}
       value={ value }
       onChangeText={ onChangeText }
       style={styles.input}
+      onSubmitEditing={onSubmitEditing}
     />
   )
 }

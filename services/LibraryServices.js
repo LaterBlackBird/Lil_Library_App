@@ -51,4 +51,10 @@ export const deleteLibraryFromDatabase = async (id) => {
   } catch (error) {
     return 'error';
   }
+};
+
+
+export const updateLibraryName = async (library, newName) => {
+  const docRef = doc(fireDB, "libraries", newDoc.id);
+
 }

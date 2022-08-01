@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef, useContext, useReducer } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Alert, Animated } from "react-native";
 
 import { getInitialLocation, returnSearchLocation } from "../../services/location";
 import { addLibraryToDatabase, librariesWithin10km } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
-import librariesReducer, { initialLibraryList } from "../../reducers/LibrariesReducer";
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -15,14 +14,18 @@ import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
 
-const MainPage = ({ navigation, route }) => {
+const MainPage = ({ navigation }) => {
   const [mapCenter, setMapCenter] = useState(null);
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
 
-  const { selectedLibraryContext, setSelectedLibraryContext, allVisibleLibrariesContext, setAllVisibleLibrariesContext } = useContext(libraryContext);
-  // const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
+  const {
+    selectedLibraryContext,
+    setSelectedLibraryContext,
+    allVisibleLibrariesContext,
+    setAllVisibleLibrariesContext,
+  } = useContext(libraryContext);
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
@@ -60,16 +63,6 @@ const MainPage = ({ navigation, route }) => {
     setInitialMapCenter();
   }, []);
 
-  // useEffect(() => {
-  //   const updateLibraryList = navigation.addListener('focus', () => {
-  //     if (selectedLibraryContext) {
-  //       librariesArray.filter(library => library.id !== selectedLibraryContext.id)
-  //     }
-  //   });
-
-  //   return updateLibraryList;
-  // }, [navigation]);
-
 
 
   //Find Libraries within 10km
@@ -79,6 +72,7 @@ const MainPage = ({ navigation, route }) => {
     // dispatch({type:'allLibraries', library: allLibraries})
     return;
   };
+
 
 
   const updateMapFromSearch = async () => {
@@ -155,6 +149,7 @@ const MainPage = ({ navigation, route }) => {
     setNewLibraryName('');
   };
   
+
   
   const goToLibraryProfile = async (library) => {
     await setSelectedLibraryContext(library);

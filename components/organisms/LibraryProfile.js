@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { signOutUser } from '../../services/user';
@@ -11,16 +11,7 @@ import Link from '../atoms/Link';
 
 
 const LibraryProfile = ({ navigation, route }) => {
-  // const { library } = route.params;
   const { selectedLibraryContext, setSelectedLibraryContext } = useContext(libraryContext)
-
-
-  // useEffect(() => {
-  //   const updateContext = setSelectedLibraryContext(library);
-  
-  //   return updateContext
-  // }, [navigation])
-  
 
   const goHome = () => {
     navigation.popToTop();

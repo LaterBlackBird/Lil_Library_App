@@ -1,10 +1,9 @@
-import { useContext, useReducer } from 'react';
-import { StyleSheet, Text, View } from 'react-native'
+import { useContext } from 'react';
+import { StyleSheet, View } from 'react-native'
 
 import { deleteLibraryFromDatabase } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 import { libraryContext } from "../../context/libraryContext";
-import librariesReducer, { initialLibraryList } from "../../reducers/LibrariesReducer";
 
 import Button from '../atoms/Button'
 import H1 from '../atoms/H1';
@@ -12,10 +11,14 @@ import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
 import PressableTextCancel from '../molecules/PressableTextCancel';
 
-const LibraryEdits = ({ navigation, route }) => {
+const LibraryEdits = ({ navigation }) => {
 
-  const { selectedLibraryContext, setSelectedLibraryContext } = useContext(libraryContext)
-  const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
+  const {
+    selectedLibraryContext,
+    setSelectedLibraryContext,
+    allVisibleLibrariesContext,
+    setAllVisibleLibrariesContext,
+  } = useContext(libraryContext);
 
 
   const changeName = () => {
@@ -30,7 +33,8 @@ const LibraryEdits = ({ navigation, route }) => {
 
   const deleteLibrary = async () => {
     await deleteLibraryFromDatabase(selectedLibraryContext.id);
-    dispatch({type: 'removeOneLibrary', library: selectedLibraryContext})
+    const updatedLibraryList = allVisibleLibrariesContext.filter(library => library.id !== selectedLibraryContext.id);
+    await setAllVisibleLibrariesContext(updatedLibraryList);
     navigation.popToTop();
     return;
   }

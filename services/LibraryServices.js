@@ -41,8 +41,7 @@ export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
   const newDoc = await addDoc(collection(fireDB, "libraries"), newLibraryData);
   const docRef = doc(fireDB, "libraries", newDoc.id);
   const docSnap = await getDoc(docRef);
-  console.log("docSnap ===========>", docSnap)
-  return { id: doc.id, ...docSnap.data() };
+  return { id: newDoc.id, ...docSnap.data() };
 };
 
 

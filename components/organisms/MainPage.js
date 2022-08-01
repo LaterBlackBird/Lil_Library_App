@@ -21,8 +21,8 @@ const MainPage = ({ navigation, route }) => {
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
 
-  const { libraryInfo, setLibraryInfo } = useContext(libraryContext)
-  const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
+  const { selectedLibraryContext, setSelectedLibraryContext, allVisibleLibrariesContext, setAllVisibleLibrariesContext } = useContext(libraryContext);
+  // const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
@@ -62,8 +62,8 @@ const MainPage = ({ navigation, route }) => {
 
   // useEffect(() => {
   //   const updateLibraryList = navigation.addListener('focus', () => {
-  //     if (libraryInfo) {
-  //       librariesArray.filter(library => library.id !== libraryInfo.id)
+  //     if (selectedLibraryContext) {
+  //       librariesArray.filter(library => library.id !== selectedLibraryContext.id)
   //     }
   //   });
 
@@ -75,7 +75,8 @@ const MainPage = ({ navigation, route }) => {
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
     const allLibraries = await librariesWithin10km(mapCenter);
-    dispatch({type:'allLibraries', library: allLibraries})
+    await setAllVisibleLibrariesContext(allLibraries);
+    // dispatch({type:'allLibraries', library: allLibraries})
     return;
   };
 
@@ -137,9 +138,10 @@ const MainPage = ({ navigation, route }) => {
   };
 
   const createNewLibrary = async () => {
-    setNewMarker(false);
     const newLibrary = await addLibraryToDatabase(mapCenter, newLibraryName);
-    dispatch({ type: 'addOneLibrary', library: newLibrary });
+    await setSelectedLibraryContext(newLibrary);
+    setNewMarker(false);
+    // dispatch({ type: 'addOneLibrary', library: newLibrary });
     switchInputsToShowSearchBox();
     setNewLibraryName('');
     return;
@@ -152,8 +154,8 @@ const MainPage = ({ navigation, route }) => {
   };
   
   
-  const goToLibraryProfile = (library) => {
-    setLibraryInfo(library);
+  const goToLibraryProfile = async (library) => {
+    await setSelectedLibraryContext(library);
     navigation.navigate("LibraryProfile", { library });
   };
 
@@ -166,15 +168,14 @@ const MainPage = ({ navigation, route }) => {
         onRegionChangeComplete={updateMapFromMove}
         children={
           <>
-            {visibleLibraries &&
-              visibleLibraries.map((library, index) => (
+            {allVisibleLibrariesContext &&
+              allVisibleLibrariesContext.map((library, index) => (
                 <MarkerStd
                   key={index}
                   coordinate={{
                     latitude: library.location.latitude,
                     longitude: library.location.longitude,
                   }}
-                  title={library.name}
                   onPress={() => goToLibraryProfile(library)}
                 />
               ))}
@@ -197,6 +198,7 @@ const MainPage = ({ navigation, route }) => {
         onSubmitEditing={updateMapFromSearch}
         placeholder={"Search"}
         placeholderTextColor={"grey"}
+        value={searchCriteria}
       />
 
       <AnimatedInput
@@ -207,6 +209,7 @@ const MainPage = ({ navigation, route }) => {
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}
         children={<PressableTextCancel onPress={cancelNewLibrary} />}
+        value={newLibraryName}
       />
 
       <ActionBar

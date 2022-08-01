@@ -14,7 +14,7 @@ import PressableTextCancel from '../molecules/PressableTextCancel';
 
 const LibraryEdits = ({ navigation, route }) => {
 
-  const { libraryInfo, setLibraryInfo } = useContext(libraryContext)
+  const { selectedLibraryContext, setSelectedLibraryContext } = useContext(libraryContext)
   const [visibleLibraries, dispatch] = useReducer(librariesReducer, initialLibraryList)
 
 
@@ -29,8 +29,8 @@ const LibraryEdits = ({ navigation, route }) => {
   }
 
   const deleteLibrary = async () => {
-    await deleteLibraryFromDatabase(libraryInfo.id);
-    dispatch({type: 'removeOneLibrary', library: libraryInfo})
+    await deleteLibraryFromDatabase(selectedLibraryContext.id);
+    dispatch({type: 'removeOneLibrary', library: selectedLibraryContext})
     navigation.popToTop();
     return;
   }
@@ -47,7 +47,7 @@ const LibraryEdits = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <H1 text={libraryInfo.name} />
+      <H1 text={selectedLibraryContext.name} />
       <Button
         onPress={changeName}
         text={"Change Library Name"}

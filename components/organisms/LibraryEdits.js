@@ -29,6 +29,12 @@ const LibraryEdits = ({ navigation }) => {
 
   const moveLibrary = () => {
     //TODO
+    //show map with no markers
+    //show temporary marker that can move
+    //after accepting new position
+    //update db
+    //update context
+    //show map with all markers
     return;
   }
 

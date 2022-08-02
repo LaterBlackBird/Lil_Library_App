@@ -12,7 +12,7 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] Library Create
 - [X] Library Read
 - [ ] Library Update/Edit
-- [ ] Library Deletion
+- [X] Library Deletion
 - [X] Library Profile
 - [ ] Library Inventory
 - [ ] Library Checkout system
@@ -39,7 +39,9 @@ Project is intended as a means to learn React Native, and will not be published 
 
 ## Demo
 
-Demo @ 7/14/22
+Demo @ 8/2/22
 <!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif height="50%") -->
-<img src="https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif" alt="Demo #1" width="250"/>
+<!-- ![Demo220802_2](https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif) -->
+
+<img src="https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif" alt="Demo"/>
 

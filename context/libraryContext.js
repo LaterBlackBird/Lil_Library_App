@@ -6,6 +6,7 @@ export const LibraryProvider = ({ children }) => {
   const [selectedLibraryContext, setSelectedLibraryContext] = useState([]);
   const [allVisibleLibrariesContext, setAllVisibleLibrariesContext] = useState([]);
   const [movingLibraryFlag, setMovingLibraryFlag] = useState(false);
+  const [movingLibrary, setMovingLibrary] = useState({});
 
   return (
     <libraryContext.Provider
@@ -15,7 +16,7 @@ export const LibraryProvider = ({ children }) => {
         allVisibleLibrariesContext,
         setAllVisibleLibrariesContext,
         movingLibraryFlag,
-        setMovingLibraryFlag
+        setMovingLibraryFlag,
       }}
     >
       {children}

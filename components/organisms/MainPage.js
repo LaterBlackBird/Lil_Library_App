@@ -155,6 +155,7 @@ const MainPage = ({ navigation }) => {
   
   const goToLibraryProfile = async (library) => {
     await setSelectedLibraryContext(library);
+    setMapCenter(selectedLibraryContext.location);
     navigation.navigate("LibraryProfile", { library });
   };
 
@@ -164,6 +165,11 @@ const MainPage = ({ navigation }) => {
     return;
   }
 
+  console.log('1', selectedLibraryContext?.location);
+  console.log('2', {
+    latitude: selectedLibraryContext.location?.latitude,
+    longitude: selectedLibraryContext.location?.longitude,
+  })
   /*************************************************/
 
   return (
@@ -173,7 +179,8 @@ const MainPage = ({ navigation }) => {
         onRegionChangeComplete={updateMapFromMove}
         children={
           <>
-            {!movingLibraryFlag && allVisibleLibrariesContext &&
+            {!movingLibraryFlag &&
+              allVisibleLibrariesContext &&
               allVisibleLibrariesContext.map((library, index) => (
                 <MarkerStd
                   key={index}
@@ -185,10 +192,17 @@ const MainPage = ({ navigation }) => {
                 />
               ))}
 
-            {newMarker === true && (
+            {(movingLibraryFlag || newMarker) && (
               <MarkerNew
                 pinColor="blue"
-                coordinate={mapCenter}
+                coordinate={
+                  movingLibraryFlag
+                    ? {
+                        latitude: selectedLibraryContext.location.latitude,
+                        longitude: selectedLibraryContext.location.longitude,
+                      }
+                    : mapCenter
+                }
                 onDragEnd={moveMapCenterToDragLocation}
               />
             )}

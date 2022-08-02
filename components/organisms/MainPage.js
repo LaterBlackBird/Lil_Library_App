@@ -25,6 +25,8 @@ const MainPage = ({ navigation }) => {
     setSelectedLibraryContext,
     allVisibleLibrariesContext,
     setAllVisibleLibrariesContext,
+    movingLibraryFlag,
+    setMovingLibraryFlag,
   } = useContext(libraryContext);
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
@@ -93,7 +95,7 @@ const MainPage = ({ navigation }) => {
   };
 
 
-  const AddLibraryMarker = () => {
+  const addLibraryMarker = () => {
     Alert.alert(
       "To Locate Your New Library",
       "Move the map to center the pin on the map, or long press to drag the pin",
@@ -156,6 +158,12 @@ const MainPage = ({ navigation }) => {
     navigation.navigate("LibraryProfile", { library });
   };
 
+
+  const acceptNewLocation = async () => {
+    //TODO
+    return;
+  }
+
   /*************************************************/
 
   return (
@@ -165,7 +173,7 @@ const MainPage = ({ navigation }) => {
         onRegionChangeComplete={updateMapFromMove}
         children={
           <>
-            {allVisibleLibrariesContext &&
+            {!movingLibraryFlag && allVisibleLibrariesContext &&
               allVisibleLibrariesContext.map((library, index) => (
                 <MarkerStd
                   key={index}
@@ -191,7 +199,7 @@ const MainPage = ({ navigation }) => {
       <AnimatedInput
         style={"primary"}
         position={{ top: searchBoxPosition }}
-        onChangeText={text => setSearchCriteria(text)}
+        onChangeText={(text) => setSearchCriteria(text)}
         onSubmitEditing={updateMapFromSearch}
         placeholder={"Search"}
         placeholderTextColor={"grey"}
@@ -201,22 +209,29 @@ const MainPage = ({ navigation }) => {
       <AnimatedInput
         style={"secondary"}
         position={{ top: libraryNameBoxPosition }}
-        onChangeText={text => setNewLibraryName(text)}
+        onChangeText={(text) => setNewLibraryName(text)}
         onSubmitEditing={createNewLibrary}
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}
         children={<PressableTextCancel onPress={cancelNewLibrary} />}
         value={newLibraryName}
       />
-
-      <ActionBar
-        children={
-          <>
-            <ActionButton type={"addLibrary"} onPress={AddLibraryMarker} />
-            <ActionButton type={"user"} onPress={signOutUser} />
-          </>
-        }
-      />
+      {!movingLibraryFlag ? (
+        <ActionBar
+          children={
+            <>
+              <ActionButton type={"addLibrary"} onPress={addLibraryMarker} />
+              <ActionButton type={"user"} onPress={signOutUser} />
+            </>
+          }
+        />
+      ) : (
+        <ActionBar
+          children={
+            <ActionButton type={"moveLibrary"} onPress={acceptNewLocation} />
+          }
+        />
+      )}
     </View>
   );
 };

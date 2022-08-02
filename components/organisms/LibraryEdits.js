@@ -22,12 +22,11 @@ const LibraryEdits = ({ navigation }) => {
     setSelectedLibraryContext,
     allVisibleLibrariesContext,
     setAllVisibleLibrariesContext,
+    setMovingLibraryFlag,
   } = useContext(libraryContext);
 
 
-
-
-  const moveLibrary = () => {
+  const moveLibrary = async () => {
     //TODO
     //show map with no markers
     //show temporary marker that can move
@@ -35,6 +34,8 @@ const LibraryEdits = ({ navigation }) => {
     //update db
     //update context
     //show map with all markers
+    await setMovingLibraryFlag(true);
+    navigation.navigate('Home');
     return;
   }
 
@@ -54,7 +55,6 @@ const LibraryEdits = ({ navigation }) => {
   const goHome = () => {
     navigation.popToTop();
   };
-
 
   const showNameChangeModal = () => {
     setModalVisible(true);

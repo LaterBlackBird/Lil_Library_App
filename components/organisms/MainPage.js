@@ -13,6 +13,7 @@ import AnimatedInput from "../molecules/AnimatedInput";
 import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
+import { map } from "@firebase/util";
 
 const MainPage = ({ navigation }) => {
   const [mapCenter, setMapCenter] = useState(null);
@@ -86,12 +87,8 @@ const MainPage = ({ navigation }) => {
 
   //updates the map when moved programmatically or by user interaction
   const updateMapFromMove = async (region) => {
-    if (mapCenter === null) setMapCenter(region);
-
-    if (mapCenter.latitude !== region.latitude) {
-      setMapCenter(region);
-      await retreiveNearbyLibraries();
-    } else return;
+    setMapCenter(region);
+    await retreiveNearbyLibraries();
   };
 
 
@@ -165,50 +162,47 @@ const MainPage = ({ navigation }) => {
     return;
   }
 
-  console.log('1', selectedLibraryContext?.location);
-  console.log('2', {
-    latitude: selectedLibraryContext.location?.latitude,
-    longitude: selectedLibraryContext.location?.longitude,
-  })
   /*************************************************/
 
   return (
     <View style={styles.container}>
-      <Map
-        region={mapCenter}
-        onRegionChangeComplete={updateMapFromMove}
-        children={
-          <>
-            {!movingLibraryFlag &&
-              allVisibleLibrariesContext &&
-              allVisibleLibrariesContext.map((library, index) => (
-                <MarkerStd
-                  key={index}
-                  coordinate={{
-                    latitude: library.location.latitude,
-                    longitude: library.location.longitude,
-                  }}
-                  onPress={() => goToLibraryProfile(library)}
-                />
-              ))}
+      {mapCenter && Object.values(mapCenter).length && (
+        <Map
+          region={mapCenter}
+          onRegionChangeComplete={updateMapFromMove}
+          children={
+            <>
+              {!movingLibraryFlag &&
+                allVisibleLibrariesContext &&
+                allVisibleLibrariesContext.map((library, index) => (
+                  <MarkerStd
+                    key={index}
+                    coordinate={{
+                      latitude: library.location.latitude,
+                      longitude: library.location.longitude,
+                    }}
+                    onPress={() => goToLibraryProfile(library)}
+                  />
+                ))}
 
-            {(movingLibraryFlag || newMarker) && (
-              <MarkerNew
-                pinColor="blue"
-                coordinate={
-                  movingLibraryFlag
-                    ? {
-                        latitude: selectedLibraryContext.location.latitude,
-                        longitude: selectedLibraryContext.location.longitude,
-                      }
-                    : mapCenter
-                }
-                onDragEnd={moveMapCenterToDragLocation}
-              />
-            )}
-          </>
-        }
-      />
+              {(movingLibraryFlag || newMarker) && (
+                <MarkerNew
+                  pinColor="blue"
+                  coordinate={
+                    movingLibraryFlag
+                      ? {
+                          latitude: selectedLibraryContext.location.latitude,
+                          longitude: selectedLibraryContext.location.longitude,
+                        }
+                      : mapCenter
+                  }
+                  onDragEnd={moveMapCenterToDragLocation}
+                />
+              )}
+            </>
+          }
+        />
+      )}
 
       <AnimatedInput
         style={"primary"}

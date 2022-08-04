@@ -72,6 +72,17 @@ const MainPage = ({ navigation }) => {
     setInitialMapCenter();
   }, []);
 
+  useEffect(() => {
+    if (selectedLibraryContext.location !== undefined) {
+      setLastKnownLocation({
+        latitude: selectedLibraryContext.location.latitude,
+        longitude: selectedLibraryContext.location.longitude,
+        latitudeDelta: 0.08,
+        longitudeDelta: 0.05,
+      });
+    };
+  }, [selectedLibraryContext]);
+
   const setInitialMapCenter = async () => {
     setLastKnownLocation(await getInitialLocation());
     return;

@@ -15,18 +15,18 @@ import TextField from '../atoms/TextField';
 
 const LibraryEdits = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [libraryRename, setLibraryRename] = useState('');
+  const [newLibraryName, setNewLibraryName] = useState('');
 
-  const {
+  const [
     selectedLibraryContext,
     setSelectedLibraryContext,
     allVisibleLibrariesContext,
     setAllVisibleLibrariesContext,
     setMovingLibraryFlag,
-  } = useContext(libraryContext);
+   ] = useContext(libraryContext);
 
 
-  const moveLibrary = async () => {
+  const moveLibrary = () => {
     //TODO
     //show map with no markers
     //show temporary marker that can move
@@ -34,7 +34,7 @@ const LibraryEdits = ({ navigation }) => {
     //update db
     //update context
     //show map with all markers
-    await setMovingLibraryFlag(true);
+    setMovingLibraryFlag(true);
     navigation.navigate('Home');
     return;
   }
@@ -61,12 +61,11 @@ const LibraryEdits = ({ navigation }) => {
     return;
   };
 
-  const renameLibary = async () => {
+  const renameLibary = () => {
     setModalVisible(false);
-    setLibraryRename('');
-    const updateName = selectedLibraryContext;
-    updateName.name = libraryRename;
-    await setSelectedLibraryContext(updateName);
+    const updatedLibrary = {...selectedLibraryContext};
+    updatedLibrary.name = newLibraryName;
+    setSelectedLibraryContext(updatedLibrary);
     navigation.navigate('LibraryProfile');
   }
 
@@ -111,8 +110,8 @@ const LibraryEdits = ({ navigation }) => {
       >
         <TextField
           placeholder={selectedLibraryContext.name}
-          value={libraryRename}
-          onChangeText={(text) => setLibraryRename(text)}
+          value={newLibraryName}
+          onChangeText={(text) => setNewLibraryName(text)}
           onSubmitEditing={renameLibary}
         />
         <PressableTextCancel onPress={() => setModalVisible(false)} />

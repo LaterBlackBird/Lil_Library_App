@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
-import { LocationContext } from "../../context/LocationContext";
 
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
@@ -12,18 +11,11 @@ import Link from "../atoms/Link";
 
 const LibraryProfile = ({ navigation, route }) => {
   const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
-  const [lastKnownLocation, setLastKnownLocation] = useContext(LocationContext);
+
 
   useEffect(() => {
-    setLastKnownLocation({
-      latitude: selectedLibraryContext.location.latitude,
-      longitude: selectedLibraryContext.location.longitude,
-      latitudeDelta: 0.08,
-      longitudeDelta: 0.05,
-    });
-    return () => {
-    };
-  }, []);
+    console.log(selectedLibraryContext);
+  }, [selectedLibraryContext]);
 
   const goHome = () => {
     navigation.popToTop();
@@ -41,7 +33,7 @@ const LibraryProfile = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={{ width: "90%", top: 50 }}>
-        <H1 text={selectedLibraryContext.name} style={{ marginLeft: 20 }} />
+        <H1 text={selectedLibraryContext?.name} style={{ marginLeft: 20 }} />
 
         <Text style={styles.libraryEstablishedText}>
           Established {selectedLibraryContext.createdAt.toDate().toDateString()}

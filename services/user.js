@@ -7,8 +7,6 @@ export const login = (email, password) => {
       // Signed in 
       const user = userCredential.user;
       // ...
-      console.log(`${user.email} logged in`)
-      // navigation.replace("Home");
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -23,7 +21,6 @@ export const signUp = (email, password, passwordConfirmation) => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(`${user.email} signed up`)
       })
       .catch((error) => {
         const errorCode = error.code;

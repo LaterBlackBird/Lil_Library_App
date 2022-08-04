@@ -1,5 +1,19 @@
 import * as geofire from 'geofire-common';
-import { collection, doc, getDoc, getDocs, addDoc, query, orderBy, startAt, endAt, serverTimestamp, GeoPoint, deleteDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  query,
+  orderBy,
+  startAt,
+  endAt,
+  serverTimestamp,
+  GeoPoint,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 import { fireDB } from './initializaiton'
 
@@ -51,4 +65,10 @@ export const deleteLibraryFromDatabase = async (id) => {
   } catch (error) {
     return 'error';
   }
+};
+
+
+export const updateLibraryName = async (library, newName) => {
+  const docRef = doc(fireDB, "libraries", library.id);
+  await updateDoc(docRef, {name: newName})
 }

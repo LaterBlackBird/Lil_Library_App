@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native'
 
-import { deleteLibraryFromDatabase } from '../../services/LibraryServices'
+import { deleteLibraryFromDatabase, updateLibraryName } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 import { libraryContext } from "../../context/libraryContext";
 
@@ -61,11 +61,12 @@ const LibraryEdits = ({ navigation }) => {
     return;
   };
 
-  const renameLibary = () => {
+  const renameLibary = async () => {
     setModalVisible(false);
     const updatedLibrary = {...selectedLibraryContext};
     updatedLibrary.name = newLibraryName;
     setSelectedLibraryContext(updatedLibrary);
+    await updateLibraryName(selectedLibraryContext, newLibraryName);
     navigation.navigate('LibraryProfile');
   }
 

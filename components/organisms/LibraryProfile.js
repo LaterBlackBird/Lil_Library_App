@@ -12,11 +12,6 @@ import Link from "../atoms/Link";
 const LibraryProfile = ({ navigation, route }) => {
   const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
 
-
-  useEffect(() => {
-    console.log(selectedLibraryContext);
-  }, [selectedLibraryContext]);
-
   const goHome = () => {
     navigation.popToTop();
   };

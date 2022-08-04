@@ -22,6 +22,7 @@ const LibraryEdits = ({ navigation }) => {
     setSelectedLibraryContext,
     allVisibleLibrariesContext,
     setAllVisibleLibrariesContext,
+    movingLibraryFlag,
     setMovingLibraryFlag,
    ] = useContext(libraryContext);
 
@@ -83,13 +84,13 @@ const LibraryEdits = ({ navigation }) => {
       <Button
         onPress={moveLibrary}
         text={
-          "This Library Is Not Located Here And I'd Like To Move The Marker"
+          "Move Library Marker"
         }
         buttonStyle="secondary"
       />
       <Button
         onPress={deleteLibrary}
-        text={"This Library Does Not Exist And Should Be Removed From The Map"}
+        text={"Remove Library"}
         buttonStyle="secondary"
       />
       <PressableTextCancel onPress={goBackToLibrary} />

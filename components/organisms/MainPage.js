@@ -80,7 +80,7 @@ const MainPage = ({ navigation }) => {
         latitudeDelta: 0.08,
         longitudeDelta: 0.05,
       });
-    };
+    }
   }, [selectedLibraryContext]);
 
   const setInitialMapCenter = async () => {
@@ -128,7 +128,7 @@ const MainPage = ({ navigation }) => {
     setLastKnownLocation({
       latitude: latitude,
       longitude: longitude,
-      latitudeDelta: 0.002,
+      latitudeDelta: 0.008,
       longitudeDelta: 0.005,
     });
   };
@@ -172,9 +172,13 @@ const MainPage = ({ navigation }) => {
     navigation.navigate("LibraryProfile");
   };
 
-  const acceptNewLocation = async () => {
+  const acceptNewLocation = () => {
     //TODO
     return;
+  };
+
+  const cancelNewLocation = () => {
+    setMovingLibraryFlag(false);
   };
 
   /*************************************************/
@@ -200,34 +204,36 @@ const MainPage = ({ navigation }) => {
                   />
                 ))}
 
-              {/* //     {(movingLibraryFlag || newMarker) && (
-        //       <MarkerNew
-        //         pinColor="blue"
-        //         coordinate={
-        //           movingLibraryFlag
-        //             ? {
-        //               latitude: selectedLibraryContext.location.latitude,
-        //               longitude: selectedLibraryContext.location.longitude,
-        //             }
-        //             : lastKnownLocation
-        //         }
-        //         onDragEnd={moveMapCenterToDragLocation}
-        //       />
-        //     )} */}
+              {(movingLibraryFlag || newMarker) && (
+                <MarkerNew
+                  pinColor="blue"
+                  coordinate={
+                    movingLibraryFlag
+                      ? {
+                          latitude: selectedLibraryContext.location.latitude,
+                          longitude: selectedLibraryContext.location.longitude,
+                        }
+                      : lastKnownLocation
+                  }
+                  onDragEnd={moveMapCenterToDragLocation}
+                />
+              )}
             </>
           }
         />
       )}
 
-      <AnimatedInput
-        style={"primary"}
-        position={{ top: searchBoxPosition }}
-        onChangeText={(text) => setSearchCriteria(text)}
-        onSubmitEditing={updateMapFromSearch}
-        placeholder={"Search"}
-        placeholderTextColor={"grey"}
-        value={searchCriteria}
-      />
+      {!movingLibraryFlag && (
+        <AnimatedInput
+          style={"primary"}
+          position={{ top: searchBoxPosition }}
+          onChangeText={(text) => setSearchCriteria(text)}
+          onSubmitEditing={updateMapFromSearch}
+          placeholder={"Search"}
+          placeholderTextColor={"grey"}
+          value={searchCriteria}
+        />
+      )}
 
       <AnimatedInput
         style={"secondary"}
@@ -251,7 +257,10 @@ const MainPage = ({ navigation }) => {
       ) : (
         <ActionBar
           children={
-            <ActionButton type={"moveLibrary"} onPress={acceptNewLocation} />
+            <>
+              <ActionButton type={"moveLibrary"} onPress={acceptNewLocation} />
+              <PressableTextCancel onPress={cancelNewLocation} />
+            </>
           }
         />
       )}

@@ -60,12 +60,10 @@ const ActionButton = ({ type, onPress }) => {
         )
       case 'moveLibrary':
         return (
-        <>
-          <Pressable>
+          <>
             <Text>Ok</Text>
-          </Pressable>
           </>
-        )
+        );
       default:
         break;
     }

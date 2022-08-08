@@ -4,6 +4,7 @@ import React from 'react'
 const Button = ({ onPress, text, buttonStyle}) => {
   return (
     <TouchableOpacity
+      testID='custom-button'
       onPress={onPress}
       style={[
         styles.button,

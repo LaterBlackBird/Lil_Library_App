@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, View, Alert, Animated, BackHandler, Pressable, Text } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import { StyleSheet, View, Alert, Animated } from "react-native";
 
 import {
   getInitialLocation,
@@ -14,6 +13,7 @@ import {
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
 import { LocationContext } from "../../context/LocationContext";
+import { creationAlertContext } from "../../context/creationAlertContext";
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -22,12 +22,8 @@ import AnimatedInput from "../molecules/AnimatedInput";
 import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
-import { map } from "@firebase/util";
-import Button from "../atoms/Button";
-import { library } from "@fortawesome/fontawesome-svg-core";
 
 const MainPage = ({ navigation }) => {
-  const isFocused = useIsFocused();
 
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
@@ -43,6 +39,7 @@ const MainPage = ({ navigation }) => {
   ] = useContext(libraryContext);
 
   const [lastKnownLocation, setLastKnownLocation] = useContext(LocationContext);
+  const [creationAlertFlag, setCreationAlertFlag] = useContext(creationAlertContext)
 
   const searchBoxPosition = useRef(new Animated.Value(50)).current;
   const libraryNameBoxPosition = useRef(new Animated.Value(-100)).current;
@@ -114,16 +111,19 @@ const MainPage = ({ navigation }) => {
   };
 
   const addLibraryMarker = () => {
-    Alert.alert(
-      "To Locate Your New Library",
-      "Move the map to center the pin on the map, or long press to drag the pin",
-      [
-        {
-          text: "OK",
-          onPress: () => switchInputsToShowLibraryNameBox(),
-        },
-      ]
-    );
+    if (!creationAlertFlag) {
+      Alert.alert(
+        "To Locate Your New Library",
+        "Move the map to center the pin on the map, or long press to drag the pin",
+        [
+          {
+            text: "OK",
+            onPress: () => switchInputsToShowLibraryNameBox(),
+          },
+        ]
+      );
+    }
+    setCreationAlertFlag(true);
     setNewMarker(true);
     return;
   };

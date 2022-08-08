@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { LibraryProvider } from './context/libraryContext';
 import { LocationProvider } from './context/LocationContext';
+import { CreationAlertProvider } from './context/creationAlertContext';
 
 import LoginForm from './components/organisms/LoginForm';
 import SignUpForm from './components/organisms/SignUpForm';
@@ -34,60 +35,63 @@ export default function App() {
       }
     });
   }, [onAuthStateChanged]);
+
     
   return (
     <LibraryProvider>
       <LocationProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            {userAuthroized === false ? (
-              <>
-                <Stack.Screen
-                  name="Login"
-                  component={LoginForm}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+        <CreationAlertProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              {userAuthroized === false ? (
+                <>
+                  <Stack.Screen
+                    name="Login"
+                    component={LoginForm}
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
 
-                <Stack.Screen
-                  name="SignUp"
-                  component={SignUpForm}
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <Stack.Screen
-                  name="Home"
-                  component={MainPage}
-                  options={{
-                    headerShown: false,
-                    animationTypeForReplace: "pop",
-                  }}
-                />
-                <Stack.Screen
-                  name="LibraryProfile"
-                  component={LibraryProfile}
-                  options={{
-                    headerShown: false,
-                    animation: "slide_from_right",
-                  }}
-                />
-                <Stack.Screen
-                  name="LibraryOptions"
-                  component={LibraryEdits}
-                  options={{
-                    headerShown: false,
-                    animation: "slide_from_right",
-                  }}
-                />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
+                  <Stack.Screen
+                    name="SignUp"
+                    component={SignUpForm}
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Stack.Screen
+                    name="Home"
+                    component={MainPage}
+                    options={{
+                      headerShown: false,
+                      animationTypeForReplace: "pop",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LibraryProfile"
+                    component={LibraryProfile}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LibraryOptions"
+                    component={LibraryEdits}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                </>
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </CreationAlertProvider>
       </LocationProvider>
     </LibraryProvider>
   );

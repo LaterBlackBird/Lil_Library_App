@@ -51,10 +51,12 @@ const LibraryEdits = ({ navigation }) => {
 
   const goBackToLibrary = () => {
     navigation.goBack();
+    return;
   }
 
   const goHome = () => {
     navigation.popToTop();
+    return;
   };
 
   const showNameChangeModal = () => {
@@ -69,6 +71,7 @@ const LibraryEdits = ({ navigation }) => {
     setSelectedLibraryContext(updatedLibrary);
     await updateLibraryName(selectedLibraryContext, newLibraryName);
     navigation.navigate('LibraryProfile');
+    return;
   }
 
 

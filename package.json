@@ -62,7 +62,13 @@
       "node_modules"
     ],
     "testEnvironment": "jsdom",
-    "testEnvironmentOptions": {}
+    "testEnvironmentOptions": {},
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "roots": [
+      "<rootDir>"
+    ]
   },
   "private": true
 }

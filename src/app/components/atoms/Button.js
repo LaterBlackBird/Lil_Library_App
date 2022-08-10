@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
 
-const Button = ({ onPress, text, buttonStyle}) => {
+const Button = ({ onPress, text, buttonStyle, disabled}) => {
   return (
-    <TouchableOpacity
+    <Pressable
       testID='custom-button'
       onPress={onPress}
       style={[
@@ -12,6 +12,7 @@ const Button = ({ onPress, text, buttonStyle}) => {
           ? styles.secondaryButton
           : styles.primaryButton,
       ]}
+      disabled={disabled}
     >
       <Text
         style={[
@@ -23,7 +24,7 @@ const Button = ({ onPress, text, buttonStyle}) => {
       >
         {text}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

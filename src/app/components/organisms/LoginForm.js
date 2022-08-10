@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Alert, StyleSheet, Text } from 'react-native';
 import { login } from '../../services/user';
 
 import TextField from '../atoms/TextField';
@@ -13,13 +13,15 @@ import H1 from '../atoms/H1';
 const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const emailVerifier = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-  validateEmail = (input) => {
-    if (emailVerifier.test(input)) {
-      setEmail(input);
+  const [disableLogin, setDisableLogin] = useState(true)
+  
+  validateEmail = () => {
+    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (regex.test(email)) {
+      console.log('passes')
+      setDisableLogin(false);
     } else {
-      throw "please enter a valid email address";
+      console.log("didn't pass")
     }
   };
 
@@ -40,7 +42,8 @@ const LoginForm = ({ navigation }) => {
           <TextField
             placeholder="Email"
             value={email}
-            onChangeText={(text) => validateEmail(text)}
+            onChangeText={(text) => setEmail(text)}
+            onBlur={validateEmail}
           />
           <SecureField
             placeholder="Password"
@@ -48,7 +51,11 @@ const LoginForm = ({ navigation }) => {
             onChangeText={(password) => setPassword(password)}
           />
 
-          <Button onPress={handleLogin} text={"Login"} />
+          <Button
+            onPress={handleLogin}
+            text={"Login"}
+            disabled={disableLogin}
+          />
 
           <Link onPress={goToSignup} text={"or Create an Account"} />
         </>

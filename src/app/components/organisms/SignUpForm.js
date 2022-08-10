@@ -23,6 +23,14 @@ const SignUpForm = ({ navigation }) => {
     }
   };
 
+    validatePassword = (input) => {
+    if (input.length > 5) {
+      return true;
+    } else {
+      throw new Error("password must be longer than 5 characters");
+    }
+  };
+
 
   const handleSignup = () => {
     signUp(email, password, passwordConfirmation);

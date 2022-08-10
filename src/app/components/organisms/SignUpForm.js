@@ -8,11 +8,20 @@ import SecureField from '../atoms/SecureField'
 import Button from '../atoms/Button'
 import Link from '../atoms/Link';
 
-const SignUpForm = () => {
+const SignUpForm = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const navigation = useNavigation();
+
+  const emailVerifier = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+  validateEmail = (input) => {
+    if (emailVerifier.test(input)) {
+      setEmail(input);
+    } else {
+      throw "please enter a valid email address";
+    }
+  };
 
 
   const handleSignup = () => {
@@ -28,30 +37,31 @@ const SignUpForm = () => {
       <Text style={styles.lilText}>Lil Library App 📚</Text>
 
       <TextField
-        placeholder='Email'
-        value={ email }
-        onChangeText={text => setEmail(text)}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => validateEmail(text)}
       />
-        
+
       <SecureField
-        placeholder='Password'
-        value={ password }
-        onChangeText={password => setPassword(password) }
+        placeholder="Password"
+        value={password}
+        onChangeText={(password) => setPassword(password)}
         secureTextEntry
       />
 
       <SecureField
-        placeholder='Confirm Password'
-        value={ passwordConfirmation }
-        onChangeText={passwordConfirmation => setPasswordConfirmation(passwordConfirmation) }
+        placeholder="Confirm Password"
+        value={passwordConfirmation}
+        onChangeText={(passwordConfirmation) =>
+          setPasswordConfirmation(passwordConfirmation)
+        }
       />
 
       <Button onPress={handleSignup} text={`Sign Up`} />
-        
+
       <Link onPress={goToLogin} text={`or Login To Your Account`} />
-      
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 export default SignUpForm

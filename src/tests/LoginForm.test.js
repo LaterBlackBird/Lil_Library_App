@@ -45,7 +45,11 @@ describe("Login Form", () => {
       expect(() => fireEvent.changeText(usernameInput, text1)).toThrow();
       expect(() => fireEvent.changeText(usernameInput, text2)).toThrow();
     });
-    test("should throw an error if empty", () => {});
+
+    test("should throw an error if empty", () => {
+      const usernameInput = screen.getByPlaceholderText("Email");
+      expect(() => fireEvent.changeText(usernameInput, '')).toThrow();
+    });
   });
 
   // test('should have username and password input fields', () => {  });

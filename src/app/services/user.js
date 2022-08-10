@@ -1,5 +1,6 @@
-import { fireAuth } from './initializaiton';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+
+import { fireAuth } from './initializaiton';
 
 export const login = (email, password) => {
   signInWithEmailAndPassword(fireAuth, email, password)
@@ -29,7 +30,6 @@ export const signUp = (email, password, passwordConfirmation) => {
       });
   } else alert('Passwords Do Not Match')
 };
-
 
 export const signOutUser = () => {
   signOut(fireAuth).then(() => {

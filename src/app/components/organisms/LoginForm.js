@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
 import { login } from '../../services/user';
 
 import TextField from '../atoms/TextField';
@@ -11,10 +10,9 @@ import Link from '../atoms/Link';
 import H1 from '../atoms/H1';
 
 
-const LoginForm = () => {
+const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
 
   
   const handleLogin = () => {

@@ -34,8 +34,17 @@ describe("Login Form", () => {
 
       const usernameInput = screen.getByPlaceholderText("Email");
       expect(() => fireEvent.changeText(usernameInput, text1)).not.toThrow();
+      expect(() => fireEvent.changeText(usernameInput, text2)).not.toThrow();
     });
-    test("should throw an error if not formatted as an email", () => {});
+
+    test("should throw an error if not formatted as an email", () => {
+      const text1 = "invalid";
+      const text2 = "123";
+
+      const usernameInput = screen.getByPlaceholderText("Email");
+      expect(() => fireEvent.changeText(usernameInput, text1)).toThrow();
+      expect(() => fireEvent.changeText(usernameInput, text2)).toThrow();
+    });
     test("should throw an error if empty", () => {});
   });
 

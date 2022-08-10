@@ -11,44 +11,50 @@ import H1 from '../atoms/H1';
 
 
 const LoginForm = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const emailVerifier = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-  
+  validateEmail = (input) => {
+    if (emailVerifier.test(input)) {
+      setEmail(input);
+    } else {
+      throw "please enter a valid email address";
+    }
+  };
+
   const handleLogin = () => {
     login(email, password);
-  }
+  };
 
   const goToSignup = () => {
     navigation.replace("SignUp");
-  }
+  };
 
   return (
     <Form
       children={
         <>
-          <H1 
-            text={'Lil Library App 📚'}
-          />
+          <H1 text={"Lil Library App 📚"} />
 
           <TextField
-            placeholder='Email'
-            value={ email }
-            onChangeText={text => setEmail(text)}
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => validateEmail(text)}
           />
           <SecureField
-            placeholder='Password'
-            value={ password }
-            onChangeText={password => setPassword(password) }
+            placeholder="Password"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
           />
 
-          <Button onPress={handleLogin} text={'Login'} />
+          <Button onPress={handleLogin} text={"Login"} />
 
-          <Link onPress={goToSignup} text={'or Create an Account'} />
+          <Link onPress={goToSignup} text={"or Create an Account"} />
         </>
       }
     />
-  )
+  );
 }
 
 export default LoginForm;

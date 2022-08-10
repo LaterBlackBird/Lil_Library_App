@@ -3,18 +3,18 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import initialize, { fireAuth } from './services/initializaiton';
+import initialize, { fireAuth } from './src/app/services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { LibraryProvider } from './context/libraryContext';
-import { LocationProvider } from './context/LocationContext';
-import { CreationAlertProvider } from './context/creationAlertContext';
+import { LibraryProvider } from './src/app/context/libraryContext';
+import { LocationProvider } from './src/app/context/LocationContext';
+import { CreationAlertProvider } from './src/app/context/creationAlertContext';
 
-import LoginForm from './components/organisms/LoginForm';
-import SignUpForm from './components/organisms/SignUpForm';
-import MainPage from './components/organisms/MainPage';
-import LibraryProfile from './components/organisms/LibraryProfile';
-import LibraryEdits from './components/organisms/LibraryEdits';
+import LoginForm from './src/app/components/organisms/LoginForm';
+import SignUpForm from './src/app/components/organisms/SignUpForm';
+import MainPage from './src/app/components/organisms/MainPage';
+import LibraryProfile from './src/app/components/organisms/LibraryProfile';
+import LibraryEdits from './src/app/components/organisms/LibraryEdits';
 
 const Stack = createNativeStackNavigator();
 initialize();

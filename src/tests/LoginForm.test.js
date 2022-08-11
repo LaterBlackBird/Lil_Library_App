@@ -1,22 +1,21 @@
 import * as React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { toBeDisabled } from '@testing-library/jest-native';
 
 import LoginForm from '../app/components/organisms/LoginForm';
 
+expect.extend({ toBeDisabled }); 
 jest.mock('../app/services/user', () => jest.fn())
 jest.mock('../app/services/initializaiton', () => jest.fn())
 jest.mock("@fortawesome/react-native-fontawesome", () => ({FontAwesomeIcon: '',}));
 
 describe("Login Form", () => {
   const component = <LoginForm />;
-  const email1 = 'test@test.com';
-  const email2 = 'test';
-  const email3 = '';
-  const email4 = 'test@testcom';
+  const validEmail = 'test@test.com';
+  const invalidEmail = 'test';
 
-  const password1 = '12345'
-  const password2 = 'test'
-  const password3 = 'password'
+  const validPassword = 'password'
+  const invalidPassword = 'test'
 
   beforeEach(() => {
     render(component);
@@ -33,14 +32,48 @@ describe("Login Form", () => {
    })
 
   test('should have a login button', () => { 
-    const loginButton = screen.getByText("Login");
+    const loginButton = screen.getByTestId("custom-button");
     expect(loginButton).toBeDefined();
   })
 
   describe("Login Button", () => {
-    test('should be disabled unless a valid email address is entered', () => { second })
-  })
+    test('should be enabled with a valid email address and password', () => { 
+      const usernameInput = screen.getByPlaceholderText("Email");
+      const passwordInput = screen.getByPlaceholderText("Password");
+      const loginButton = screen.getByTestId("custom-button");
 
+      fireEvent.changeText(usernameInput, validEmail);
+      fireEvent.changeText(passwordInput, validPassword);
+      expect(loginButton).toBeDisabled(false);
+    })
+     
+    test('should be disabled with a invalid email address and valid password', () => { 
+       const usernameInput = screen.getByPlaceholderText("Email");
+       const passwordInput = screen.getByPlaceholderText("Password");
+       const loginButton = screen.getByTestId("custom-button");
+       
+       fireEvent.changeText(usernameInput, invalidEmail);
+       fireEvent.changeText(passwordInput, validPassword);
+       expect(loginButton).toBeDisabled(true);
+      })
+      
+    test('should be disabled with a valid email address but invalid password', () => { 
+      const usernameInput = screen.getByPlaceholderText("Email");
+      const passwordInput = screen.getByPlaceholderText("Password");
+      const loginButton = screen.getByTestId("custom-button");
+      
+      fireEvent.changeText(usernameInput, validEmail);
+      fireEvent.changeText(passwordInput, invalidPassword);
+      expect(loginButton).toBeDisabled(true);
+    })
+  
+    test('should be disabled with empty email and empty password fields', () => { 
+      const loginButton = screen.getByTestId("custom-button");
+
+      expect(loginButton).toBeDisabled(true);
+    })
+     
+    })
   // describe("username input", () => {
 
   //   test("should be present", () => {

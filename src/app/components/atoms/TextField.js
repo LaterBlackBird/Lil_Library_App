@@ -16,11 +16,11 @@ export default TextField
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
-    width: '80%',
+    width: "80%",
   },
-})
+});

@@ -1,16 +1,26 @@
-import { StyleSheet, Text, TouchableOpacity, Pressable } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Button = ({ onPress, text, buttonStyle, disabled}) => {
+const Button = ({ onPress, text, buttonStyle, disabled }) => {
+  const styleSwitch = () => {
+    switch (disabled) {
+      case false:
+        if (buttonStyle === 'secondary') return styles.secondaryButton;
+        else return styles.primaryButton;
+      case true:
+        return styles.disabledButton;
+      default:
+        return styles.primaryButton;
+    };
+  };
+
   return (
-    <Pressable
+    <TouchableOpacity
       testID='custom-button'
       onPress={onPress}
       style={[
         styles.button,
-        buttonStyle === "secondary"
-          ? styles.secondaryButton
-          : styles.primaryButton,
+        styleSwitch()
       ]}
       disabled={disabled}
     >
@@ -24,7 +34,7 @@ const Button = ({ onPress, text, buttonStyle, disabled}) => {
       >
         {text}
       </Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
@@ -56,4 +66,7 @@ const styles = StyleSheet.create({
   secondaryText: {
     color: 'black',
   },
+  disabledButton: {
+    backgroundColor: '#ccd4e6'
+  }
 })

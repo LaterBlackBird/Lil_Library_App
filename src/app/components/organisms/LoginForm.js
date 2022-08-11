@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text } from 'react-native';
 import { login } from '../../services/user';
 
@@ -15,13 +15,14 @@ const LoginForm = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [disableLogin, setDisableLogin] = useState(true)
   
-  validateEmail = () => {
+  const validateCredentials = (text) => {
+    setPassword(text);
     const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (regex.test(email)) {
-      console.log('passes')
+
+    if (regex.test(email) && password.length > 4) {
       setDisableLogin(false);
     } else {
-      console.log("didn't pass")
+      setDisableLogin(true);
     }
   };
 
@@ -32,6 +33,7 @@ const LoginForm = ({ navigation }) => {
   const goToSignup = () => {
     navigation.replace("SignUp");
   };
+  
 
   return (
     <Form
@@ -43,12 +45,12 @@ const LoginForm = ({ navigation }) => {
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
-            onBlur={validateEmail}
           />
+
           <SecureField
             placeholder="Password"
             value={password}
-            onChangeText={(password) => setPassword(password)}
+            onChangeText={validateCredentials}
           />
 
           <Button
@@ -66,15 +68,4 @@ const LoginForm = ({ navigation }) => {
 
 export default LoginForm;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lilText: {
-    fontSize: 35,
-    fontWeight: 'bold',
-    paddingBottom: 35,
-  },
-})
+const styles = StyleSheet.create({})

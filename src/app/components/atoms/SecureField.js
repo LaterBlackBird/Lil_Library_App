@@ -1,12 +1,13 @@
 import { TextInput, StyleSheet } from 'react-native'
 
-const SecureField = ({ placeholder, value, onChangeText }) => {
+const SecureField = ({ placeholder, value, onChangeText, onEndEditing }) => {
   return (
     <TextInput
       placeholder={ placeholder }
       value={ value }
       onChangeText={ onChangeText }
-      style={ styles.input }
+      style={styles.input}
+      onEndEditing={onEndEditing}
       secureTextEntry
     />
   )

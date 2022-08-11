@@ -1,4 +1,5 @@
 const {defaults} = require('jest-config');
+const path = require("path");
 
 module.exports = {
   name: "lil_library_app",

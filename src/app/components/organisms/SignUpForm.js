@@ -66,7 +66,6 @@ const SignUpForm = ({ navigation }) => {
 
   const renderErrors = () => {
     if (errors.length > 0) {
-      console.log(errors);
       return errors.map((error) => <ErrorText key={error} text={error} />);
     } else return null;
   };

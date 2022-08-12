@@ -50,7 +50,7 @@ const LoginForm = ({ navigation }) => {
     setErrors([]);
     const emailCheck = validateEmail();
     const passwordCheck = validatePassword();
-    if ((emailCheck, passwordCheck)) {
+    if (emailCheck && passwordCheck) {
       login(email, password);
     }
     return;

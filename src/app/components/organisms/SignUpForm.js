@@ -1,88 +1,130 @@
-import { KeyboardAvoidingView, StyleSheet, Text } from 'react-native'
-import { useState } from 'react'
-import { useNavigation } from '@react-navigation/core';
-import { signUp } from '../../services/user';
+import { StyleSheet, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { signUp } from "../../services/user";
 
-import TextField from '../atoms/TextField'
-import SecureField from '../atoms/SecureField'
-import Button from '../atoms/Button'
-import Link from '../atoms/Link';
+import Form from "../molecules/Form";
+import TextField from "../atoms/TextField";
+import SecureField from "../atoms/SecureField";
+import Button from "../atoms/Button";
+import Link from "../atoms/Link";
+import H1 from "../atoms/H1";
+import ErrorText from "../atoms/ErrorText";
 
 const SignUpForm = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [errors, setErrors] = useState("");
+  const [emailErrorState, setEmailErrorState] = useState(false);
+  const [passwordErrorState, setPasswordErrorState] = useState(false);
+  const [passwordConfirmationErrorState, setPasswordConfirmationErrorState] = useState(false);
 
-  const emailVerifier = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-  validateEmail = (input) => {
-    if (emailVerifier.test(input)) {
-      setEmail(input);
+  const validateEmail = () => {
+    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (email.length === 0 || !regex.test(email)) {
+      setErrors((prevErrors) => [...prevErrors, "Invalid Email"]);
+      setEmailErrorState(true);
+      return false;
     } else {
-      throw "please enter a valid email address";
-    }
-  };
-
-    validatePassword = (input) => {
-    if (input.length > 5) {
+      setEmailErrorState(false);
       return true;
-    } else {
-      throw new Error("password must be longer than 5 characters");
     }
   };
 
+  const validatePassword = () => {
+    if (password.length === 0) {
+      setErrors((prevErrors) => [...prevErrors, "Password Required"]);
+      setPasswordErrorState(true);
+      return false;
+    } else if (password.length < 4) {
+      setErrors((prevErrors) => [
+        ...prevErrors,
+        "Password Must be Longer Than 5 Characters",
+      ]);
+      setPasswordErrorState(true);
+      return false;
+    } else {
+      setPasswordErrorState(false);
+      return true;
+    }
+  };
 
-  const handleSignup = () => {
-    signUp(email, password, passwordConfirmation);
-  }
+  const validateConfirmation = () => {
+    if (passwordConfirmation.length === 0) {
+      setErrors((prevErrors) => [...prevErrors, "Confirm Password Required"]);
+      setPasswordConfirmationErrorState(true);
+      return false;
+    } else if (passwordConfirmation !== password) {
+      setErrors((prevErrors) => [...prevErrors, "Passwords Do Not Match"]);
+      setPasswordConfirmationErrorState(true);
+      return false;
+    } else {
+      setPasswordConfirmationErrorState(false);
+      return true;
+    }
+  };
+
+  const renderErrors = () => {
+    if (errors.length > 0) {
+      console.log(errors);
+      return errors.map((error) => <ErrorText key={error} text={error} />);
+    } else return null;
+  };
+
+  const handleSignup = async () => {
+    setErrors([]);
+    const emailCheck = validateEmail();
+    const passwordCheck = validatePassword();
+    const confirmationCheck = validateConfirmation();
+    if ((emailCheck, passwordCheck, confirmationCheck)) {
+      signUp(email, password);
+    }
+    return;
+  };
 
   const goToLogin = () => {
-    navigation.replace("Login")
-  }
+    navigation.replace("Login");
+    return;
+  };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <Text style={styles.lilText}>Lil Library App 📚</Text>
+    <Form
+      children={
+        <>
+          <H1 text={"Lil Library App 📚"} />
 
-      <TextField
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => validateEmail(text)}
-      />
+          <TextField
+            placeholder={"Email"}
+            value={email}
+            onChangeText={(input) => setEmail(input)}
+            errorState={emailErrorState}
+          />
 
-      <SecureField
-        placeholder="Password"
-        value={password}
-        onChangeText={(password) => setPassword(password)}
-        secureTextEntry
-      />
+          <SecureField
+            placeholder={"Password"}
+            value={password}
+            onChangeText={(input) => setPassword(input)}
+            errorState={passwordErrorState}
+          />
 
-      <SecureField
-        placeholder="Confirm Password"
-        value={passwordConfirmation}
-        onChangeText={(passwordConfirmation) =>
-          setPasswordConfirmation(passwordConfirmation)
-        }
-      />
+          <SecureField
+            placeholder="Confirm Password"
+            value={passwordConfirmation}
+            onChangeText={(input) => setPasswordConfirmation(input)}
+            errorState={passwordConfirmationErrorState}
+          />
 
-      <Button onPress={handleSignup} text={`Sign Up`} />
+          {renderErrors()}
 
-      <Link onPress={goToLogin} text={`or Login To Your Account`} />
-    </KeyboardAvoidingView>
+          <Button onPress={handleSignup} text={`Sign Up`} />
+
+          <Link onPress={goToLogin} text={`or Login To Your Account`} />
+        </>
+      }
+    />
   );
-}
+};
 
-export default SignUpForm
+export default SignUpForm;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lilText: {
-    fontSize: 35,
-    fontWeight: 'bold',
-    paddingBottom: 35,
-  },
-})
+const styles = StyleSheet.create({});

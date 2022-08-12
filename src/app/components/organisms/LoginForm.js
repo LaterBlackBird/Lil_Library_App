@@ -24,14 +24,17 @@ const LoginForm = ({ navigation }) => {
     } else {
       setDisableLogin(true);
     }
+    return;
   };
 
   const handleLogin = () => {
     login(email, password);
+    return;
   };
 
   const goToSignup = () => {
     navigation.replace("SignUp");
+    return;
   };
   
 

@@ -1,5 +1,5 @@
-import { StyleSheet, Text } from "react-native";
-import { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import { useState } from "react";
 import { signUp } from "../../services/user";
 
 import Form from "../molecules/Form";

@@ -1,15 +1,8 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Alert, Animated } from "react-native";
 
-import {
-  getInitialLocation,
-  returnSearchLocation,
-} from "../../services/location";
-import {
-  addLibraryToDatabase,
-  librariesWithin10km,
-  updateLibraryLocation,
-} from "../../services/LibraryServices";
+import { getInitialLocation, returnSearchLocation, } from "../../services/location";
+import { addLibraryToDatabase, librariesWithin10km, updateLibraryLocation, } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
 import { LocationContext } from "../../context/LocationContext";

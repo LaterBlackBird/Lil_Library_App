@@ -26,7 +26,7 @@ const LibraryProfile = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={'test'}>
       <View style={{ width: "90%", top: 50 }}>
         <H1 text={selectedLibraryContext?.name} style={{ marginLeft: 20 }} />
 

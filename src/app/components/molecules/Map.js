@@ -5,6 +5,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 const Map = ({ children, region, onRegionChangeComplete }) => {
   return (
     <MapView
+      testId='MapView'
       provider={PROVIDER_GOOGLE}
       style={styles.map}
       region={region}

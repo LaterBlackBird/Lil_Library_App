@@ -1,6 +1,5 @@
-import { StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
-import TextField from '../atoms/TextField'
 
 const Form = ({ children }) => {
   return (

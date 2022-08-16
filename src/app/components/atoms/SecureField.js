@@ -1,13 +1,15 @@
 import { TextInput, StyleSheet } from 'react-native'
 
-const SecureField = ({ placeholder, value, onChangeText }) => {
+const SecureField = ({ placeholder, value, onChangeText, onEndEditing, onBlur, errorState }) => {
   return (
     <TextInput
+      secureTextEntry
       placeholder={ placeholder }
       value={ value }
       onChangeText={ onChangeText }
-      style={ styles.input }
-      secureTextEntry
+      style={[styles.input, errorState ? styles.errorState : null]}
+      onEndEditing={onEndEditing}
+      onBlur={onBlur}
     />
   )
 }
@@ -22,5 +24,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     width: '80%',
+  },
+  errorState: {
+    borderColor: "red",
+    borderWidth: 1,
+    backgroundColor: "#ffc7c7",
   },
 })

@@ -11,7 +11,7 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] User Auth
 - [X] Library Create
 - [X] Library Read
-- [ ] Library Update/Edit
+- [X] Library Update/Edit
 - [X] Library Deletion
 - [X] Library Profile
 - [ ] Library Inventory

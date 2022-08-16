@@ -32,10 +32,26 @@ describe("Library Profile", () => {
 
   beforeEach(() => {
     render(component);
-  })
+  });
+
+  test('should render', () => {
+    const mainView = screen.getByTestId('Libarry-Profile-View');
+    expect(mainView).toBeDefined;
+  });
   
-  test('should render', () => { 
-    const mainView = screen.getByTestId('test');
-    expect(mainView).toBeDefined
-   })
+  test('should show library name', () => {
+    const libraryName = screen.getByText('Testing Library');
+    expect(libraryName).toBeDefined;
+  });
+
+  test('should show date library was created', () => {
+    const creationDate = screen.getByText('Established today');
+    expect(creationDate).toBeDefined;
+  });
+
+  test('should show user actions', () => {
+    const actionBar = screen.getByTestId('ActionBar');
+    expect(actionBar).toBeDefined;
+  });
+
 });

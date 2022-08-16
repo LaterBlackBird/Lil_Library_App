@@ -2,7 +2,6 @@ import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
 import SignUpForm from "../app/components/organisms/SignUpForm";
-import login from "../app/services/user";
 
 const user = require('../app/services/user')
 user.signUp = jest.fn(() => {return true})

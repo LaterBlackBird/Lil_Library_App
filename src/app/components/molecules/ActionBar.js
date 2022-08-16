@@ -1,26 +1,21 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 const ActionBar = ({ children }) => {
+  return <View style={styles.actionsContainer} testID='ActionBar'>{children}</View>;
+};
 
-  return (
-    <View style={styles.actionsContainer}>
-      {children}
-  </View>
-  )
-}
-
-export default ActionBar
+export default ActionBar;
 
 const styles = StyleSheet.create({
   actionsContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     height: 70,
-    width: '100%',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
+    width: "100%",
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
-})
+});

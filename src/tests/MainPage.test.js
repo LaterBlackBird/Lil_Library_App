@@ -47,9 +47,9 @@ describe("Main Page", () => {
     </LibraryProvider>
   );
 
-  // beforeEach(() => {
-  //   render(component);
-  // });
+  beforeEach(() => {
+    render(component);
+  });
 
   // test('should show the map', () => {
   //   render(<Map />)

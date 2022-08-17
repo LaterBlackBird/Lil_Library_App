@@ -22,6 +22,24 @@ describe("Library Profile", () => {
       "longitude": -122.06512900069356,
     },
     "name": "Testing Library",
+    "inventory": {
+      "book1": {
+        "title": "It Ends With Us",
+        "author": "Colleen Hoover",
+      },
+      "book2": {
+        "title": "Where The Crawdads Sing",
+        "author": "Delia Owens",
+      },
+      "book3": {
+        "title": "Verity",
+        "author": "Colleen Hoover",
+      },
+      "book4": {
+        "title": "Atomic Habits",
+        "author": "James Clear",
+      },
+    }
   }
 
   const component = (
@@ -54,4 +72,17 @@ describe("Library Profile", () => {
     expect(actionBar).toBeDefined;
   });
 
+  describe('book inventory', () => {
+
+    test('should list all books currently available at the selected library', () => {
+      const book1 = screen.getByText('It Ends With Us');
+      const book2 = screen.getByText('Where The Crawdads Sing');
+      const book3 = screen.getByText('Verity');
+      const book4 = screen.getByText('Atomic Habits');
+      expect(book1).toBeVisible();
+      expect(book2).toBeVisible();
+      expect(book3).toBeVisible();
+      expect(book4).toBeVisible();
+    });
+  });
 });

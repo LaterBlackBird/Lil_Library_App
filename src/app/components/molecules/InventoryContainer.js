@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import BookDetail from '../atoms/BookDetail';
 
@@ -16,10 +16,15 @@ const InventoryContainer = ({ inventory }) => {
         </>
       );
     } else {
-      return inventory.map((book) => (
-        <BookDetail key={book.title} book={book} />
-      ));
-    }
+      return (
+        <FlatList
+          data={inventory}
+          renderItem={({ item, index, separators }) => (
+            <BookDetail key={`${item.title}${index}`} book={item} />
+          )}
+        />
+      );
+    };
   };
 
   /***********************************************************/
@@ -42,6 +47,8 @@ const styles = StyleSheet.create({
   },
   inventoryText: {
     marginBottom: 25,
+    textDecorationLine: 'underline',
+    fontSize: 17,
   },
   noBook: {
     fontSize: 25,

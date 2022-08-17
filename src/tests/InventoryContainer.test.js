@@ -17,12 +17,12 @@ describe("Inventory Container", () => {
     expect(screen.getByText('test book 3')).toBeDefined;
   });
 
-  test('should show an error have never been added to a library', () => {
+  test('should show an error if no books have ever been added to a library', () => {
     render(<InventoryContainer inventory={undefined} />);
     expect(screen.getByText(/No Books/i)).toBeDefined;
   });
 
-  test('should show an error a library becomes empty', () => {
+  test('should show an error if a library becomes empty', () => {
     render(<InventoryContainer inventory={[]} />);
     expect(screen.getByText(/No Books/i)).toBeDefined;
   });

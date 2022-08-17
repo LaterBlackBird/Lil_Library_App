@@ -52,7 +52,7 @@ const LibraryProfile = ({ navigation, route }) => {
         children={
           <>
             <ActionButton type={"home"} onPress={goHome} />
-            {/* <ActionButton type={"addBook"} onPress={addBook} /> */}
+            <ActionButton type={"addBook"} onPress={addBook} />
             <ActionButton type={"user"} onPress={signOutUser} />
           </>
         }

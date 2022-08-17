@@ -11,6 +11,6 @@ describe("Book Detail", () => {
   test('should display the book title and author', () => { 
     render(<BookDetail book={book} />);
     expect(screen.getByText('test title')).toBeDefined;
-    expect(screen.getByText('test author')).toBeDefined;
+    expect(screen.getByText('by: test author')).toBeDefined;
    })
 })

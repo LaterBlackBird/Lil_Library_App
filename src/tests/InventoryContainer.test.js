@@ -13,8 +13,17 @@ describe("Inventory Container", () => {
   test('should show a list of books', () => {
     render(<InventoryContainer inventory={bookList} />);
     expect(screen.getByText('test book 1')).toBeDefined;
-    expect(screen.getByText('test author 2')).toBeDefined;
+    expect(screen.getByText('by: test author 2')).toBeDefined;
     expect(screen.getByText('test book 3')).toBeDefined;
+  });
 
+  test('should show an error have never been added to a library', () => {
+    render(<InventoryContainer inventory={undefined} />);
+    expect(screen.getByText(/No Books/i)).toBeDefined;
+  });
+
+  test('should show an error a library becomes empty', () => {
+    render(<InventoryContainer inventory={[]} />);
+    expect(screen.getByText(/No Books/i)).toBeDefined;
   });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import BookDetail from '../atoms/BookDetail';
+import BookCard from '../atoms/BookCard';
 
 const InventoryContainer = ({ inventory }) => {
 
@@ -21,7 +21,7 @@ const InventoryContainer = ({ inventory }) => {
           style={styles.bookList}
           data={inventory}
           renderItem={({ item, index, separators }) => (
-            <BookDetail key={`${item.title}${index}`} book={item} />
+            <BookCard key={item} ISBN={item} />
           )}
         />
       );

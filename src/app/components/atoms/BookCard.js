@@ -30,7 +30,7 @@ const BookCard = ({ ISBN }) => {
   }, [bookDetails]);
   
   const showBookDetails = () => {
-    if (bookDetails !== undefined) {
+    if (bookDetails) {
       return (
         <View style={styles.bookDetails}>
           <Text style={styles.bookTitle}>{bookDetails.title}</Text>
@@ -43,7 +43,7 @@ const BookCard = ({ ISBN }) => {
   /***********************************************************/
 
   return (
-    <TouchableOpacity style={styles.bookContainer}>
+    <TouchableOpacity style={styles.bookContainer} testID='bookCard'>
       {showBookDetails()}
     </TouchableOpacity>
   )

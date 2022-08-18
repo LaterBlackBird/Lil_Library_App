@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watch --verbose --onlyChanged --noStackTrace"
+    "test": "jest --watch --verbose"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",

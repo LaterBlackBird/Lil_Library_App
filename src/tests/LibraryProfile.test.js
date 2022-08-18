@@ -2,13 +2,23 @@ import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
 import LibraryProfile from "../app/components/organisms/LibraryProfile";
-import { libraryContext } from "../app/context/libraryContext";
+import { libraryContext } from "../app/context/libraryContext";import getBookDetails from '../app/services/bookAPI';
+
+
+const data = {
+  title: "It Ends With Us",
+  title: "I'm Glad My Mom Died",
+  title: "The Subtle Art of Not Giving a Fuck",
+};
 
 const user = require('../app/services/user')
 user.login = jest.fn(() => { return true })
 
 jest.mock("../app/services/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
+jest.mock('../app/services/bookAPI');
+
+getBookDetails.mockResolvedValue(data);
 
 describe("Library Profile", () => {
   const library = {
@@ -22,12 +32,7 @@ describe("Library Profile", () => {
       longitude: -122.06512900069356,
     },
     name: "Testing Library",
-    inventory: [
-      { title: "It Ends With Us", author: "Colleen Hoover" },
-      { title: "Where The Crawdads Sing", author: "Delia Owens" },
-      { title: "Verity", author: "Colleen Hoover" },
-      { title: "Atomic Habits", author: "James Clear" },
-    ],
+    inventory: [9781501110368, 9781797147963, 9780062899149],
   };
 
   const component = (

@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   libraryInfo: {
     width: "90%",
     marginTop: 50,
+    flex: 1,
   },
   libraryEstablishedText: {
     fontSize: 12,

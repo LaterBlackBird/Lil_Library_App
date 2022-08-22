@@ -1,5 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState} from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { useEffect, useState } from 'react';
+
+import H1 from './H1';
 
 import getBookDetails from '../../services/bookAPI';
 
@@ -28,14 +30,30 @@ const BookCard = ({ ISBN }) => {
       }
     } else setAuthors('unavailable')
   }, [bookDetails]);
+
+
+  const showImage = () => {
+    if (bookDetails.cover) {
+      return (
+        <View style={styles.imageContainer}>
+          <Image style={styles.coverImage} source={{ uri: `${bookDetails.cover.large}` }} scale={3} />
+        </View>
+      )
+    } else {
+      return (
+        <H1 style={styles.coverImage} text={'Book Cover Unavailable'}/>
+      )
+    }
+  }
   
   const showBookDetails = () => {
     if (bookDetails) {
       return (
-        <View style={styles.bookDetails}>
-          <Text style={styles.bookTitle}>{bookDetails.title}</Text>
+        <>
+          <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
+          {showImage()}
           <Text style={styles.bookAuthor}>by: {authors}</Text>
-        </View>
+        </>
       );
     } else return null;
   };
@@ -43,9 +61,9 @@ const BookCard = ({ ISBN }) => {
   /***********************************************************/
 
   return (
-    <TouchableOpacity style={styles.bookContainer} testID='bookCard'>
+    <View style={styles.bookContainer} testID='bookCard'>
       {showBookDetails()}
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -53,20 +71,32 @@ export default BookCard
 
 const styles = StyleSheet.create({
   bookContainer: {
-    backgroundColor: 'white',
+    height: 400,
     width: '100%',
+    flex: 1,
     marginTop: 12,
     borderRadius: 10,
-    flexDirection: 'row',
-  },
-  bookDetails: {
-    margin: 5,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   bookTitle: {
     fontSize: 25,
     fontWeight: '500',
+    height: '12%',
   },
   bookAuthor: {
     fontSize: 12,
+    height: '8%',
   },
+  imageContainer: {
+    height: '80%',
+    width: '100%',
+    alignContent: 'center'
+  },
+  coverImage: {
+    height: '100%',
+    width: undefined,
+    resizeMode: 'contain',
+  }
 })

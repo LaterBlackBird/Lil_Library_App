@@ -20,6 +20,7 @@ const InventoryContainer = ({ inventory }) => {
         <FlatList
           testID='bookFlatList'
           style={styles.bookList}
+          numColumns={1}
           data={inventory}
           renderItem={({ item, index, separators }) => (
             <BookCard key={item} ISBN={item} />
@@ -46,14 +47,17 @@ const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: "center",
     width: "100%",
+    flex: 10,
   },
   inventoryText: {
-    marginBottom: 25,
+    marginBottom: 10,
     textDecorationLine: 'underline',
     fontSize: 17,
   },
   bookList: {
     width: '90%',
+    flex: 1,
+
   },
   noBook: {
     fontSize: 25,

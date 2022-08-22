@@ -16,11 +16,6 @@ describe("Inventory Container", () => {
     expect(view).toBeDefined;
   });
 
-  // test('should call the BookCard component the correct number of times', () => {
-  //   render(container);
-  //   expect(BookCard).toHaveBeenCalledTimes(3);
-  // });
-
   test('should render the flat list of books', () => { 
     render(container);
     expect(screen.getByTestId('bookFlatList')).toBeDefined;

@@ -51,12 +51,6 @@ describe("Main Page", () => {
     render(component);
   });
 
-  // test('should show the map', () => {
-  //   render(<Map />)
-  //   const map = screen.getAllByTestId("MapView");
-  //   expect(map).toBeDefined();
-  // });
-
   test('should have a search bar', () => {
     const searchBar = screen.getByPlaceholderText("Search");
     expect(searchBar).toBeDefined();

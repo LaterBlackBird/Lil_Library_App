@@ -46,6 +46,7 @@ const LibraryProfile = ({ navigation, route }) => {
         inventory={
           selectedLibraryContext.inventory
         }
+        testID='inventoryContainer'
       />
 
       <ActionBar

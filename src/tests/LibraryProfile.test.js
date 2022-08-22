@@ -1,14 +1,17 @@
 import * as React from "react";
-import { render, screen, fireEvent } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 
 import LibraryProfile from "../app/components/organisms/LibraryProfile";
-import { libraryContext } from "../app/context/libraryContext";
+import { libraryContext } from "../app/context/libraryContext";import getBookDetails from '../app/services/bookAPI';
+import BookCard from "../app/components/atoms/BookCard";
 
 const user = require('../app/services/user')
 user.login = jest.fn(() => { return true })
 
 jest.mock("../app/services/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
+jest.mock('../app/services/bookAPI', () => jest.fn());
+jest.mock('../app/components/atoms/BookCard', () => jest.fn(() => null))
 
 describe("Library Profile", () => {
   const library = {
@@ -22,12 +25,7 @@ describe("Library Profile", () => {
       longitude: -122.06512900069356,
     },
     name: "Testing Library",
-    inventory: [
-      { title: "It Ends With Us", author: "Colleen Hoover" },
-      { title: "Where The Crawdads Sing", author: "Delia Owens" },
-      { title: "Verity", author: "Colleen Hoover" },
-      { title: "Atomic Habits", author: "James Clear" },
-    ],
+    inventory: [9781501110368, 9781797147963, 9780062899149],
   };
 
   const component = (
@@ -38,6 +36,7 @@ describe("Library Profile", () => {
 
   beforeEach(() => {
     render(component);
+    return;
   });
 
   test('should render', () => {
@@ -60,17 +59,8 @@ describe("Library Profile", () => {
     expect(actionBar).toBeDefined;
   });
 
-  describe('book inventory', () => {
-
-    test('should list all books currently available at the selected library', () => {
-      const book1 = screen.getByText('It Ends With Us');
-      const book2 = screen.getByText('Where The Crawdads Sing');
-      const book3 = screen.getByText('Verity');
-      const book4 = screen.getByText('Atomic Habits');
-      expect(book1).toBeDefined;
-      expect(book2).toBeDefined;
-      expect(book3).toBeDefined;
-      expect(book4).toBeDefined;
-    });
+  test('should call the inventory contianer component', () => {
+    const inventory = screen.getByTestId('inventoryContainer');
+    expect(inventory).toBeDefined;
   });
 });

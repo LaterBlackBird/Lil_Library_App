@@ -46,6 +46,7 @@ const LibraryProfile = ({ navigation, route }) => {
         inventory={
           selectedLibraryContext.inventory
         }
+        testID='inventoryContainer'
       />
 
       <ActionBar
@@ -69,10 +70,12 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     flex: 1,
+    backgroundColor: '#DCFFD6',
   },
   libraryInfo: {
     width: "90%",
     marginTop: 50,
+    flex: 1,
   },
   libraryEstablishedText: {
     fontSize: 12,

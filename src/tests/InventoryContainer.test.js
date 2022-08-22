@@ -1,21 +1,25 @@
-import * as React from "react";
-import { render, screen, fireEvent } from "@testing-library/react-native";
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react-native";
+
 import InventoryContainer from "../app/components/molecules/InventoryContainer";
+import BookCard from "../app/components/atoms/BookCard";
+
+jest.mock("../app/components/atoms/BookCard", () => jest.fn());
 
 describe("Inventory Container", () => {
+  const bookList = [9781501110368, 9781797147963, 9780062899149];
+  const container = <InventoryContainer inventory={{bookList}} />;
 
-  const bookList = [
-    { title: 'test book 1', author: 'test author 1' },
-    { title: 'test book 2', author: 'test author 2' },
-    { title: 'test book 3', author: 'test author 3' },
-  ]
-
-  test('should show a list of books', () => {
-    render(<InventoryContainer inventory={bookList} />);
-    expect(screen.getByText('test book 1')).toBeDefined;
-    expect(screen.getByText('by: test author 2')).toBeDefined;
-    expect(screen.getByText('test book 3')).toBeDefined;
+  test("should render", () => {
+    render(container);
+    const view = screen.getByTestId("inventoryContainer");
+    expect(view).toBeDefined;
   });
+
+  test('should render the flat list of books', () => { 
+    render(container);
+    expect(screen.getByTestId('bookFlatList')).toBeDefined;
+   })
 
   test('should show an error if no books have ever been added to a library', () => {
     render(<InventoryContainer inventory={undefined} />);

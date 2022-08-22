@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import BookDetail from '../atoms/BookDetail';
+import BookCard from '../atoms/BookCard';
 
 const InventoryContainer = ({ inventory }) => {
 
@@ -18,10 +18,12 @@ const InventoryContainer = ({ inventory }) => {
     } else {
       return (
         <FlatList
+          testID='bookFlatList'
           style={styles.bookList}
+          numColumns={1}
           data={inventory}
           renderItem={({ item, index, separators }) => (
-            <BookDetail key={`${item.title}${index}`} book={item} />
+            <BookCard key={item} ISBN={item} />
           )}
         />
       );
@@ -31,7 +33,7 @@ const InventoryContainer = ({ inventory }) => {
   /***********************************************************/
 
   return (
-    <View style={styles.inventoryContainer}>
+    <View style={styles.inventoryContainer} testID={'inventoryContainer'}>
       <Text style={styles.inventoryText}>Inventory</Text>
       {bookList()}
     </View>
@@ -42,17 +44,20 @@ export default InventoryContainer
 
 const styles = StyleSheet.create({
   inventoryContainer: {
-    marginTop: 50,
+    marginBottom: 70,
     alignItems: "center",
     width: "100%",
+    flex: 5,
   },
   inventoryText: {
-    marginBottom: 25,
+    marginBottom: 10,
     textDecorationLine: 'underline',
     fontSize: 17,
   },
   bookList: {
     width: '90%',
+    flex: 1,
+
   },
   noBook: {
     fontSize: 25,

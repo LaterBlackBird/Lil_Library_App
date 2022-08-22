@@ -44,10 +44,10 @@ export default InventoryContainer
 
 const styles = StyleSheet.create({
   inventoryContainer: {
-    marginTop: 50,
+    marginBottom: 70,
     alignItems: "center",
     width: "100%",
-    flex: 10,
+    flex: 5,
   },
   inventoryText: {
     marginBottom: 10,

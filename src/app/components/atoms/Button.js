@@ -1,18 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Button = ({ onPress, text, buttonStyle, disabled }) => {
-  const styleSwitch = () => {
-    switch (disabled) {
-      case false:
-        if (buttonStyle === 'secondary') return styles.secondaryButton;
-        else return styles.primaryButton;
-      case true:
-        return styles.disabledButton;
-      default:
-        return styles.primaryButton;
-    };
-  };
+const Button = ({ onPress, text, buttonStyle }) => {
 
   return (
     <TouchableOpacity
@@ -20,9 +9,10 @@ const Button = ({ onPress, text, buttonStyle, disabled }) => {
       onPress={onPress}
       style={[
         styles.button,
-        styleSwitch()
+        buttonStyle === "secondary"
+            ? styles.secondaryButton
+            : styles.primaryButton,
       ]}
-      disabled={disabled}
     >
       <Text
         style={[
@@ -55,10 +45,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   primaryButton: {
-    backgroundColor: '#83A0DF',
+    backgroundColor: '#333B31',
   },
   secondaryButton: {
-    backgroundColor: '#ced4da',
+    backgroundColor: '#A1BA9C',
   },
   primaryText: {
     color: 'white',

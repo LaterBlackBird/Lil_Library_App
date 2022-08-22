@@ -1,5 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBookSkull } from '@fortawesome/free-solid-svg-icons'
 
 import H1 from './H1';
 
@@ -36,15 +38,22 @@ const BookCard = ({ ISBN }) => {
     if (bookDetails.cover) {
       return (
         <View style={styles.imageContainer}>
-          <Image style={styles.coverImage} source={{ uri: `${bookDetails.cover.large}` }} scale={3} />
+          <Image
+            style={styles.coverImage}
+            source={{ uri: `${bookDetails.cover.large}` }}
+            scale={3}
+          />
         </View>
-      )
+      );
     } else {
       return (
-        <H1 style={styles.coverImage} text={'Book Cover Unavailable'}/>
-      )
+        <>
+          <FontAwesomeIcon icon={faBookSkull} color="#fd7e14" size={40} />
+          <Text>No Cover Available</Text>
+        </>
+      );
     }
-  }
+  };
   
   const showBookDetails = () => {
     if (bookDetails) {
@@ -73,12 +82,15 @@ const styles = StyleSheet.create({
   bookContainer: {
     height: 400,
     width: '100%',
-    flex: 1,
+    flex: 10,
     marginTop: 12,
     borderRadius: 10,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    // shadowColor: 'black',
+    elevation: 2,
   },
   bookTitle: {
     fontSize: 25,

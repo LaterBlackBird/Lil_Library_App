@@ -5,6 +5,7 @@ import BookCard from "../app/components/atoms/BookCard";
 import getBookDetails from '../app/services/bookAPI';
 
 jest.mock('../app/services/bookAPI');
+jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 describe("Book Detail", () => {
   

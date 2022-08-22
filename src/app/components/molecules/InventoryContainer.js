@@ -18,6 +18,7 @@ const InventoryContainer = ({ inventory }) => {
     } else {
       return (
         <FlatList
+          testID='bookFlatList'
           style={styles.bookList}
           data={inventory}
           renderItem={({ item, index, separators }) => (
@@ -31,7 +32,7 @@ const InventoryContainer = ({ inventory }) => {
   /***********************************************************/
 
   return (
-    <View style={styles.inventoryContainer}>
+    <View style={styles.inventoryContainer} testID={'inventoryContainer'}>
       <Text style={styles.inventoryText}>Inventory</Text>
       {bookList()}
     </View>

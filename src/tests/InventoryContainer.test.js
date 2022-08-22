@@ -1,33 +1,30 @@
-import { useState } from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react-native";
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react-native";
+
 import InventoryContainer from "../app/components/molecules/InventoryContainer";
+import BookCard from "../app/components/atoms/BookCard";
 
-const mockSetState = jest.fn();
-
-jest.mock('react', () => ({
-  useState: initial => [initial, mockSetState]
-}));
-// import getBookDetails from '../app/services/bookAPI';
-
-// jest.mock('../app/services/bookAPI');
-
-// const data = {
-//   title: "it ends with us",
-//   authors: [{ name: 'john doe' }]
-// };
-
-// getBookDetails.mockResolvedValue(data);
+jest.mock("../app/components/atoms/BookCard", () => jest.fn());
 
 describe("Inventory Container", () => {
+  const bookList = [9781501110368, 9781797147963, 9780062899149];
+  const container = <InventoryContainer inventory={{bookList}} />;
 
-  const bookList = [9781501110368, 9781797147963, 9780062899149]
-
-  test('should show a list of books', async () => {
-    await waitFor(() => render(<InventoryContainer inventory={bookList} />));
-    await waitFor(() => expect(screen.getByText(/it ends with us/i)).toBeDefined);
-    await waitFor(() => expect(screen.getByText(/i'm glad my mom died/i)).toBeDefined);
-    await waitFor(() => expect(screen.getByText(/the stubtle art/i)).toBeDefined);
+  test("should render", () => {
+    render(container);
+    const view = screen.getByTestId("inventoryContainer");
+    expect(view).toBeDefined;
   });
+
+  // test('should call the BookCard component the correct number of times', () => {
+  //   render(container);
+  //   expect(BookCard).toHaveBeenCalledTimes(3);
+  // });
+
+  test('should render the flat list of books', () => { 
+    render(container);
+    expect(screen.getByTestId('bookFlatList')).toBeDefined;
+   })
 
   test('should show an error if no books have ever been added to a library', () => {
     render(<InventoryContainer inventory={undefined} />);

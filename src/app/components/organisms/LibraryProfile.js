@@ -22,7 +22,7 @@ const LibraryProfile = ({ navigation, route }) => {
     return;
   };
   const addBook = () => {
-    //TODO
+    navigation.navigate("BookSearch");
     return;
   };
 

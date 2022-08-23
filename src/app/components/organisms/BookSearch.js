@@ -2,16 +2,30 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import theme from "../theme";
+import { signOutUser } from "../../services/user";
 
 import TextField from "../atoms/TextField";
+import ActionBar from "../molecules/ActionBar";
+import ActionButton from "../molecules/ActionButton";
+import { bookSearch } from "../../services/bookAPI";
+import SearchResultsContainer from "../molecules/SearchResultsContainer";
 
-const BookSearch = () => {
+const BookSearch = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [searchErrorState, setSearchErrorState] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
-  const searchForBooks = () => {
+  const searchForBooks = async () => {
     if (searchCriteria.length === 0) setSearchErrorState(true);
-    else setSearchErrorState(false);
+    else {
+      setSearchErrorState(false);
+      setSearchResults(await bookSearch(searchCriteria));
+    };
+    return;
+  };
+
+  const goHome = () => {
+    navigation.popToTop();
   };
 
   /*********************************************/
@@ -27,6 +41,17 @@ const BookSearch = () => {
           errorState={searchErrorState}
         />
       </View>
+
+      <SearchResultsContainer searchResults={searchResults.isbn} />
+
+      <ActionBar
+        children={
+          <>
+            <ActionButton type={"home"} onPress={goHome} />
+            <ActionButton type={"user"} onPress={signOutUser} />
+          </>
+        }
+      />
     </View>
   );
 };

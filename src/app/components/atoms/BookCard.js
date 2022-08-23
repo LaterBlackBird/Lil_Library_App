@@ -64,7 +64,7 @@ const BookCard = ({ ISBN }) => {
         <>
           <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
           {showImage()}
-          <Text style={styles.bookAuthor}>by: {authors}</Text>
+          <Text style={styles.bookAuthor}>{authors ? `by: ${authors}`: ''}</Text>
         </>
       );
     } else return null;

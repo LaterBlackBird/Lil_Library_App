@@ -15,7 +15,7 @@ const SearchResultsContainer = ({ searchResults }) => {
           numColumns={1}
           data={searchResults}
           renderItem={({ item, index, separators }) => (
-            <BookCard key={item} ISBN={item} />
+            <BookCard key={item} ISBN={item} options={'search'} />
           )}
         />
       );

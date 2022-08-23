@@ -8,4 +8,9 @@ describe("Book Search Page", () => {
     render(<BookSearch />);
     expect(screen.getByTestId('bookSearchComponent')).toBeDefined;
   });
+
+  test('should have a search box', () => { 
+    render(<BookSearch />);
+    expect(screen.getByPlaceholderText('Search')).toBeDefined;
+   })
 });

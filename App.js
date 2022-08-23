@@ -15,6 +15,7 @@ import SignUpForm from './src/app/components/organisms/SignUpForm';
 import MainPage from './src/app/components/organisms/MainPage';
 import LibraryProfile from './src/app/components/organisms/LibraryProfile';
 import LibraryEdits from './src/app/components/organisms/LibraryEdits';
+import BookSearch from './src/app/components/organisms/BookSearch';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -82,6 +83,14 @@ export default function App() {
                   <Stack.Screen
                     name="LibraryOptions"
                     component={LibraryEdits}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="BookSearch"
+                    component={BookSearch}
                     options={{
                       headerShown: false,
                       animation: "slide_from_right",

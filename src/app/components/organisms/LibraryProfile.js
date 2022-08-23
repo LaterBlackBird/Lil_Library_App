@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { signOutUser } from "../../services/user";
 import { libraryContext } from "../../context/libraryContext";
+import theme from "../theme";
 
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
@@ -22,7 +23,7 @@ const LibraryProfile = ({ navigation, route }) => {
     return;
   };
   const addBook = () => {
-    //TODO
+    navigation.navigate("BookSearch");
     return;
   };
 
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     flex: 1,
-    backgroundColor: '#DCFFD6',
+    backgroundColor: theme.primaryPageBackground,
   },
   libraryInfo: {
     width: "90%",

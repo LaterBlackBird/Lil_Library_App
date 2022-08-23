@@ -1,13 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBookSkull } from '@fortawesome/free-solid-svg-icons'
-
-import H1 from './H1';
+import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
 
 import getBookDetails from '../../services/bookAPI';
 
-const BookCard = ({ ISBN }) => {
+const BookCard = ({ ISBN, options }) => {
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
 
@@ -22,15 +20,21 @@ const BookCard = ({ ISBN }) => {
   }, []);
 
   useEffect(() => {
-    if (bookDetails && bookDetails.authors) {
-      const authors = bookDetails.authors;
-      setAuthors(authors[0].name);
-      if (authors.length > 1) {
-        for (let i = 1; i < authors.length; i++) {
-          setAuthors(prevState => `${prevState}, ${authors[i]}`)
+    const unsubscribe = () => {
+      if (bookDetails && bookDetails.authors) {
+        const authors = bookDetails.authors;
+        setAuthors(authors[0].name);
+        if (authors.length > 1) {
+          for (let i = 1; i < authors.length; i++) {
+            setAuthors((prevState) => `${prevState}, ${authors[i]}`);
+          }
         }
       }
-    } else setAuthors('unavailable')
+    };
+
+    unsubscribe();
+    return () => unsubscribe;
+
   }, [bookDetails]);
 
 
@@ -48,12 +52,35 @@ const BookCard = ({ ISBN }) => {
     } else {
       return (
         <>
-          <FontAwesomeIcon icon={faBookSkull} color="#fd7e14" size={40} />
+          <FontAwesomeIcon icon={faBookSkull} color="black" size={40} />
           <Text>No Cover Available</Text>
         </>
       );
     }
   };
+
+  const showButtons = () => {
+    if (options === 'inventory') {
+      return (
+        <View style={styles.checkoutButtons}>
+          <Pressable onPress={checkoutBook}>
+            <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={40} />
+          </Pressable>
+          <Pressable onPress={removeBook}>
+            <FontAwesomeIcon icon={faTrash} color="red" size={40} />
+          </Pressable>
+        </View>
+      )
+    } else if (options === 'search') {
+      return (
+        <View style={styles.addToLibraryButton}>
+          <Pressable onPress={addBook}>
+            <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
+          </Pressable>
+        </View>
+      )
+    }
+  }
   
   const showBookDetails = () => {
     if (bookDetails) {
@@ -61,11 +88,29 @@ const BookCard = ({ ISBN }) => {
         <>
           <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
           {showImage()}
-          <Text style={styles.bookAuthor}>by: {authors}</Text>
+          <Text style={styles.bookAuthor}>{authors ? `by: ${authors}` : ''}</Text>
+          {showButtons()}
         </>
       );
     } else return null;
   };
+
+  const checkoutBook = () => {
+    //TODO
+    return;
+  };
+
+  const removeBook = () => {
+    //TODO
+    return;
+  };
+
+  const addBook = () => {
+    //TODO
+    return;
+  };
+
+
 
   /***********************************************************/
 
@@ -110,5 +155,17 @@ const styles = StyleSheet.create({
     height: '100%',
     width: undefined,
     resizeMode: 'contain',
+  },
+  addToLibraryButton: {
+    position: 'absolute',
+    top: '50%',
+    width: '90%',
+  },
+  checkoutButtons: {
+    position: 'absolute',
+    top: '50%',
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   }
 })

@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull } from '@fortawesome/free-solid-svg-icons'
 
-import H1 from './H1';
-
 import getBookDetails from '../../services/bookAPI';
 
 const BookCard = ({ ISBN }) => {
@@ -22,15 +20,20 @@ const BookCard = ({ ISBN }) => {
   }, []);
 
   useEffect(() => {
-    if (bookDetails && bookDetails.authors) {
-      const authors = bookDetails.authors;
-      setAuthors(authors[0].name);
-      if (authors.length > 1) {
-        for (let i = 1; i < authors.length; i++) {
-          setAuthors(prevState => `${prevState}, ${authors[i]}`)
+    const unsubscribe = () => {
+      if (bookDetails && bookDetails.authors) {
+        const authors = bookDetails.authors;
+        setAuthors(authors[0].name);
+        if (authors.length > 1) {
+          for (let i = 1; i < authors.length; i++) {
+            setAuthors((prevState) => `${prevState}, ${authors[i]}`);
+          }
         }
-      }
-    } else setAuthors('unavailable')
+      } else setAuthors("unavailable");
+    };
+
+    return () => unsubscribe;
+
   }, [bookDetails]);
 
 

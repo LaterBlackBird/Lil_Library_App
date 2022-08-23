@@ -1,9 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+
+import theme from '../theme'
 
 const BookSearch = () => {
   return (
-    <View>
+    <View
+      testID={'bookSearchComponent'}
+      style={styles.container}
+    >
       <Text>BookSearch</Text>
     </View>
   )
@@ -11,4 +16,9 @@ const BookSearch = () => {
 
 export default BookSearch
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.primaryPageBackground,
+    flex: 1,
+  },
+});

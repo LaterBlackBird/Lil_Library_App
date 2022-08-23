@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { deleteLibraryFromDatabase, updateLibraryName } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 import { libraryContext } from "../../context/libraryContext";
+import theme from '../theme';
 
 import Button from '../atoms/Button'
 import ModalInput from '../molecules/ModalInput';
@@ -133,6 +134,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: '100%',
-    backgroundColor: '#DCFFD6',
+    backgroundColor: theme.primaryPageBackground,
   },
 })

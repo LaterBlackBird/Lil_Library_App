@@ -13,6 +13,8 @@ import {
   GeoPoint,
   deleteDoc,
   updateDoc,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 
 import { fireDB } from './initializaiton'
@@ -81,4 +83,11 @@ export const updateLibraryLocation = async (library, newLocation) => {
   await updateDoc(docRef, { location: locationToGeoPoint });
   const docSnap = await getDoc(docRef);
   return docSnap.data();
+}
+
+
+export const addBookToInventory = async (library, bookISBN) => {
+  const docRef = doc(fireDB, 'libraries', library.id);
+  await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  return;
 }

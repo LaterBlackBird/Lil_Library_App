@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import getBookDetails from '../../services/bookAPI';
 import LibraryReducer from '../../reducer/LibraryReducer';
 import { libraryContext } from "../../context/libraryContext";
+import { addBookToInventory } from '../../services/LibraryServices';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
@@ -115,8 +116,9 @@ const BookCard = ({ ISBN, options }) => {
     return;
   };
 
-  const addBook = () => {
+  const addBook = async () => {
     dispatch({ type: 'addBook', value: ISBN });
+    await addBookToInventory(selectedLibraryContext, ISBN);
     navigation.navigate("LibraryProfile");
     return;
   };

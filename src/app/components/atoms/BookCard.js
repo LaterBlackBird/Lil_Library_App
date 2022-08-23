@@ -1,13 +1,20 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
+import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
+import LibraryReducer from '../../reducer/LibraryReducer';
+import { libraryContext } from "../../context/libraryContext";
 
 const BookCard = ({ ISBN, options }) => {
+  const navigation = useNavigation();
+
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
+  const [selectedLibraryContext] = useContext(libraryContext);
+  const [state, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
 
   useEffect(() => {
     const unsubscribe = async () => {
@@ -109,7 +116,8 @@ const BookCard = ({ ISBN, options }) => {
   };
 
   const addBook = () => {
-    //TODO
+    dispatch({ type: 'addBook', value: ISBN });
+    navigation.navigate("LibraryProfile");
     return;
   };
 
@@ -164,6 +172,7 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-around',
   },
   icon: {
     alignItems: 'center',

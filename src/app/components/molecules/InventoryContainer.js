@@ -18,12 +18,16 @@ const InventoryContainer = ({ inventory }) => {
     } else {
       return (
         <FlatList
-          testID='bookFlatList'
+          testID="bookFlatList"
           style={styles.bookList}
           numColumns={1}
           data={inventory}
           renderItem={({ item, index, separators }) => (
-            <BookCard key={item} ISBN={item} options={'inventory'} />
+            <BookCard
+              key={item}
+              ISBN={item}
+              options={"inventory"}
+            />
           )}
         />
       );

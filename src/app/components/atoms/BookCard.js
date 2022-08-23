@@ -63,19 +63,22 @@ const BookCard = ({ ISBN, options }) => {
     if (options === 'inventory') {
       return (
         <View style={styles.checkoutButtons}>
-          <Pressable onPress={checkoutBook}>
-            <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={40} />
+          <Pressable onPress={checkoutBook} style={styles.icon}>
+            <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={30} />
+            <Text style={{color:"#15aabf"}}>Checkout</Text>
           </Pressable>
-          <Pressable onPress={removeBook}>
-            <FontAwesomeIcon icon={faTrash} color="red" size={40} />
+          <Pressable onPress={removeBook} style={styles.icon}>
+            <FontAwesomeIcon icon={faTrash} color="red" size={30} />
+            <Text style={{color:"red"}}>Not Here</Text>
           </Pressable>
         </View>
       )
     } else if (options === 'search') {
       return (
         <View style={styles.addToLibraryButton}>
-          <Pressable onPress={addBook}>
+          <Pressable onPress={addBook} style={styles.icon}>
             <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
+            <Text style={{color:"#15aabf"}}>Add To Library</Text>
           </Pressable>
         </View>
       )
@@ -125,29 +128,26 @@ export default BookCard
 
 const styles = StyleSheet.create({
   bookContainer: {
-    height: 400,
+    height: 525,
     width: '100%',
-    flex: 10,
     marginTop: 12,
     borderRadius: 10,
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    // shadowColor: 'black',
     elevation: 2,
   },
   bookTitle: {
     fontSize: 25,
     fontWeight: '500',
-    height: '12%',
+    height: '8%',
   },
   bookAuthor: {
     fontSize: 12,
     height: '8%',
   },
   imageContainer: {
-    height: '80%',
+    height: '70%',
     width: '100%',
     alignContent: 'center'
   },
@@ -157,15 +157,17 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   addToLibraryButton: {
-    position: 'absolute',
-    top: '50%',
     width: '90%',
   },
   checkoutButtons: {
-    position: 'absolute',
-    top: '50%',
+    height: '8%',
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  icon: {
+    alignItems: 'center',
+    marginBottom: 15,
+    marginTop: 0,
   }
 })

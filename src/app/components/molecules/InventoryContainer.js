@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import BookCard from '../atoms/BookCard';
+import BookCard from '../molecules/BookCard';
 
 const InventoryContainer = ({ inventory }) => {
 

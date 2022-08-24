@@ -27,6 +27,10 @@ const LibraryProfile = ({ navigation, route }) => {
     return;
   };
 
+  // useEffect(() => {
+  //   console.log(selectedLibraryContext)
+  // },[selectedLibraryContext])
+
   return (
     <View style={styles.container} testID={"Libarry-Profile-View"}>
       <View style={styles.libraryInfo}>

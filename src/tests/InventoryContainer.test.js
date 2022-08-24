@@ -2,9 +2,9 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
 
 import InventoryContainer from "../app/components/molecules/InventoryContainer";
-import BookCard from "../app/components/atoms/BookCard";
+import BookCard from "../app/components/molecules/BookCard";
 
-jest.mock("../app/components/atoms/BookCard", () => jest.fn());
+jest.mock("../app/components/molecules/BookCard", () => jest.fn());
 
 describe("Inventory Container", () => {
   const bookList = [9781501110368, 9781797147963, 9780062899149];

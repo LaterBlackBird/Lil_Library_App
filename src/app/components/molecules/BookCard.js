@@ -14,8 +14,8 @@ const BookCard = ({ ISBN, options }) => {
 
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
-  const [selectedLibraryContext] = useContext(libraryContext);
-  const [state, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
+  const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
+  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
 
   useEffect(() => {
     const unsubscribe = async () => {
@@ -44,6 +44,13 @@ const BookCard = ({ ISBN, options }) => {
     return () => unsubscribe;
 
   }, [bookDetails]);
+
+
+  useEffect(() => {
+    const unsub = () => setSelectedLibraryContext(bookState);
+    unsub();
+    return () => unsub;
+  }, [bookState]);
 
 
   const showImage = () => {
@@ -112,7 +119,7 @@ const BookCard = ({ ISBN, options }) => {
   };
 
   const removeBook = () => {
-    //TODO
+    dispatch({ type: 'removeBook', value: ISBN });
     return;
   };
 
@@ -122,8 +129,6 @@ const BookCard = ({ ISBN, options }) => {
     navigation.navigate("LibraryProfile");
     return;
   };
-
-
 
   /***********************************************************/
 

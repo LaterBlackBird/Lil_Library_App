@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
+import theme from '../theme'
+
 const Button = ({ onPress, text, buttonStyle }) => {
 
   return (
@@ -45,18 +47,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   primaryButton: {
-    backgroundColor: '#333B31',
+    backgroundColor: theme.primaryButton,
   },
   secondaryButton: {
-    backgroundColor: '#A1BA9C',
+    backgroundColor: theme.secondaryButton,
   },
   primaryText: {
-    color: 'white',
+    color: theme.primaryButtonText,
   },
   secondaryText: {
-    color: 'black',
+    color: theme.secondaryButtonText,
   },
-  disabledButton: {
-    backgroundColor: '#ccd4e6'
-  }
-})
+});

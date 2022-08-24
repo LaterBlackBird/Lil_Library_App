@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react-native";
 
 import LibraryProfile from "../app/components/organisms/LibraryProfile";
 import { libraryContext } from "../app/context/libraryContext";import getBookDetails from '../app/services/bookAPI';
-import BookCard from "../app/components/atoms/BookCard";
+import BookCard from "../app/components/molecules/BookCard";
 
 const user = require('../app/services/user')
 user.login = jest.fn(() => { return true })
@@ -11,7 +11,7 @@ user.login = jest.fn(() => { return true })
 jest.mock("../app/services/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 jest.mock('../app/services/bookAPI', () => jest.fn());
-jest.mock('../app/components/atoms/BookCard', () => jest.fn(() => null))
+jest.mock('../app/components/molecules/BookCard', () => jest.fn(() => null))
 
 describe("Library Profile", () => {
   const library = {

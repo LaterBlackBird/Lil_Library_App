@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Alert, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
 import { login } from "../../services/user";
+
+import theme from '../theme'
 
 import TextField from "../atoms/TextField";
 import SecureField from "../atoms/SecureField";
@@ -62,36 +64,43 @@ const LoginForm = ({ navigation }) => {
   };
 
   return (
-    <Form
-      children={
-        <>
-          <H1 text={"Lil Library App 📚"} />
+    <View style={styles.container}>
+      <Form style={styles.form}
+        children={
+          <>
+            <H1 text={"Lil Library App 📚"} />
 
-          <TextField
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            errorState={emailErrorState}
-          />
+            <TextField
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              errorState={emailErrorState}
+            />
 
-          <SecureField
-            placeholder="Password"
-            value={password}
-            onChangeText={(input) => setPassword(input)}
-            errorState={passwordErrorState}
-          />
+            <SecureField
+              placeholder="Password"
+              value={password}
+              onChangeText={(input) => setPassword(input)}
+              errorState={passwordErrorState}
+            />
 
-          {renderErrors()}
+            {renderErrors()}
 
-          <Button onPress={handleLogin} text={"Login"} />
+            <Button onPress={handleLogin} text={"Login"} buttonStyle={'primray'} />
 
-          <Link onPress={goToSignup} text={"or Create an Account"} />
-        </>
-      }
-    />
+            <Link onPress={goToSignup} text={"or Create an Account"} />
+          </>
+        }
+      />
+    </View>
   );
 };
 
 export default LoginForm;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.primaryPageBackground,
+    flex: 1,
+  }
+});

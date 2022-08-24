@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
 
-import BookCard from "../app/components/atoms/BookCard";
+import BookCard from "../app/components/molecules/BookCard";
 import getBookDetails from '../app/services/bookAPI';
 
 jest.mock('../app/services/bookAPI');

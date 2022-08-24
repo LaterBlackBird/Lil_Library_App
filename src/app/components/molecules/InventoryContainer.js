@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import BookCard from '../atoms/BookCard';
+import BookCard from '../molecules/BookCard';
 
 const InventoryContainer = ({ inventory }) => {
 
@@ -18,12 +18,16 @@ const InventoryContainer = ({ inventory }) => {
     } else {
       return (
         <FlatList
-          testID='bookFlatList'
+          testID="bookFlatList"
           style={styles.bookList}
           numColumns={1}
           data={inventory}
           renderItem={({ item, index, separators }) => (
-            <BookCard key={item} ISBN={item} options={'inventory'} />
+            <BookCard
+              key={item}
+              ISBN={item}
+              options={"inventory"}
+            />
           )}
         />
       );

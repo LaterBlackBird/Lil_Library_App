@@ -1,41 +1,56 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
+import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
+import LibraryReducer from '../../reducer/LibraryReducer';
+import { libraryContext } from "../../context/libraryContext";
+import { addBookToInventory, removeBookFromInventory } from '../../services/LibraryServices';
 
 const BookCard = ({ ISBN, options }) => {
+  const navigation = useNavigation();
+
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
+  const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
+  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
 
   useEffect(() => {
-    const unsubscribe = async () => {
-      const data = await getBookDetails(ISBN);
-      setBookDetails(data);
-    }
-    
-    unsubscribe();
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = () => {
-      if (bookDetails && bookDetails.authors) {
-        const authors = bookDetails.authors;
-        setAuthors(authors[0].name);
-        if (authors.length > 1) {
-          for (let i = 1; i < authors.length; i++) {
-            setAuthors((prevState) => `${prevState}, ${authors[i]}`);
-          }
-        }
+    let run = true;
+    const retreive = async () => {
+      if (run) {
+        const data = await getBookDetails(ISBN);
+        setBookDetails(data);
       }
     };
 
-    unsubscribe();
-    return () => unsubscribe;
+    retreive();
+    return () => (run = false);
+  }, []);
 
+  useEffect(() => {
+    let run = true;
+    if (run && bookDetails && bookDetails.authors) {
+      const authors = bookDetails.authors;
+      setAuthors(authors[0].name);
+      if (authors.length > 1) {
+        for (let i = 1; i < authors.length; i++) {
+          setAuthors((prevState) => `${prevState}, ${authors[i]}`);
+        }
+      }
+    }
+
+    return () => (run = false);
   }, [bookDetails]);
+
+
+  useEffect(() => {
+    let run = true;
+    if (run) setSelectedLibraryContext(bookState);
+    return () => (run = false);
+  }, [bookState]);
 
 
   const showImage = () => {
@@ -63,19 +78,22 @@ const BookCard = ({ ISBN, options }) => {
     if (options === 'inventory') {
       return (
         <View style={styles.checkoutButtons}>
-          <Pressable onPress={checkoutBook}>
-            <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={40} />
+          <Pressable onPress={checkoutBook} style={styles.icon}>
+            <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={30} />
+            <Text style={{color:"#15aabf"}}>Checkout</Text>
           </Pressable>
-          <Pressable onPress={removeBook}>
-            <FontAwesomeIcon icon={faTrash} color="red" size={40} />
+          <Pressable onPress={removeBook} style={styles.icon}>
+            <FontAwesomeIcon icon={faTrash} color="red" size={30} />
+            <Text style={{color:"red"}}>Not Here</Text>
           </Pressable>
         </View>
       )
     } else if (options === 'search') {
       return (
         <View style={styles.addToLibraryButton}>
-          <Pressable onPress={addBook}>
+          <Pressable onPress={addBook} style={styles.icon}>
             <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
+            <Text style={{color:"#15aabf"}}>Add To Library</Text>
           </Pressable>
         </View>
       )
@@ -89,34 +107,36 @@ const BookCard = ({ ISBN, options }) => {
           <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
           {showImage()}
           <Text style={styles.bookAuthor}>{authors ? `by: ${authors}` : ''}</Text>
-          {showButtons()}
         </>
       );
     } else return null;
   };
 
   const checkoutBook = () => {
-    //TODO
+    //this will change once user profiles are implemented
+    removeBook();
     return;
   };
 
-  const removeBook = () => {
-    //TODO
+  const removeBook = async() => {
+    dispatch({ type: 'removeBook', value: ISBN });
+    await removeBookFromInventory(selectedLibraryContext.id, ISBN);
     return;
   };
 
-  const addBook = () => {
-    //TODO
+  const addBook = async () => {
+    dispatch({ type: 'addBook', value: ISBN });
+    await addBookToInventory(selectedLibraryContext.id, ISBN);
+    navigation.navigate("LibraryProfile");
     return;
   };
-
-
 
   /***********************************************************/
 
   return (
     <View style={styles.bookContainer} testID='bookCard'>
       {showBookDetails()}
+      {showButtons()}
     </View>
   )
 }
@@ -125,29 +145,26 @@ export default BookCard
 
 const styles = StyleSheet.create({
   bookContainer: {
-    height: 400,
+    height: 525,
     width: '100%',
-    flex: 10,
     marginTop: 12,
     borderRadius: 10,
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    // shadowColor: 'black',
     elevation: 2,
   },
   bookTitle: {
     fontSize: 25,
     fontWeight: '500',
-    height: '12%',
+    height: '8%',
   },
   bookAuthor: {
     fontSize: 12,
     height: '8%',
   },
   imageContainer: {
-    height: '80%',
+    height: '70%',
     width: '100%',
     alignContent: 'center'
   },
@@ -157,15 +174,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   addToLibraryButton: {
-    position: 'absolute',
-    top: '50%',
     width: '90%',
   },
   checkoutButtons: {
-    position: 'absolute',
-    top: '50%',
+    height: '8%',
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  icon: {
+    alignItems: 'center',
+    marginBottom: 15,
+    marginTop: 0,
   }
 })

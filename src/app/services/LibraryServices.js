@@ -13,10 +13,11 @@ import {
   GeoPoint,
   deleteDoc,
   updateDoc,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 
 import { fireDB } from './initializaiton'
-
 
 export const librariesWithin10km = async (mapCenter) => {
   let libraries = [];
@@ -40,7 +41,6 @@ export const librariesWithin10km = async (mapCenter) => {
   return libraries;
 };
 
-
 export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
   const newLibraryData = {
     createdAt: serverTimestamp(),
@@ -58,7 +58,6 @@ export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
   return { id: newDoc.id, ...docSnap.data() };
 };
 
-
 export const deleteLibraryFromDatabase = async (id) => {
   try {
     await deleteDoc(doc(fireDB, 'libraries', id));
@@ -67,13 +66,11 @@ export const deleteLibraryFromDatabase = async (id) => {
   }
 };
 
-
 export const updateLibraryName = async (library, newName) => {
   const docRef = doc(fireDB, "libraries", library.id);
   await updateDoc(docRef, { name: newName });
   return 'ok';
 }
-
 
 export const updateLibraryLocation = async (library, newLocation) => {
   const locationToGeoPoint = new GeoPoint(newLocation.latitude, newLocation.longitude)
@@ -81,4 +78,16 @@ export const updateLibraryLocation = async (library, newLocation) => {
   await updateDoc(docRef, { location: locationToGeoPoint });
   const docSnap = await getDoc(docRef);
   return docSnap.data();
+}
+
+export const addBookToInventory = async (libraryID, bookISBN) => {
+  const docRef = doc(fireDB, 'libraries', libraryID);
+  await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  return;
+}
+
+export const removeBookFromInventory = async (libraryID, bookISBN) => {
+  const docRef = doc(fireDB, 'libraries', libraryID);
+  await updateDoc(docRef, { inventory: arrayRemove(bookISBN) })
+  return;
 }

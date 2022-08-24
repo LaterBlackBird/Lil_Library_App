@@ -6,7 +6,7 @@ This app is designed for people wanting to find the nearest [Little Library](htt
 Project is intended as a means to learn React Native, and will not be published publicly.
 
 
-## Features
+## Features ⚙
 
 - [X] User Auth
 - [X] Library Create
@@ -14,14 +14,17 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] Library Update/Edit
 - [X] Library Deletion
 - [X] Library Profile
-- [ ] Library Inventory
+- [X] Library Inventory
+- [X] Book Search
+- [X] Book Addition To Library Inventory
+- [X] Book Removal From Library Inventory
 - [ ] Library Checkout system
 - [ ] User Update/Edit
 - [ ] User Deletion
 - [ ] User Checkout History
 
 
-## Tech Stack
+## Tech Stack 👨‍💻
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37) 
@@ -29,7 +32,7 @@ Project is intended as a means to learn React Native, and will not be published 
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 
 
-## Documentation
+## Documentation 📃
 
 [Wiki](https://github.com/LaterBlackBird/Lil_Library_App/wiki)  
 [User Stories](https://github.com/LaterBlackBird/Lil_Library_App/wiki/User-Stories)  
@@ -37,7 +40,11 @@ Project is intended as a means to learn React Native, and will not be published 
 [Database Schema](https://github.com/LaterBlackBird/Lil_Library_App/wiki/Database-Schema)  
 
 
-## Demo
+## API 🤝
+[Open Library](https://openlibrary.org/developers/api)  
+
+
+## Demo 📱
 
 Demo @ 8/2/22
 <!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif height="50%") -->

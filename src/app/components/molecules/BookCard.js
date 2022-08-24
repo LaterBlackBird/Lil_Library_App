@@ -113,7 +113,8 @@ const BookCard = ({ ISBN, options }) => {
   };
 
   const checkoutBook = () => {
-    //TODO
+    //this will change once user profiles are implemented
+    removeBook();
     return;
   };
 

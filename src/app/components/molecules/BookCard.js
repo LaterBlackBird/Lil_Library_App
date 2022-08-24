@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import getBookDetails from '../../services/bookAPI';
 import LibraryReducer from '../../reducer/LibraryReducer';
 import { libraryContext } from "../../context/libraryContext";
-import { addBookToInventory } from '../../services/LibraryServices';
+import { addBookToInventory, removeBookFromInventory } from '../../services/LibraryServices';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
@@ -18,38 +18,38 @@ const BookCard = ({ ISBN, options }) => {
   const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
 
   useEffect(() => {
-    const unsubscribe = async () => {
-      const data = await getBookDetails(ISBN);
-      setBookDetails(data);
-    }
-    
-    unsubscribe();
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = () => {
-      if (bookDetails && bookDetails.authors) {
-        const authors = bookDetails.authors;
-        setAuthors(authors[0].name);
-        if (authors.length > 1) {
-          for (let i = 1; i < authors.length; i++) {
-            setAuthors((prevState) => `${prevState}, ${authors[i]}`);
-          }
-        }
+    let run = true;
+    const retreive = async () => {
+      if (run) {
+        const data = await getBookDetails(ISBN);
+        setBookDetails(data);
       }
     };
 
-    unsubscribe();
-    return () => unsubscribe;
+    retreive();
+    return () => (run = false);
+  }, []);
 
+  useEffect(() => {
+    let run = true;
+    if (run && bookDetails && bookDetails.authors) {
+      const authors = bookDetails.authors;
+      setAuthors(authors[0].name);
+      if (authors.length > 1) {
+        for (let i = 1; i < authors.length; i++) {
+          setAuthors((prevState) => `${prevState}, ${authors[i]}`);
+        }
+      }
+    }
+
+    return () => (run = false);
   }, [bookDetails]);
 
 
   useEffect(() => {
-    const unsub = () => setSelectedLibraryContext(bookState);
-    unsub();
-    return () => unsub;
+    let run = true;
+    if (run) setSelectedLibraryContext(bookState);
+    return () => (run = false);
   }, [bookState]);
 
 
@@ -107,7 +107,6 @@ const BookCard = ({ ISBN, options }) => {
           <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
           {showImage()}
           <Text style={styles.bookAuthor}>{authors ? `by: ${authors}` : ''}</Text>
-          {showButtons()}
         </>
       );
     } else return null;
@@ -118,14 +117,15 @@ const BookCard = ({ ISBN, options }) => {
     return;
   };
 
-  const removeBook = () => {
+  const removeBook = async() => {
     dispatch({ type: 'removeBook', value: ISBN });
+    await removeBookFromInventory(selectedLibraryContext.id, ISBN);
     return;
   };
 
   const addBook = async () => {
     dispatch({ type: 'addBook', value: ISBN });
-    await addBookToInventory(selectedLibraryContext, ISBN);
+    await addBookToInventory(selectedLibraryContext.id, ISBN);
     navigation.navigate("LibraryProfile");
     return;
   };
@@ -135,6 +135,7 @@ const BookCard = ({ ISBN, options }) => {
   return (
     <View style={styles.bookContainer} testID='bookCard'>
       {showBookDetails()}
+      {showButtons()}
     </View>
   )
 }

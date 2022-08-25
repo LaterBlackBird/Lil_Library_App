@@ -13,7 +13,7 @@ import InventoryContainer from "../molecules/InventoryContainer";
 
 const LibraryProfile = ({ navigation, route }) => {
   const {
-    allVisibleLibraries,
+    visibleLibrariesList,
     selectedLibraryInfo,
     movingFlag,
     addBook,

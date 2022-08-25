@@ -15,7 +15,7 @@ const BookCard = ({ ISBN, options }) => {
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
   const {
-    allVisibleLibraries,
+    visibleLibrariesList,
     selectedLibraryInfo,
     movingFlag,
     addBook,
@@ -26,7 +26,7 @@ const BookCard = ({ ISBN, options }) => {
     removeLibrary,
     setSelectedLibrary,
   } = useContext(LibraryContext);
-  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryInfo)
+  // const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryInfo)
 
   useEffect(() => {
     let run = true;

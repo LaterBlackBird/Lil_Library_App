@@ -21,18 +21,14 @@ const MainPage = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
-  const [visibleLibrariesList, setVisibleLibrariesList] = useState("");
 
   const {
-    allVisibleLibraries,
+    visibleLibrariesList,
     selectedLibraryInfo,
     movingFlag,
-    addBook,
-    removeBook,
     movingLibraryFlagToggle,
     newLibraryList,
     addNewLibrary,
-    removeLibrary,
     setSelectedLibrary,
   } = useContext(LibraryContext);
 
@@ -64,6 +60,12 @@ const MainPage = ({ navigation }) => {
     duration: 500,
     useNativeDriver: false,
   });
+
+  useEffect(() => {
+    console.log(visibleLibrariesList);
+  
+  }, [visibleLibrariesList])
+  
 
   useEffect(() => {
     setInitialMapCenter();
@@ -217,8 +219,8 @@ const MainPage = ({ navigation }) => {
           children={
             <>
               {!movingFlag &&
-                allVisibleLibraries &&
-                allVisibleLibraries.map((library, index) => (
+                visibleLibrariesList &&
+                visibleLibrariesList.map((library, index) => (
                   <MarkerStd
                     key={index}
                     coordinate={{

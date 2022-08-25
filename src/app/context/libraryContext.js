@@ -20,7 +20,7 @@ const reducer = (state, action) => {
     case "movingLibraryFlagToggle":
       return { ...state, movingFlag: action.value };
     case "newLibraryList":
-      return { ...state, visibleLibrariesLists: action.value };
+      return { ...state, visibleLibrariesList: action.value };
     case "addNewLibrary":
       return { ...state, visibleLibrariesList: [...visibleLibrariesList, action.value] };
     case "removeLibrary":
@@ -38,7 +38,7 @@ export const LibraryProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const value = {
-    allvisibleLibraries: state.allvisibleLibraries,
+    visibleLibrariesList: state.visibleLibrariesList,
     selectedLibraryInfo: state.selectedLibraryInfo,
     movingFlag: state.movingFlag,
     addBook: (book) => {
@@ -50,8 +50,8 @@ export const LibraryProvider = ({ children }) => {
     movingLibraryFlagToggle: (boolean) => {
       dispatch({type: 'movingLibraryFlagToggle', value: boolean})
     },
-    newLibraryList: (library) => {
-      dispatch({type: 'newLibraryList', value: library})
+    newLibraryList: (libraries) => {
+      dispatch({type: 'newLibraryList', value: libraries})
     },
     addNewLibrary: (library) => {
       dispatch({type: 'addNewLibrary', value: library})

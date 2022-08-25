@@ -19,7 +19,7 @@ const LibraryEdits = ({ navigation }) => {
   const [newLibraryName, setNewLibraryName] = useState('');
 
   const {
-    allVisibleLibraries,
+    visibleLibrariesList,
     selectedLibraryInfo,
     movingFlag,
     addBook,

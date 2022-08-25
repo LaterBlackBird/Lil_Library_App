@@ -1,6 +1,4 @@
-import { createContext, useState, useReducer } from "react";
-import LibraryReducer from "../reducer/LibraryReducer";
-
+import { createContext, useReducer } from "react";
 
 const initialState = {
   selectedLibraryInfo: {},
@@ -11,12 +9,12 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "addBook":
-      const addBookState = { ...state };
-      addBookState.selectedLibraryInfo.inventory.push(action.value);
-      return addBookState;
-      // return {...state, state.selectedLibraryInfo.inventory: state.inventory.push(action.value)}
+      // const addBookState = { ...state };
+      // addBookState.selectedLibraryInfo.inventory.push(action.value);
+      // return addBookState;
+      return { ...state, selectedLibraryInfo: { ...state.selectedLibraryInfo, inventory: [...state.selectedLibraryInfo.inventory, action.value] } };
     case "removeBook":
-      return { ...state.selectedLibraryInfo, inventory: state.inventory.filter(book => book !== action.value) }
+      return { ...state, selectedLibraryInfo: { ...state.selectedLibraryInfo, inventory: state.selectedLibraryInfo.inventory.filter(book => book !== action.value) } };
     case "movingLibraryFlagToggle":
       return { ...state, movingFlag: action.value };
     case "newLibraryList":

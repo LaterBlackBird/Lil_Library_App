@@ -2,7 +2,7 @@ import * as React from "react";
 import { render, screen } from "@testing-library/react-native";
 
 import LibraryProfile from "../app/components/organisms/LibraryProfile";
-import { libraryContext } from "../app/context/libraryContext";import getBookDetails from '../app/services/bookAPI';
+import { LibraryContext } from "../app/context/LibraryContext";import getBookDetails from '../app/services/bookAPI';
 import BookCard from "../app/components/molecules/BookCard";
 
 const user = require('../app/services/user')
@@ -29,9 +29,9 @@ describe("Library Profile", () => {
   };
 
   const component = (
-    <libraryContext.Provider value={[library, null]}>
+    <LibraryContext.Provider value={[library, null]}>
       <LibraryProfile />
-    </libraryContext.Provider>
+    </LibraryContext.Provider>
   );
 
   beforeEach(() => {

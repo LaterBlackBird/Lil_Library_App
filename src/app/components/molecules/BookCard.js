@@ -6,16 +6,27 @@ import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
 import LibraryReducer from '../../reducer/LibraryReducer';
-import { libraryContext } from "../../context/libraryContext";
-import { addBookToInventory, removeBookFromInventory } from '../../services/LibraryServices';
+import { LibraryContext } from "../../context/LibraryContext";
+import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
 
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
-  const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
-  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
+  const {
+    allVisibleLibraries,
+    selectedLibraryInfo,
+    movingFlag,
+    addBook,
+    removeBook,
+    movingLibraryFlagToggle,
+    newLibraryList,
+    addNewLibrary,
+    removeLibrary,
+    setSelectedLibrary,
+  } = useContext(LibraryContext);
+  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryInfo)
 
   useEffect(() => {
     let run = true;
@@ -114,19 +125,19 @@ const BookCard = ({ ISBN, options }) => {
 
   const checkoutBook = () => {
     //this will change once user profiles are implemented
-    removeBook();
+    removeBookFromInventory();
     return;
   };
 
-  const removeBook = async() => {
-    dispatch({ type: 'removeBook', value: ISBN });
-    await removeBookFromInventory(selectedLibraryContext.id, ISBN);
+  const removeBookFromInventory = async() => {
+    removeBook(ISBN);
+    await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
     return;
   };
 
-  const addBook = async () => {
-    dispatch({ type: 'addBook', value: ISBN });
-    await addBookToInventory(selectedLibraryContext.id, ISBN);
+  const addBookToInventory = async () => {
+    addBook(ISBN);
+    await updateDB_LibraryInventory_AddBook(selectedLibraryInfo.id, ISBN);
     navigation.navigate("LibraryProfile");
     return;
   };

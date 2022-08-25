@@ -2,10 +2,10 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Alert, Animated } from "react-native";
 
 import { getInitialLocation, returnSearchLocation, } from "../../services/location";
-import { addLibraryToDatabase, librariesWithin10km, updateLibraryLocation, } from "../../services/LibraryServices";
+import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
-import { libraryContext } from "../../context/libraryContext";
 import { LocationContext } from "../../context/LocationContext";
+import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";
 
 import MarkerStd from "../atoms/MarkerStd";
@@ -21,15 +21,20 @@ const MainPage = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
+  const [visibleLibrariesList, setVisibleLibrariesList] = useState("");
 
-  const [
-    selectedLibraryContext,
-    setSelectedLibraryContext,
-    allVisibleLibrariesContext,
-    setAllVisibleLibrariesContext,
-    movingLibraryFlag,
-    setMovingLibraryFlag,
-  ] = useContext(libraryContext);
+  const {
+    allVisibleLibraries,
+    selectedLibraryInfo,
+    movingFlag,
+    addBook,
+    removeBook,
+    movingLibraryFlagToggle,
+    newLibraryList,
+    addNewLibrary,
+    removeLibrary,
+    setSelectedLibrary,
+  } = useContext(LibraryContext);
 
   const [lastKnownLocation, setLastKnownLocation] = useContext(LocationContext);
   const [creationAlertFlag, setCreationAlertFlag] = useContext(creationAlertContext)
@@ -65,15 +70,15 @@ const MainPage = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedLibraryContext.location !== undefined) {
+    if (selectedLibraryInfo.location !== undefined) {
       setLastKnownLocation({
-        latitude: selectedLibraryContext.location.latitude,
-        longitude: selectedLibraryContext.location.longitude,
+        latitude: selectedLibraryInfo.location.latitude,
+        longitude: selectedLibraryInfo.location.longitude,
         latitudeDelta: 0.08,
         longitudeDelta: 0.05,
       });
     }
-  }, [selectedLibraryContext]);
+  }, [selectedLibraryInfo]);
 
   const setInitialMapCenter = async () => {
     setLastKnownLocation(await getInitialLocation());
@@ -82,7 +87,7 @@ const MainPage = ({ navigation }) => {
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
-    setAllVisibleLibrariesContext(await librariesWithin10km(lastKnownLocation));
+    newLibraryList(await librariesWithin10km(lastKnownLocation));
     return;
   };
 
@@ -149,12 +154,12 @@ const MainPage = ({ navigation }) => {
   };
 
   const createNewLibrary = async () => {
-    const newLibrary = await addLibraryToDatabase(
+    const newLibrary = await updateDB_AddLibrary(
       lastKnownLocation,
       newLibraryName
     );
-    setSelectedLibraryContext(newLibrary);
-    setAllVisibleLibrariesContext([...allVisibleLibrariesContext, newLibrary]);
+    setSelectedLibrary(newLibrary);
+    addNewLibrary(newLibrary);
     setNewMarker(false);
     switchInputsToShowSearchBox();
     setNewLibraryName("");
@@ -170,33 +175,33 @@ const MainPage = ({ navigation }) => {
   };
 
   const goToLibraryProfile = (library) => {
-    setSelectedLibraryContext(library);
+    setSelectedLibrary(library);
     navigation.navigate("LibraryProfile");
     return;
   };
 
   const acceptNewLocation = async () => {
-    setMovingLibraryFlag(false);
+    movingLibraryFlagToggle(false);
 
     const newLocation = {
       latitude: lastKnownLocation.latitude,
       longitude: lastKnownLocation.longitude,
     };
 
-    const res = await updateLibraryLocation( selectedLibraryContext, newLocation );
+    const res = await updateDB_MoveLibrary( selectedLibraryInfo, newLocation );
 
     if (res) {
-      const libraryId = (library) => library.id === selectedLibraryContext.id;
-      let updatedList = [...allVisibleLibrariesContext];
-      const libraryIndex = allVisibleLibrariesContext.findIndex(libraryId);
+      const libraryId = (library) => library.id === selectedLibraryInfo.id;
+      let updatedList = [...visibleLibrariesList];
+      const libraryIndex = visibleLibrariesList.findIndex(libraryId);
       updatedList[libraryIndex] = res;
-      setAllVisibleLibrariesContext(updatedList);
+      newLibraryList(updatedList);
     }
     return;
   };
 
   const cancelNewLocation = () => {
-    setMovingLibraryFlag(false);
+    movingLibraryFlagToggle(false);
     return;
   };
 
@@ -211,9 +216,9 @@ const MainPage = ({ navigation }) => {
           onRegionChangeComplete={updateMapFromMove}
           children={
             <>
-              {!movingLibraryFlag &&
-                allVisibleLibrariesContext &&
-                allVisibleLibrariesContext.map((library, index) => (
+              {!movingFlag &&
+                allVisibleLibraries &&
+                allVisibleLibraries.map((library, index) => (
                   <MarkerStd
                     key={index}
                     coordinate={{
@@ -224,14 +229,14 @@ const MainPage = ({ navigation }) => {
                   />
                 ))}
 
-              {(movingLibraryFlag || newMarker) && (
+              {(movingFlag || newMarker) && (
                 <MarkerNew
                   pinColor="blue"
                   coordinate={
-                    movingLibraryFlag
+                    movingFlag
                       ? {
-                          latitude: selectedLibraryContext.location.latitude,
-                          longitude: selectedLibraryContext.location.longitude,
+                          latitude: selectedLibraryInfo.location.latitude,
+                          longitude: selectedLibraryInfo.location.longitude,
                         }
                       : lastKnownLocation
                   }
@@ -243,7 +248,7 @@ const MainPage = ({ navigation }) => {
         />
       )}
 
-      {!movingLibraryFlag && (
+      {!movingFlag && (
         <AnimatedInput
           style={"primary"}
           position={{ top: searchBoxPosition }}
@@ -266,7 +271,7 @@ const MainPage = ({ navigation }) => {
         value={newLibraryName}
       />
 
-      {!movingLibraryFlag ? (
+      {!movingFlag ? (
         <ActionBar
           children={
             <>

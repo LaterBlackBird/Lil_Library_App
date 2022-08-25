@@ -26,7 +26,6 @@ const BookCard = ({ ISBN, options }) => {
     removeLibrary,
     setSelectedLibrary,
   } = useContext(LibraryContext);
-  // const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryInfo)
 
   useEffect(() => {
     let run = true;
@@ -57,11 +56,11 @@ const BookCard = ({ ISBN, options }) => {
   }, [bookDetails]);
 
 
-  useEffect(() => {
-    let run = true;
-    if (run) setSelectedLibraryContext(bookState);
-    return () => (run = false);
-  }, [bookState]);
+  // useEffect(() => {
+  //   let run = true;
+  //   if (run) setSelectedLibraryContext(bookState);
+  //   return () => (run = false);
+  // }, [bookState]);
 
 
   const showImage = () => {
@@ -93,7 +92,7 @@ const BookCard = ({ ISBN, options }) => {
             <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={30} />
             <Text style={{color:"#15aabf"}}>Checkout</Text>
           </Pressable>
-          <Pressable onPress={removeBook} style={styles.icon}>
+          <Pressable onPress={removeBookFromInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faTrash} color="red" size={30} />
             <Text style={{color:"red"}}>Not Here</Text>
           </Pressable>
@@ -102,7 +101,7 @@ const BookCard = ({ ISBN, options }) => {
     } else if (options === 'search') {
       return (
         <View style={styles.addToLibraryButton}>
-          <Pressable onPress={addBook} style={styles.icon}>
+          <Pressable onPress={addBookToInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
             <Text style={{color:"#15aabf"}}>Add To Library</Text>
           </Pressable>

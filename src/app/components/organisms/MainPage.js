@@ -59,13 +59,7 @@ const MainPage = ({ navigation }) => {
     toValue: 50,
     duration: 500,
     useNativeDriver: false,
-  });
-
-  useEffect(() => {
-    console.log(visibleLibrariesList);
-  
-  }, [visibleLibrariesList])
-  
+  });  
 
   useEffect(() => {
     setInitialMapCenter();

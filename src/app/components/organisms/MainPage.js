@@ -30,6 +30,7 @@ const MainPage = ({ navigation }) => {
     newLibraryList,
     addNewLibrary,
     setSelectedLibrary,
+    updateLibrary
   } = useContext(LibraryContext);
 
   const [lastKnownLocation, setLastKnownLocation] = useContext(LocationContext);
@@ -184,15 +185,12 @@ const MainPage = ({ navigation }) => {
       longitude: lastKnownLocation.longitude,
     };
 
-    const res = await updateDB_MoveLibrary( selectedLibraryInfo, newLocation );
+    const updatedLibraryInfo = await updateDB_MoveLibrary(
+      selectedLibraryInfo,
+      newLocation
+    );
 
-    if (res) {
-      const libraryId = (library) => library.id === selectedLibraryInfo.id;
-      let updatedList = [...visibleLibrariesList];
-      const libraryIndex = visibleLibrariesList.findIndex(libraryId);
-      updatedList[libraryIndex] = res;
-      newLibraryList(updatedList);
-    }
+    if (updatedLibraryInfo) updateLibrary(updatedLibraryInfo, selectedLibraryInfo.id);
     return;
   };
 

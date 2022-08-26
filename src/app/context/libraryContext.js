@@ -21,7 +21,13 @@ const reducer = (state, action) => {
     case "removeLibrary":
       return { ...state, visibleLibrariesList: state.visibleLibrariesList.filter(library => library.id !== action.value.id) }
     case "setSelectedLibrary":
-      return {...state, selectedLibraryInfo: action.value}
+      return { ...state, selectedLibraryInfo: action.value };
+    case "updateLibrary":
+      const updatedLibrariesList = [...state.visibleLibrariesList];
+      const libraryId = (library) => library.id === action.id
+      const index = updatedLibrariesList.findIndex(libraryId);
+      updatedLibrariesList[index] = action.value;
+      return { ...state, selectedLibraryInfo: action.value, visibleLibrariesList: updatedLibrariesList}
     default:
       return state;
   }
@@ -57,6 +63,9 @@ export const LibraryProvider = ({ children }) => {
     setSelectedLibrary: (library) => {
       dispatch({type: 'setSelectedLibrary', value: library})
     },
+    updateLibrary: (library, id) => {
+      dispatch({type: "updateLibrary", value: library, id: id})
+    }
   }
 
   return (

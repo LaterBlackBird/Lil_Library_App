@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { signOutUser } from "../../services/user";
@@ -28,6 +28,8 @@ const LibraryProfile = ({ navigation, route }) => {
     return;
   };
 
+  /*************************************************/
+  
   return (
     <View style={styles.container} testID={"Libarry-Profile-View"}>
       <View style={styles.libraryInfo}>

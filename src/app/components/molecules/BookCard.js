@@ -14,18 +14,7 @@ const BookCard = ({ ISBN, options }) => {
 
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
-  const {
-    visibleLibrariesList,
-    selectedLibraryInfo,
-    movingFlag,
-    addBook,
-    removeBook,
-    movingLibraryFlagToggle,
-    newLibraryList,
-    addNewLibrary,
-    removeLibrary,
-    setSelectedLibrary,
-  } = useContext(LibraryContext);
+  const { selectedLibraryInfo, addBook, removeBook, } = useContext(LibraryContext);
 
   useEffect(() => {
     let run = true;
@@ -54,13 +43,6 @@ const BookCard = ({ ISBN, options }) => {
 
     return () => (run = false);
   }, [bookDetails]);
-
-
-  // useEffect(() => {
-  //   let run = true;
-  //   if (run) setSelectedLibraryContext(bookState);
-  //   return () => (run = false);
-  // }, [bookState]);
 
 
   const showImage = () => {

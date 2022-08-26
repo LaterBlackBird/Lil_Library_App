@@ -69,7 +69,8 @@ export const updateDB_DeleteLibrary = async (id) => {
 export const updateDB_RenameLibrary = async (library, newName) => {
   const docRef = doc(fireDB, "libraries", library.id);
   await updateDoc(docRef, { name: newName });
-  return 'ok';
+  const docSnap = await getDoc(docRef);
+  return docSnap.data();
 }
 
 export const updateDB_MoveLibrary = async (library, newLocation) => {

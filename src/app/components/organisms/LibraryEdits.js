@@ -19,27 +19,14 @@ const LibraryEdits = ({ navigation }) => {
   const [newLibraryName, setNewLibraryName] = useState('');
 
   const {
-    visibleLibrariesList,
     selectedLibraryInfo,
-    movingFlag,
-    addBook,
-    removeBook,
     movingLibraryFlagToggle,
-    newLibraryList,
-    addNewLibrary,
     removeLibrary,
-    setSelectedLibrary,
+    updateLibrary,
   } = useContext(LibraryContext);
 
 
   const moveLibrary = () => {
-    //TODO
-    //show map with no markers
-    //show temporary marker that can move
-    //after accepting new position
-    //update db
-    //update context
-    //show map with all markers
     movingLibraryFlagToggle(true);
     navigation.navigate('Home');
     return;
@@ -70,10 +57,10 @@ const LibraryEdits = ({ navigation }) => {
 
   const renameLibary = async () => {
     setModalVisible(false);
-    const updatedLibrary = {...selectedLibraryInfo};
-    updatedLibrary.name = newLibraryName;
-    setSelectedLibraryContext(updatedLibrary);
-    await updateDB_RenameLibrary(selectedLibraryInfo, newLibraryName);
+
+    const updatedLibraryInfo = await updateDB_RenameLibrary(selectedLibraryInfo, newLibraryName);
+
+    if (updatedLibraryInfo) updateLibrary(updatedLibraryInfo, selectedLibraryInfo.id);
     navigation.navigate('LibraryProfile');
     return;
   }

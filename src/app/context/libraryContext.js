@@ -1,7 +1,14 @@
 import { createContext, useReducer } from "react";
 
 const initialState = {
-  selectedLibraryInfo: {},
+  selectedLibraryInfo: {
+    "createdAt": {},
+    "geohash": "",
+    "id": "",
+    "inventory": [],
+    "location": {},
+    "name": "",
+  },
   visibleLibrariesList: [],
   movingFlag: false,
 };

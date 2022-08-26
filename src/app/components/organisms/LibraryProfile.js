@@ -12,18 +12,8 @@ import Link from "../atoms/Link";
 import InventoryContainer from "../molecules/InventoryContainer";
 
 const LibraryProfile = ({ navigation, route }) => {
-  const {
-    visibleLibrariesList,
-    selectedLibraryInfo,
-    movingFlag,
-    addBook,
-    removeBook,
-    movingLibraryFlagToggle,
-    newLibraryList,
-    addNewLibrary,
-    removeLibrary,
-    setSelectedLibrary,
-  } = useContext(LibraryContext);
+  const { selectedLibraryInfo, } = useContext(LibraryContext);
+
   const goHome = () => {
     navigation.popToTop();
   };

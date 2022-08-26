@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
-import { LibraryProvider } from '../app/context/libraryContext';
+import { LibraryProvider } from '../app/context/LibraryContext';
 import { LocationContext, LocationProvider } from '../app/context/LocationContext';
 import { CreationAlertProvider } from '../app/context/creationAlertContext';
 

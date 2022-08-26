@@ -41,7 +41,7 @@ export const librariesWithin10km = async (mapCenter) => {
   return libraries;
 };
 
-export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
+export const updateDB_AddLibrary = async (mapCenter, newLibraryName) => {
   const newLibraryData = {
     createdAt: serverTimestamp(),
     geohash: geofire.geohashForLocation([
@@ -58,7 +58,7 @@ export const addLibraryToDatabase = async (mapCenter, newLibraryName) => {
   return { id: newDoc.id, ...docSnap.data() };
 };
 
-export const deleteLibraryFromDatabase = async (id) => {
+export const updateDB_DeleteLibrary = async (id) => {
   try {
     await deleteDoc(doc(fireDB, 'libraries', id));
   } catch (error) {
@@ -66,13 +66,14 @@ export const deleteLibraryFromDatabase = async (id) => {
   }
 };
 
-export const updateLibraryName = async (library, newName) => {
+export const updateDB_RenameLibrary = async (library, newName) => {
   const docRef = doc(fireDB, "libraries", library.id);
   await updateDoc(docRef, { name: newName });
-  return 'ok';
+  const docSnap = await getDoc(docRef);
+  return docSnap.data();
 }
 
-export const updateLibraryLocation = async (library, newLocation) => {
+export const updateDB_MoveLibrary = async (library, newLocation) => {
   const locationToGeoPoint = new GeoPoint(newLocation.latitude, newLocation.longitude)
   const docRef = doc(fireDB, 'libraries', library.id);
   await updateDoc(docRef, { location: locationToGeoPoint });
@@ -80,13 +81,13 @@ export const updateLibraryLocation = async (library, newLocation) => {
   return docSnap.data();
 }
 
-export const addBookToInventory = async (libraryID, bookISBN) => {
+export const updateDB_LibraryInventory_AddBook = async (libraryID, bookISBN) => {
   const docRef = doc(fireDB, 'libraries', libraryID);
   await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
   return;
 }
 
-export const removeBookFromInventory = async (libraryID, bookISBN) => {
+export const updateDB_LibraryInventory_RemoveBook = async (libraryID, bookISBN) => {
   const docRef = doc(fireDB, 'libraries', libraryID);
   await updateDoc(docRef, { inventory: arrayRemove(bookISBN) })
   return;

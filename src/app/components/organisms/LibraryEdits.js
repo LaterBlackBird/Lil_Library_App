@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native'
 
-import { deleteLibraryFromDatabase, updateLibraryName } from '../../services/LibraryServices'
+import { updateDB_DeleteLibrary, updateDB_RenameLibrary } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
-import { libraryContext } from "../../context/libraryContext";
+import { LibraryContext } from "../../context/LibraryContext";
 import theme from '../theme';
 
 import Button from '../atoms/Button'
@@ -18,33 +18,23 @@ const LibraryEdits = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState('');
 
-  const [
-    selectedLibraryContext,
-    setSelectedLibraryContext,
-    allVisibleLibrariesContext,
-    setAllVisibleLibrariesContext,
-    movingLibraryFlag,
-    setMovingLibraryFlag,
-   ] = useContext(libraryContext);
+  const {
+    selectedLibraryInfo,
+    movingLibraryFlagToggle,
+    removeLibrary,
+    updateLibrary,
+  } = useContext(LibraryContext);
 
 
   const moveLibrary = () => {
-    //TODO
-    //show map with no markers
-    //show temporary marker that can move
-    //after accepting new position
-    //update db
-    //update context
-    //show map with all markers
-    setMovingLibraryFlag(true);
+    movingLibraryFlagToggle(true);
     navigation.navigate('Home');
     return;
   }
 
   const deleteLibrary = async () => {
-    await deleteLibraryFromDatabase(selectedLibraryContext.id);
-    const updatedLibraryList = allVisibleLibrariesContext.filter(library => library.id !== selectedLibraryContext.id);
-    await setAllVisibleLibrariesContext(updatedLibraryList);
+    removeLibrary(selectedLibraryInfo);
+    await updateDB_DeleteLibrary(selectedLibraryInfo.id);
     navigation.popToTop();
     return;
   }
@@ -67,19 +57,19 @@ const LibraryEdits = ({ navigation }) => {
 
   const renameLibary = async () => {
     setModalVisible(false);
-    const updatedLibrary = {...selectedLibraryContext};
-    updatedLibrary.name = newLibraryName;
-    setSelectedLibraryContext(updatedLibrary);
-    await updateLibraryName(selectedLibraryContext, newLibraryName);
+
+    const updatedLibraryInfo = await updateDB_RenameLibrary(selectedLibraryInfo, newLibraryName);
+
+    if (updatedLibraryInfo) updateLibrary(updatedLibraryInfo, selectedLibraryInfo.id);
     navigation.navigate('LibraryProfile');
     return;
   }
 
-
+/*************************************************/
 
   return (
     <View style={styles.container}>
-      <H1 text={selectedLibraryContext.name} />
+      <H1 text={selectedLibraryInfo.name} />
       <Button
         onPress={showNameChangeModal}
         text={"Change Library Name"}
@@ -115,7 +105,7 @@ const LibraryEdits = ({ navigation }) => {
         onDismiss={renameLibary}
       >
         <TextField
-          placeholder={selectedLibraryContext.name}
+          placeholder={selectedLibraryInfo.name}
           value={newLibraryName}
           onChangeText={(text) => setNewLibraryName(text)}
           onSubmitEditing={renameLibary}

@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './src/app/services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import { LibraryProvider } from './src/app/context/libraryContext';
+import { LibraryProvider } from './src/app/context/LibraryContext';
 import { LocationProvider } from './src/app/context/LocationContext';
 import { CreationAlertProvider } from './src/app/context/creationAlertContext';
 

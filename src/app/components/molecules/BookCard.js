@@ -6,16 +6,15 @@ import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
 import LibraryReducer from '../../reducer/LibraryReducer';
-import { libraryContext } from "../../context/libraryContext";
-import { addBookToInventory, removeBookFromInventory } from '../../services/LibraryServices';
+import { LibraryContext } from "../../context/LibraryContext";
+import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
 
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState('');
-  const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
-  const [bookState, dispatch] = useReducer(LibraryReducer, selectedLibraryContext)
+  const { selectedLibraryInfo, addBook, removeBook, } = useContext(LibraryContext);
 
   useEffect(() => {
     let run = true;
@@ -44,13 +43,6 @@ const BookCard = ({ ISBN, options }) => {
 
     return () => (run = false);
   }, [bookDetails]);
-
-
-  useEffect(() => {
-    let run = true;
-    if (run) setSelectedLibraryContext(bookState);
-    return () => (run = false);
-  }, [bookState]);
 
 
   const showImage = () => {
@@ -82,7 +74,7 @@ const BookCard = ({ ISBN, options }) => {
             <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={30} />
             <Text style={{color:"#15aabf"}}>Checkout</Text>
           </Pressable>
-          <Pressable onPress={removeBook} style={styles.icon}>
+          <Pressable onPress={removeBookFromInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faTrash} color="red" size={30} />
             <Text style={{color:"red"}}>Not Here</Text>
           </Pressable>
@@ -91,7 +83,7 @@ const BookCard = ({ ISBN, options }) => {
     } else if (options === 'search') {
       return (
         <View style={styles.addToLibraryButton}>
-          <Pressable onPress={addBook} style={styles.icon}>
+          <Pressable onPress={addBookToInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
             <Text style={{color:"#15aabf"}}>Add To Library</Text>
           </Pressable>
@@ -114,19 +106,19 @@ const BookCard = ({ ISBN, options }) => {
 
   const checkoutBook = () => {
     //this will change once user profiles are implemented
-    removeBook();
+    removeBookFromInventory();
     return;
   };
 
-  const removeBook = async() => {
-    dispatch({ type: 'removeBook', value: ISBN });
-    await removeBookFromInventory(selectedLibraryContext.id, ISBN);
+  const removeBookFromInventory = async() => {
+    removeBook(ISBN);
+    await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
     return;
   };
 
-  const addBook = async () => {
-    dispatch({ type: 'addBook', value: ISBN });
-    await addBookToInventory(selectedLibraryContext.id, ISBN);
+  const addBookToInventory = async () => {
+    addBook(ISBN);
+    await updateDB_LibraryInventory_AddBook(selectedLibraryInfo.id, ISBN);
     navigation.navigate("LibraryProfile");
     return;
   };

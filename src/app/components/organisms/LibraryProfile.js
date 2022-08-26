@@ -1,8 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { signOutUser } from "../../services/user";
-import { libraryContext } from "../../context/libraryContext";
+import { LibraryContext } from "../../context/LibraryContext";
 import theme from "../theme";
 
 import ActionBar from "../molecules/ActionBar";
@@ -12,7 +12,7 @@ import Link from "../atoms/Link";
 import InventoryContainer from "../molecules/InventoryContainer";
 
 const LibraryProfile = ({ navigation, route }) => {
-  const [selectedLibraryContext, setSelectedLibraryContext] = useContext(libraryContext);
+  const { selectedLibraryInfo, } = useContext(LibraryContext);
 
   const goHome = () => {
     navigation.popToTop();
@@ -22,18 +22,21 @@ const LibraryProfile = ({ navigation, route }) => {
     navigation.navigate("LibraryOptions");
     return;
   };
-  const addBook = () => {
+
+  const goToSearchPage = () => {
     navigation.navigate("BookSearch");
     return;
   };
 
+  /*************************************************/
+  
   return (
     <View style={styles.container} testID={"Libarry-Profile-View"}>
       <View style={styles.libraryInfo}>
-        <H1 text={selectedLibraryContext?.name} style={{ marginLeft: 20 }} />
+        <H1 text={selectedLibraryInfo?.name} style={{ marginLeft: 20 }} />
 
         <Text style={styles.libraryEstablishedText}>
-          Established {selectedLibraryContext.createdAt.toDate().toDateString()}
+          Established {selectedLibraryInfo.createdAt.toDate().toDateString()}
         </Text>
 
         <Link
@@ -45,7 +48,7 @@ const LibraryProfile = ({ navigation, route }) => {
 
       <InventoryContainer
         inventory={
-          selectedLibraryContext.inventory
+          selectedLibraryInfo.inventory
         }
         testID='inventoryContainer'
       />
@@ -54,7 +57,7 @@ const LibraryProfile = ({ navigation, route }) => {
         children={
           <>
             <ActionButton type={"home"} onPress={goHome} />
-            <ActionButton type={"addBook"} onPress={addBook} />
+            <ActionButton type={"addBook"} onPress={goToSearchPage} />
             <ActionButton type={"user"} onPress={signOutUser} />
           </>
         }

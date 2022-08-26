@@ -46,9 +46,8 @@ const LibraryEdits = ({ navigation }) => {
   }
 
   const deleteLibrary = async () => {
+    removeLibrary(selectedLibraryInfo);
     await updateDB_DeleteLibrary(selectedLibraryInfo.id);
-    const updatedLibraryList = allVisibleLibrariesContext.filter(library => library.id !== selectedLibraryInfo.id);
-    await setAllVisibleLibrariesContext(updatedLibraryList);
     navigation.popToTop();
     return;
   }

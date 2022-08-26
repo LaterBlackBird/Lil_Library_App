@@ -9,9 +9,6 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "addBook":
-      // const addBookState = { ...state };
-      // addBookState.selectedLibraryInfo.inventory.push(action.value);
-      // return addBookState;
       return { ...state, selectedLibraryInfo: { ...state.selectedLibraryInfo, inventory: [...state.selectedLibraryInfo.inventory, action.value] } };
     case "removeBook":
       return { ...state, selectedLibraryInfo: { ...state.selectedLibraryInfo, inventory: state.selectedLibraryInfo.inventory.filter(book => book !== action.value) } };
@@ -20,9 +17,9 @@ const reducer = (state, action) => {
     case "newLibraryList":
       return { ...state, visibleLibrariesList: action.value };
     case "addNewLibrary":
-      return { ...state, visibleLibrariesList: [...visibleLibrariesList, action.value] };
+      return { ...state, visibleLibrariesList: [...state.visibleLibrariesList, action.value] };
     case "removeLibrary":
-      return {...state, visibleLibrariesList: [...visibleLibrariesList.filter(library => library.id !== action.value.id)]}
+      return { ...state, visibleLibrariesList: state.visibleLibrariesList.filter(library => library.id !== action.value.id) }
     case "setSelectedLibrary":
       return {...state, selectedLibraryInfo: action.value}
     default:

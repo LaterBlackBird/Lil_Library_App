@@ -19,8 +19,7 @@ import {
 
 import { fireDB } from './initializaiton'
 
-export const librariesWithin10km = async (mapCenter) => {
-  let libraries = [];
+export const librariesWithin10km = async (mapCenter, searchArea) => {
   const searchCenter = [mapCenter.latitude, mapCenter.longitude];
   const searchRadius = 10000; //meters
 
@@ -28,17 +27,24 @@ export const librariesWithin10km = async (mapCenter) => {
   // a separate query for each pair. There can be up to 9 pairs of bounds
   // depending on overlap, but in most cases there are 4.
   const bounds = geofire.geohashQueryBounds(searchCenter, searchRadius);
-  const db = collection(fireDB, 'libraries');
+  let update = true;
+  let libraries = [];
 
-  for (const b of bounds) {
-    const q = query(db, orderBy('geohash'), startAt(b[0]), endAt(b[1]))
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-      libraries = [...libraries, { id: doc.id, ...doc.data() }];
-    });
-  };
+  if (JSON.stringify(searchArea) === JSON.stringify(bounds)) {
+    update = false;
+    libraries = null;
+  } else {
+    const db = collection(fireDB, "libraries");
+    for (const b of bounds) {
+      const q = query(db, orderBy("geohash"), startAt(b[0]), endAt(b[1]));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        libraries = [...libraries, { id: doc.id, ...doc.data() }];
+      });
+    }
+  }
 
-  return libraries;
+  return { libraries, bounds, update };
 };
 
 export const updateDB_AddLibrary = async (mapCenter, newLibraryName) => {

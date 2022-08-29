@@ -22,6 +22,7 @@ const MainPage = ({ navigation }) => {
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
   const [myLocation, setMyLocation] = useState({});
+  const [searchArea, setSearchArea] = useState({});
 
   const {
     visibleLibrariesList,
@@ -86,7 +87,11 @@ const MainPage = ({ navigation }) => {
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
-    newLibraryList(await librariesWithin10km(lastKnownLocation));
+    const { libraries, bounds, update } = await librariesWithin10km(lastKnownLocation, searchArea);
+    setSearchArea(bounds);
+    if (update) {
+      newLibraryList(libraries);
+    }
     return;
   };
 

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Pressable } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCirclePlus, faCircleUser, faMapLocation } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCircleUser, faMapLocation, faStreetView } from '@fortawesome/free-solid-svg-icons';
 
 const ActionButton = ({ type, onPress }) => {
 
@@ -16,6 +16,19 @@ const ActionButton = ({ type, onPress }) => {
               />
               <Text style={{ color: '#82c91e' }}>
                 Map
+              </Text>
+          </>
+        );
+      case 'recenter':
+        return (
+          <>
+              <FontAwesomeIcon
+                icon={faStreetView}
+                color='#82c91e'
+                size={40}
+              />
+              <Text style={{ color: '#82c91e' }}>
+                My Location
               </Text>
           </>
         )
@@ -83,6 +96,7 @@ export default ActionButton
 
 const styles = StyleSheet.create({
   actionButton: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 140,
   },
 })

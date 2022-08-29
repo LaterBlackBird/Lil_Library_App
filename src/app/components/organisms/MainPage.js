@@ -21,6 +21,7 @@ const MainPage = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
+  const [myLocation, setMyLocation] = useState({});
 
   const {
     visibleLibrariesList,
@@ -79,6 +80,7 @@ const MainPage = ({ navigation }) => {
 
   const setInitialMapCenter = async () => {
     setLastKnownLocation(await getInitialLocation());
+    setMyLocation(lastKnownLocation);
     return;
   };
 
@@ -104,6 +106,10 @@ const MainPage = ({ navigation }) => {
     retreiveNearbyLibraries();
     return;
   };
+
+  const recenter = () => {
+    setLastKnownLocation(myLocation);
+  }
 
   const addLibraryMarker = () => {
     if (!creationAlertFlag) {
@@ -270,6 +276,7 @@ const MainPage = ({ navigation }) => {
         <ActionBar
           children={
             <>
+              <ActionButton type={"recenter"} onPress={recenter} />
               <ActionButton type={"addLibrary"} onPress={addLibraryMarker} />
               <ActionButton type={"user"} onPress={signOutUser} />
             </>

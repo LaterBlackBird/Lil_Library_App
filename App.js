@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from './src/app/services/RootNavigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import initialize, { fireAuth } from './src/app/services/initializaiton';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -16,6 +17,7 @@ import MainPage from './src/app/components/organisms/MainPage';
 import LibraryProfile from './src/app/components/organisms/LibraryProfile';
 import LibraryEdits from './src/app/components/organisms/LibraryEdits';
 import BookSearch from './src/app/components/organisms/BookSearch';
+import UserProfile from './src/app/components/organisms/UserProfile';
 
 const Stack = createNativeStackNavigator();
 initialize();
@@ -42,7 +44,7 @@ export default function App() {
     <LibraryProvider>
       <LocationProvider>
         <CreationAlertProvider>
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Stack.Navigator>
               {userAuthroized === false ? (
                 <>
@@ -91,6 +93,14 @@ export default function App() {
                   <Stack.Screen
                     name="BookSearch"
                     component={BookSearch}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="UserProfile"
+                    component={UserProfile}
                     options={{
                       headerShown: false,
                       animation: "slide_from_right",

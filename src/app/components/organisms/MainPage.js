@@ -4,6 +4,7 @@ import { StyleSheet, View, Alert, Animated } from "react-native";
 import { getInitialLocation, returnSearchLocation, } from "../../services/location";
 import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
+import { goToProfile } from "../../services/navigation";
 import { LocationContext } from "../../context/LocationContext";
 import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";
@@ -283,7 +284,7 @@ const MainPage = ({ navigation }) => {
             <>
               <ActionButton type={"recenter"} onPress={recenter} />
               <ActionButton type={"addLibrary"} onPress={addLibraryMarker} />
-              <ActionButton type={"user"} onPress={signOutUser} />
+              <ActionButton type={"user"} onPress={goToProfile} />
             </>
           }
         />

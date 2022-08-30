@@ -4,7 +4,7 @@ import { StyleSheet, View, Alert, Animated } from "react-native";
 import { getInitialLocation, returnSearchLocation, } from "../../services/location";
 import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
 import { signOutUser } from "../../services/user";
-import { goToProfile } from "../../services/navigation";
+import { goToUserProfile, goToLibraryProfile } from "../../services/navigation";
 import { LocationContext } from "../../context/LocationContext";
 import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";
@@ -172,7 +172,7 @@ const MainPage = ({ navigation }) => {
     setNewMarker(false);
     switchInputsToShowSearchBox();
     setNewLibraryName("");
-    navigation.navigate("LibraryProfile");
+    selectLibrary();
     return;
   };
 
@@ -183,9 +183,9 @@ const MainPage = ({ navigation }) => {
     return;
   };
 
-  const goToLibraryProfile = (library) => {
+  const selectLibrary = (library) => {
     setSelectedLibrary(library);
-    navigation.navigate("LibraryProfile");
+    goToLibraryProfile();
     return;
   };
 
@@ -232,7 +232,7 @@ const MainPage = ({ navigation }) => {
                       latitude: library.location.latitude,
                       longitude: library.location.longitude,
                     }}
-                    onPress={() => goToLibraryProfile(library)}
+                    onPress={() => selectLibrary(library)}
                   />
                 ))}
 
@@ -284,7 +284,7 @@ const MainPage = ({ navigation }) => {
             <>
               <ActionButton type={"recenter"} onPress={recenter} />
               <ActionButton type={"addLibrary"} onPress={addLibraryMarker} />
-              <ActionButton type={"user"} onPress={goToProfile} />
+              <ActionButton type={"user"} onPress={goToUserProfile} />
             </>
           }
         />

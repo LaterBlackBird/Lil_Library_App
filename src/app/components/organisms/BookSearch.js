@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import theme from "../theme";
 import { signOutUser } from "../../services/user";
+import { goHome } from "../../services/navigation";
 
 import TextField from "../atoms/TextField";
 import ActionBar from "../molecules/ActionBar";
@@ -22,10 +23,6 @@ const BookSearch = ({ navigation }) => {
       setSearchResults(await bookSearch(searchCriteria));
     };
     return;
-  };
-
-  const goHome = () => {
-    navigation.popToTop();
   };
 
   /*********************************************/

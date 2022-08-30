@@ -4,6 +4,18 @@ export const goHome = () => {
   RootNavigation.popToTop();
 };
 
-export const goToProfile = () => {
+export const goToUserProfile = () => {
   RootNavigation.navigate('UserProfile');
+}
+
+export const goToLibraryProfile = () => {
+  RootNavigation.navigate('LibraryProfile');
+}
+
+export const goToLibraryEditOptions = () => {
+  RootNavigation.navigate('LibraryOptions');
+}
+
+export const goToBookSearchPage = () => {
+  RootNavigation.navigate('BookSearch');
 }

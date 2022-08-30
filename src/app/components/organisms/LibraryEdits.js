@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { updateDB_DeleteLibrary, updateDB_RenameLibrary } from '../../services/LibraryServices'
 import { signOutUser } from '../../services/user';
 import { LibraryContext } from "../../context/LibraryContext";
+import { goHome, goToLibraryProfile } from '../../services/navigation';
 import theme from '../theme';
 
 import Button from '../atoms/Button'
@@ -28,7 +29,7 @@ const LibraryEdits = ({ navigation }) => {
 
   const moveLibrary = () => {
     movingLibraryFlagToggle(true);
-    navigation.navigate('Home');
+    goHome();
     return;
   }
 
@@ -45,11 +46,6 @@ const LibraryEdits = ({ navigation }) => {
     return;
   }
 
-  const goHome = () => {
-    navigation.popToTop();
-    return;
-  };
-
   const showNameChangeModal = () => {
     setModalVisible(true);
     return;
@@ -61,7 +57,7 @@ const LibraryEdits = ({ navigation }) => {
     const updatedLibraryInfo = await updateDB_RenameLibrary(selectedLibraryInfo, newLibraryName);
 
     if (updatedLibraryInfo) updateLibrary(updatedLibraryInfo, selectedLibraryInfo.id);
-    navigation.navigate('LibraryProfile');
+    goToLibraryProfile();
     return;
   }
 

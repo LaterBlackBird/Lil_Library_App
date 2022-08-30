@@ -1,8 +1,10 @@
 import * as React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
 
-import BookCard from "../app/components/molecules/BookCard";
 import getBookDetails from '../app/services/bookAPI';
+import theme from '../app/components/theme'
+
+import BookCard from "../app/components/molecules/BookCard";
 
 jest.mock('../app/services/bookAPI');
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));

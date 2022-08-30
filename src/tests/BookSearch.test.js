@@ -1,6 +1,8 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
 
+import theme from '../app/components/theme'
+
 import BookSearch from "../app/components/organisms/BookSearch";
 
 jest.mock("../app/services/initializaiton", () => jest.fn());

@@ -1,6 +1,8 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
 
+import theme from '../app/components/theme'
+
 import InventoryContainer from "../app/components/molecules/InventoryContainer";
 import BookCard from "../app/components/molecules/BookCard";
 

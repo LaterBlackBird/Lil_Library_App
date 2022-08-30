@@ -2,7 +2,10 @@ import * as React from "react";
 import { render, screen } from "@testing-library/react-native";
 
 import LibraryProfile from "../app/components/organisms/LibraryProfile";
-import { LibraryContext } from "../app/context/LibraryContext";import getBookDetails from '../app/services/bookAPI';
+import { LibraryContext } from "../app/context/LibraryContext";
+import getBookDetails from '../app/services/bookAPI';
+import theme from '../app/components/theme'
+
 import BookCard from "../app/components/molecules/BookCard";
 
 const user = require('../app/services/user')

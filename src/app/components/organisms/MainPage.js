@@ -216,7 +216,7 @@ const MainPage = ({ navigation }) => {
   /*************************************************/
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={'main'}>
       {Object.values(lastKnownLocation).length > 0 && (
         <Map
           region={lastKnownLocation}

@@ -1,20 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext } from 'react';
 
-import { signOutUser } from '../../services/user'
-import { goHome } from '../../services/navigation'
+import { signOutUser } from '../../services/user';
+import { goHome } from '../../services/navigation';
+import { UserContext } from '../../context/UserContext';
 
-import ActionBar from '../molecules/ActionBar'
-import ActionButton from '../molecules/ActionButton'
+import ActionBar from '../molecules/ActionBar';
+import ActionButton from '../molecules/ActionButton';
+import H1 from '../atoms/H1';
 
 const UserProfile = () => {
-
+  const userInfo = useContext(UserContext);
 
   /*************************************************/
 
   return (
     <View testID='userProfile' style={styles.container}>
-      <Text>UserProfile</Text>
+
+      <View style={{ top: 50 }}>
+        <H1 text={"My Info:"} />
+        <Text>{userInfo.displayName}</Text>
+        <Text>{userInfo.email}</Text>
+      </View>
+
 
       <ActionBar
         children={

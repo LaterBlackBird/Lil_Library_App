@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { fireAuth } from "../services/initializaiton";
 import { onAuthStateChanged } from "firebase/auth";
 
-import { changeUserName } from "../services/user";
+import { changeUserName, changeUserEmail } from "../services/user";
 
 export const UserContext = createContext();
 
@@ -33,10 +33,16 @@ export const UserProvider = ({ children }) => {
     changeUserName(name);
     return;
   };
+
+  const setUserEmail = (credentials, email) => {
+    setUserInfo((prev) => ({ ...prev, email: email }));
+    changeUserEmail(credentials, email);
+    return;
+  };
   
 
   return (
-    <UserContext.Provider value={ [userInfo, setUserName] } >
+    <UserContext.Provider value={ [userInfo, setUserName, setUserEmail] } >
       {children}
     </UserContext.Provider>
   );

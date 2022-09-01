@@ -1,14 +1,12 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
-import { EmailAuthProvider } from 'firebase/auth';
 
-import { signOutUser, changeUserName } from '../../services/user';
+import { signOutUser } from '../../services/user';
 import { goHome } from '../../services/navigation';
 import { UserContext } from '../../context/UserContext';
-import { validateEmail, validatePassword, validateConfirmation } from '../../utils/validations';
+import { validateEmail, validatePassword} from '../../utils/validations';
 
-import theme from '../theme'
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
@@ -18,7 +16,6 @@ import ModalInput from '../molecules/ModalInput';
 import TextField from '../atoms/TextField';
 import SecureField from '../atoms/SecureField';
 import Button from '../atoms/Button';
-import Form from '../molecules/Form';
 import PressableTextCancel from '../molecules/PressableTextCancel'
 
 const UserProfile = () => {
@@ -207,7 +204,6 @@ export default UserProfile
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    // height: '100%',
     alignItems: "center",
     flex: 1,
     backgroundColor: theme.primaryPageBackground,

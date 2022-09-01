@@ -1,12 +1,14 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
+import { EmailAuthProvider } from 'firebase/auth';
 
 import { signOutUser, changeUserName } from '../../services/user';
 import { goHome } from '../../services/navigation';
 import { UserContext } from '../../context/UserContext';
 import { validateEmail, validatePassword, validateConfirmation } from '../../utils/validations';
 
+import theme from '../theme'
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
 import ActionButton from '../molecules/ActionButton';
@@ -197,7 +199,7 @@ const UserProfile = () => {
         </View>
       </ModalInput>
     </View>
-  );
+  );;
 }
 
 export default UserProfile

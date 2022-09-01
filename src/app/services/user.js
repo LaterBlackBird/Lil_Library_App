@@ -63,12 +63,13 @@ export const changeUserEmail = async (credential, newEmail) => {
       updateEmail(auth.currentUser, newEmail);
     } catch (error) {
       Alert.alert(error.message)
-  }  }).catch((error) => {
+    }
+  }).catch((error) => {
     Alert.alert(error.message)
   });
 
   return;
-}
+};
 
 export const changeUserPassword = async (credential, newPassword) => {
   const auth = getAuth();
@@ -79,9 +80,10 @@ export const changeUserPassword = async (credential, newPassword) => {
       updatePassword(auth.currentUser, newPassword);
     } catch (error) {
       Alert.alert(error.message)
-  }  }).catch((error) => {
+    }
+  }).catch((error) => {
     Alert.alert(error.message)
   });
 
   return;
-}
+};

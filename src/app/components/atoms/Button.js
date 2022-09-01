@@ -3,17 +3,18 @@ import React from 'react'
 
 import theme from '../theme'
 
-const Button = ({ onPress, text, buttonStyle }) => {
+const Button = ({ onPress, text, buttonStyle, style }) => {
 
   return (
     <TouchableOpacity
-      testID='custom-button'
+      testID="custom-button"
       onPress={onPress}
       style={[
         styles.button,
         buttonStyle === "secondary"
-            ? styles.secondaryButton
-            : styles.primaryButton,
+          ? styles.secondaryButton
+          : styles.primaryButton,
+        style,
       ]}
     >
       <Text

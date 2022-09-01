@@ -53,37 +53,3 @@ export const changeUserName = async (newName) => {
   }
   return;
 }
-
-export const changeUserEmail = async (credential, newEmail) => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  
-  await reauthenticateWithCredential(user, credential).then(() => {
-    try {
-      updateEmail(auth.currentUser, newEmail);
-    } catch (error) {
-      Alert.alert(error.message)
-    }
-  }).catch((error) => {
-    Alert.alert(error.message)
-  });
-
-  return;
-};
-
-export const changeUserPassword = async (credential, newPassword) => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  
-  await reauthenticateWithCredential(user, credential).then(() => {
-    try {
-      updatePassword(auth.currentUser, newPassword);
-    } catch (error) {
-      Alert.alert(error.message)
-    }
-  }).catch((error) => {
-    Alert.alert(error.message)
-  });
-
-  return;
-};

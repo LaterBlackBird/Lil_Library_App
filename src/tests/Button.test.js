@@ -1,6 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react-native";
 
+import theme from '../app/components/theme'
+
 import Button from '../app/components/atoms/Button';
 
 describe("<Button />", () => {

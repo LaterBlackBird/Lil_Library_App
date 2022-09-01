@@ -1,6 +1,8 @@
 import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
+import theme from '../app/components/theme'
+
 import SignUpForm from "../app/components/organisms/SignUpForm";
 
 const user = require('../app/services/user')

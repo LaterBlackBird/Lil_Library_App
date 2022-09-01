@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { signOutUser } from "../../services/user";
 import { LibraryContext } from "../../context/LibraryContext";
+import { goHome, goToBookSearchPage, goToLibraryEditOptions, goToUserProfile } from "../../services/navigation";
+
 import theme from "../theme";
 
 import ActionBar from "../molecules/ActionBar";
@@ -13,20 +15,6 @@ import InventoryContainer from "../molecules/InventoryContainer";
 
 const LibraryProfile = ({ navigation, route }) => {
   const { selectedLibraryInfo, } = useContext(LibraryContext);
-
-  const goHome = () => {
-    navigation.popToTop();
-  };
-
-  const goToLibraryEditOptions = () => {
-    navigation.navigate("LibraryOptions");
-    return;
-  };
-
-  const goToSearchPage = () => {
-    navigation.navigate("BookSearch");
-    return;
-  };
 
   /*************************************************/
   
@@ -57,8 +45,8 @@ const LibraryProfile = ({ navigation, route }) => {
         children={
           <>
             <ActionButton type={"home"} onPress={goHome} />
-            <ActionButton type={"addBook"} onPress={goToSearchPage} />
-            <ActionButton type={"user"} onPress={signOutUser} />
+            <ActionButton type={"addBook"} onPress={goToBookSearchPage} />
+            <ActionButton type={"user"} onPress={goToUserProfile} />
           </>
         }
       />

@@ -1,7 +1,8 @@
 import { Alert } from 'react-native';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, getAuth, updateEmail, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 
 import { fireAuth } from './initializaiton';
+
 
 export const login = (email, password) => {
   signInWithEmailAndPassword(fireAuth, email, password)
@@ -40,4 +41,15 @@ export const signOutUser = () => {
   }).catch((error) => {
     // An error happened.
   });
+};
+
+export const changeUserName = async (newName) => {
+  const auth = getAuth();
+
+  try {
+    await updateProfile(auth.currentUser, { displayName: newName });
+  } catch (error) {
+    Alert.alert("didn't update database")
+  }
+  return;
 }

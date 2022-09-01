@@ -4,7 +4,7 @@ import H1 from '../atoms/H1'
 
 
 
-const ModalInput = ({ title, visible, onRequestClose, onDismiss, children }) => {
+const ModalInput = ({ title, visible, onRequestClose, onDismiss, children, style }) => {
   return (
     <Modal
       animationType="slide"
@@ -13,7 +13,7 @@ const ModalInput = ({ title, visible, onRequestClose, onDismiss, children }) => 
       onRequestClose={onRequestClose}
       onDismiss={onDismiss}
     >
-      <View style={styles.modal}>
+      <View style={[styles.modal, style]}>
         <H1 text={title} />
         {children}
       </View>

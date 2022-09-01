@@ -1,8 +1,10 @@
 import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
-import LoginForm from "../app/components/organisms/LoginForm";
+import theme from '../app/components/theme'
 import login from "../app/services/user";
+
+import LoginForm from "../app/components/organisms/LoginForm";
 
 const user = require('../app/services/user')
 user.login = jest.fn(() => {return true})

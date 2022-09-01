@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Pressable } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCirclePlus, faCircleUser, faMapLocation, faStreetView } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCircleUser, faMapLocation, faStreetView, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 
 const ActionButton = ({ type, onPress }) => {
 
@@ -63,6 +63,19 @@ const ActionButton = ({ type, onPress }) => {
           <>
             <FontAwesomeIcon
               icon={faCircleUser}
+              color='#fd7e14'
+              size={40}
+            />
+            <Text style={{ color: '#fd7e14' }}>
+              My Profile
+            </Text>
+          </>
+        )
+      case 'signOut':
+        return (
+          <>
+            <FontAwesomeIcon
+              icon={faPersonRunning}
               color='#fd7e14'
               size={40}
             />

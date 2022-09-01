@@ -13,14 +13,13 @@ import ModalInput from '../molecules/ModalInput';
 import TextField from '../atoms/TextField';
 
 const UserProfile = () => {
-  const [userInfo, setUserInfo] = useContext(UserContext);
+  const [userInfo, setUserName] = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [newUserName, setNewUserName] = useState('');
   const [newUserEmail, setNewUserEmail] = useState('');
 
   const changeName = () => {
-    changeUserName(newUserName);
-    setUserInfo({...userInfo, displayName: newUserName});
+    setUserName(newUserName);
     setModalVisible(false);
     return;
   }

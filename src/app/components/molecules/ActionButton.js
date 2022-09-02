@@ -84,7 +84,7 @@ const ActionButton = ({ type, onPress }) => {
             </Text>
           </>
         )
-      case 'moveLibrary':
+      case 'ok':
         return (
           <>
             <Text>Ok</Text>

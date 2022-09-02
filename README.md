@@ -18,9 +18,9 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] Book Search
 - [X] Book Addition To Library Inventory
 - [X] Book Removal From Library Inventory
-- [ ] Library Checkout system
-- [ ] User Update/Edit
-- [ ] User Deletion
+- [X] Book Removal From Library Inventory
+- [X] User Profile
+- [X] User Update/Edit
 - [ ] User Checkout History
 
 

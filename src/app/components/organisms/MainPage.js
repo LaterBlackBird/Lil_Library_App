@@ -73,8 +73,8 @@ const MainPage = ({ navigation }) => {
   useEffect(() => {
     if (selectedLibraryInfo.location !== undefined) {
       setLastKnownLocation({
-        latitude: selectedLibraryInfo.location.latitude,
-        longitude: selectedLibraryInfo.location.longitude,
+        latitude: selectedLibraryInfo?.location?.latitude,
+        longitude: selectedLibraryInfo?.location?.longitude,
         latitudeDelta: 0.08,
         longitudeDelta: 0.05,
       });
@@ -176,7 +176,7 @@ const MainPage = ({ navigation }) => {
     switchInputsToShowSearchBox();
     setNewLibraryName("");
     Keyboard.dismiss();
-    selectLibrary();
+    goToLibraryProfile();
     return;
   };
 
@@ -217,6 +217,7 @@ const MainPage = ({ navigation }) => {
     Keyboard.dismiss();
     return;
   };
+  
 
   /*************************************************/
 
@@ -247,8 +248,8 @@ const MainPage = ({ navigation }) => {
                   coordinate={
                     movingFlag
                       ? {
-                          latitude: selectedLibraryInfo.location.latitude,
-                          longitude: selectedLibraryInfo.location.longitude,
+                          latitude: selectedLibraryInfo?.location?.latitude,
+                          longitude: selectedLibraryInfo?.location?.longitude,
                         }
                       : lastKnownLocation
                   }

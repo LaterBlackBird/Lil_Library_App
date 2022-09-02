@@ -23,8 +23,10 @@ const UserProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
-  const [currentEmail, setCurrentEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
+  const [currentEmail1, setCurrentEmail1] = useState('');
+  const [currentEmail2, setCurrentEmail2] = useState('');
+  const [currentPassword1, setCurrentPassword1] = useState('');
+  const [currentPassword2, setCurrentPassword2] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [emailErrorState, setEmailErrorState] = useState(false);
   const [passwordErrorState, setPasswordErrorState] = useState(false);
@@ -68,8 +70,10 @@ const UserProfile = () => {
   const cleanup = () => {
     setNewName('');
     setNewEmail('');
-    setCurrentEmail('');
-    setCurrentPassword('');
+    setCurrentEmail1('');
+    setCurrentPassword1('');
+    setCurrentEmail2('');
+    setCurrentPassword2('');
     setNewPassword('');
     setEmailErrorState(false);
     setPasswordErrorState(false);
@@ -109,8 +113,8 @@ const UserProfile = () => {
       <ModalInput
         title={"Edit My Info"}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
-        onDismiss={() => setModalVisible(!modalVisible)}
+        onRequestClose={cancelEdit}
+        onDismiss={cancelEdit}
         style={{
           backgroundColor: theme.primaryPageBackground,
           flex: 1,
@@ -148,13 +152,13 @@ const UserProfile = () => {
               />
               <TextField
                 placeholder={"Current Email"}
-                value={currentEmail}
-                onChangeText={(text) => setCurrentEmail(text)}
+                value={currentEmail1}
+                onChangeText={(text) => setCurrentEmail1(text)}
               />
               <SecureField
                 placeholder={"Current Password"}
-                value={currentPassword}
-                onChangeText={(text) => setCurrentPassword(text)}
+                value={currentPassword1}
+                onChangeText={(text) => setCurrentPassword1(text)}
               />
               <Button
                 onPress={changeUserEmail}
@@ -165,16 +169,16 @@ const UserProfile = () => {
             </View>
 
             <View style={styles.changeCard}>
-              <Text>Change My Account Email</Text>
+              <Text>Change My Account Password</Text>
               <TextField
                 placeholder={"Current Email"}
-                value={currentEmail}
-                onChangeText={(text) => setCurrentEmail(text)}
+                value={currentEmail2}
+                onChangeText={(text) => setCurrentEmail2(text)}
               />
               <SecureField
                 placeholder={"Current Password"}
-                value={currentPassword}
-                onChangeText={(text) => setCurrentPassword(text)}
+                value={currentPassword2}
+                onChangeText={(text) => setCurrentPassword2(text)}
               />
               <SecureField
                 placeholder={"New Password"}
@@ -191,7 +195,7 @@ const UserProfile = () => {
               />
             </View>
 
-            <PressableTextCancel onPress={cancelEdit} />
+            <PressableTextCancel onPress={cancelEdit} style={{marginBottom: 30}} />
           </ScrollView>
         </View>
       </ModalInput>

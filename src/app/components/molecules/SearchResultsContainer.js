@@ -14,7 +14,7 @@ const SearchResultsContainer = ({ searchResults }) => {
           style={styles.bookList}
           numColumns={1}
           data={searchResults}
-          renderItem={({ item, index, separators }) => (
+          renderItem={({ item }) => (
             <BookCard key={item} ISBN={item} options={'search'} />
           )}
         />

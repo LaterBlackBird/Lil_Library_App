@@ -15,12 +15,16 @@ const BookSearch = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [searchErrorState, setSearchErrorState] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const searchForBooks = async () => {
     if (searchCriteria.length === 0) setSearchErrorState(true);
     else {
+      setIsLoading(true);
       setSearchErrorState(false);
       setSearchResults(await bookSearch(searchCriteria));
+      setIsLoading(false);
     };
     return;
   };

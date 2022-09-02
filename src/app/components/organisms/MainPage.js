@@ -67,6 +67,7 @@ const MainPage = ({ navigation }) => {
 
   useEffect(() => {
     setInitialMapCenter();
+    setMyLocation(lastKnownLocation);
   }, []);
 
   useEffect(() => {
@@ -81,8 +82,9 @@ const MainPage = ({ navigation }) => {
   }, [selectedLibraryInfo]);
 
   const setInitialMapCenter = async () => {
-    setLastKnownLocation(await getInitialLocation());
-    setMyLocation(lastKnownLocation);
+    const originalLocation = await getInitialLocation();
+    setLastKnownLocation(originalLocation);
+    setMyLocation(originalLocation);
     return;
   };
 
@@ -215,8 +217,6 @@ const MainPage = ({ navigation }) => {
     Keyboard.dismiss();
     return;
   };
-  
-
 
   /*************************************************/
 

@@ -126,11 +126,11 @@ const MainPage = ({ navigation }) => {
         [
           {
             text: "OK",
-            onPress: () => switchInputsToShowLibraryNameBox(),
           },
         ]
       );
     }
+    switchInputsToShowLibraryNameBox();
     setCreationAlertFlag(true);
     setNewMarker(true);
     return;
@@ -279,7 +279,6 @@ const MainPage = ({ navigation }) => {
         onSubmitEditing={createNewLibrary}
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}
-        // children={<PressableTextCancel onPress={cancelNewLibrary} />}
         value={newLibraryName}
       />
 

@@ -45,10 +45,18 @@ Project is intended as a means to learn React Native, and will not be published 
 
 
 ## Demo 📱
+  <div align=top>
+  <h3>User Auth</h3>
+  <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>
+  <div>
 
-Demo @ 8/2/22
-<!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif height="50%") -->
+
+
+<!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif width="50%") -->
+
+<!-- Demo @ 8/2/22-->
 <!-- ![Demo220802_2](https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif) -->
+<!-- <img src="https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif" alt="Demo"/> -->
 
-<img src="https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif" alt="Demo"/>
+
 

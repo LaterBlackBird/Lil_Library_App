@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState, useContext, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
@@ -14,15 +14,19 @@ const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
 
   const [bookDetails, setBookDetails] = useState();
-  const [authors, setAuthors] = useState('');
-  const { selectedLibraryInfo, addBook, removeBook, } = useContext(LibraryContext);
+  const [authors, setAuthors] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { selectedLibraryInfo, addBook, removeBook } =
+    useContext(LibraryContext);
 
   useEffect(() => {
     let run = true;
     const retreive = async () => {
+      setIsLoading(true);
       if (run) {
         const data = await getBookDetails(ISBN);
         setBookDetails(data);
+        setIsLoading(false);
       }
     };
 
@@ -44,7 +48,6 @@ const BookCard = ({ ISBN, options }) => {
 
     return () => (run = false);
   }, [bookDetails]);
-
 
   const showImage = () => {
     if (bookDetails.cover) {
@@ -68,38 +71,42 @@ const BookCard = ({ ISBN, options }) => {
   };
 
   const showButtons = () => {
-    if (options === 'inventory') {
+    if (options === "inventory") {
       return (
         <View style={styles.checkoutButtons}>
           <Pressable onPress={checkoutBook} style={styles.icon}>
             <FontAwesomeIcon icon={faCartPlus} color="#15aabf" size={30} />
-            <Text style={{color:"#15aabf"}}>Checkout</Text>
+            <Text style={{ color: "#15aabf" }}>Checkout</Text>
           </Pressable>
           <Pressable onPress={removeBookFromInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faTrash} color="red" size={30} />
-            <Text style={{color:"red"}}>Not Here</Text>
+            <Text style={{ color: "red" }}>Not Here</Text>
           </Pressable>
         </View>
-      )
-    } else if (options === 'search') {
+      );
+    } else if (options === "search") {
       return (
         <View style={styles.addToLibraryButton}>
           <Pressable onPress={addBookToInventory} style={styles.icon}>
             <FontAwesomeIcon icon={faBookMedical} color="#15aabf" size={40} />
-            <Text style={{color:"#15aabf"}}>Add To Library</Text>
+            <Text style={{ color: "#15aabf" }}>Add To Library</Text>
           </Pressable>
         </View>
-      )
+      );
     }
-  }
-  
+  };
+
   const showBookDetails = () => {
     if (bookDetails) {
       return (
         <>
-          <Text style={styles.bookTitle} numberOfLines={1}>{bookDetails.title}</Text>
+          <Text style={styles.bookTitle} numberOfLines={1}>
+            {bookDetails.title}
+          </Text>
           {showImage()}
-          <Text style={styles.bookAuthor}>{authors ? `by: ${authors}` : ''}</Text>
+          <Text style={styles.bookAuthor}>
+            {authors ? `by: ${authors}` : ""}
+          </Text>
         </>
       );
     } else return null;
@@ -111,7 +118,7 @@ const BookCard = ({ ISBN, options }) => {
     return;
   };
 
-  const removeBookFromInventory = async() => {
+  const removeBookFromInventory = async () => {
     removeBook(ISBN);
     await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
     return;
@@ -127,12 +134,18 @@ const BookCard = ({ ISBN, options }) => {
   /***********************************************************/
 
   return (
-    <View style={styles.bookContainer} testID='bookCard'>
-      {showBookDetails()}
-      {showButtons()}
+    <View style={styles.bookContainer} testID="bookCard">
+      {isLoading ? (
+        <ActivityIndicator size={"large"} style={{flex:1}} />
+      ) : (
+        <>
+          {showBookDetails()}
+          {showButtons()}
+        </>
+      )}
     </View>
-  )
-}
+  );
+};
 
 export default BookCard
 

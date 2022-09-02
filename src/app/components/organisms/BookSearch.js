@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 
 import theme from "../theme";
 import { signOutUser } from "../../services/user";
@@ -15,13 +15,17 @@ const BookSearch = ({ navigation }) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [searchErrorState, setSearchErrorState] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const searchForBooks = async () => {
     if (searchCriteria.length === 0) setSearchErrorState(true);
     else {
+      setIsLoading(true);
       setSearchErrorState(false);
       setSearchResults(await bookSearch(searchCriteria));
     };
+    setIsLoading(false);
     return;
   };
 
@@ -39,7 +43,11 @@ const BookSearch = ({ navigation }) => {
         />
       </View>
 
-      <SearchResultsContainer searchResults={searchResults.isbn} />
+      {isLoading ? (
+        <ActivityIndicator size={'large'} style={{flex:1}} />
+      ): (
+        <SearchResultsContainer searchResults={searchResults.isbn} />
+      )}
 
       <ActionBar
         children={

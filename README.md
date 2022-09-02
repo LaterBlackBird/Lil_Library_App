@@ -45,10 +45,20 @@ Project is intended as a means to learn React Native, and will not be published 
 
 
 ## Demo 📱
-  <div align=top>
-  <h3>User Auth</h3>
-  <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>
-  <div>
+<div style="display: flex;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h3>User Auth</h3>
+    <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h3>Libraries</h3>
+    <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h3>User Profile & Signout</h3>
+    <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>
+  </div>
+</div>
 
 
 

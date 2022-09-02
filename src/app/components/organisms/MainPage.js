@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, View, Alert, Animated } from "react-native";
+import { StyleSheet, View, Alert, Animated, Keyboard } from "react-native";
 
 import { getInitialLocation, returnSearchLocation, } from "../../services/location";
 import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
@@ -103,6 +103,7 @@ const MainPage = ({ navigation }) => {
     } else {
       Alert.alert("please enter valid search criteria");
     }
+    Keyboard.dismiss();
     return;
   };
 
@@ -172,6 +173,7 @@ const MainPage = ({ navigation }) => {
     setNewMarker(false);
     switchInputsToShowSearchBox();
     setNewLibraryName("");
+    Keyboard.dismiss();
     selectLibrary();
     return;
   };
@@ -180,6 +182,7 @@ const MainPage = ({ navigation }) => {
     switchInputsToShowSearchBox();
     setNewMarker(false);
     setNewLibraryName("");
+    Keyboard.dismiss();
     return;
   };
 
@@ -203,11 +206,13 @@ const MainPage = ({ navigation }) => {
     );
 
     if (updatedLibraryInfo) updateLibrary(updatedLibraryInfo, selectedLibraryInfo.id);
+    Keyboard.dismiss();
     return;
   };
 
   const cancelNewLocation = () => {
     movingLibraryFlagToggle(false);
+    Keyboard.dismiss();
     return;
   };
   
@@ -216,7 +221,7 @@ const MainPage = ({ navigation }) => {
   /*************************************************/
 
   return (
-    <View style={styles.container} testID={'main'}>
+    <View style={styles.container} testID={"main"}>
       {Object.values(lastKnownLocation).length > 0 && (
         <Map
           region={lastKnownLocation}
@@ -274,11 +279,11 @@ const MainPage = ({ navigation }) => {
         onSubmitEditing={createNewLibrary}
         placeholder={`Enter Your New Library's Name`}
         placeholderTextColor={"white"}
-        children={<PressableTextCancel onPress={cancelNewLibrary} />}
+        // children={<PressableTextCancel onPress={cancelNewLibrary} />}
         value={newLibraryName}
       />
 
-      {!movingFlag ? (
+      {!movingFlag && !newMarker && (
         <ActionBar
           children={
             <>
@@ -288,12 +293,23 @@ const MainPage = ({ navigation }) => {
             </>
           }
         />
-      ) : (
+      )}
+      {movingFlag && !newMarker && (
         <ActionBar
           children={
             <>
-              <ActionButton type={"moveLibrary"} onPress={acceptNewLocation} />
+              <ActionButton type={"ok"} onPress={acceptNewLocation} />
               <PressableTextCancel onPress={cancelNewLocation} />
+            </>
+          }
+        />
+      )}
+      {newMarker && !movingFlag && (
+        <ActionBar
+          children={
+            <>
+              <ActionButton type={"ok"} onPress={createNewLibrary} />
+              <PressableTextCancel onPress={cancelNewLibrary} />
             </>
           }
         />

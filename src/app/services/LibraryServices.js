@@ -76,7 +76,7 @@ export const updateDB_RenameLibrary = async (library, newName) => {
   const docRef = doc(fireDB, "libraries", library.id);
   await updateDoc(docRef, { name: newName });
   const docSnap = await getDoc(docRef);
-  return docSnap.data();
+  return { id: library.id, ...docSnap.data() };
 }
 
 export const updateDB_MoveLibrary = async (library, newLocation) => {
@@ -84,7 +84,7 @@ export const updateDB_MoveLibrary = async (library, newLocation) => {
   const docRef = doc(fireDB, 'libraries', library.id);
   await updateDoc(docRef, { location: locationToGeoPoint });
   const docSnap = await getDoc(docRef);
-  return docSnap.data();
+  return { id: library.id, ...docSnap.data() };
 }
 
 export const updateDB_LibraryInventory_AddBook = async (libraryID, bookISBN) => {

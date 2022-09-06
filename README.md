@@ -46,9 +46,9 @@ Project is intended as a means to learn React Native, and will not be published 
 
 ## Demo 📱
 
-| User Auth | Libraries | User Profile |
-|:-----------:|:-----------:|:--------------:|
-|<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>|<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>|    <img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>|
+| User Auth | Libraries | Book Search & Inventory | User Profile |
+|:-----------:|:-----------:|:--------------:|:--------------:|
+|<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>|<img src="https://user-images.githubusercontent.com/14840521/188697583-211df4be-c915-448f-9583-e8b8b02c9462.gif" style="width:200px" alt="user auth workflow"/>|    <img src="https://user-images.githubusercontent.com/14840521/188697650-ca06e0bb-5bb4-401f-94ca-ae768651da6b.gif" style="width:200px" alt="user auth workflow"/>|
 
 
 
@@ -57,6 +57,4 @@ Project is intended as a means to learn React Native, and will not be published 
 <!-- Demo @ 8/2/22-->
 <!-- ![Demo220802_2](https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif) -->
 <!-- <img src="https://user-images.githubusercontent.com/14840521/182405241-99863d0d-a821-4dd8-ac8f-cc01714cf710.gif" alt="Demo"/> -->
-
-
 

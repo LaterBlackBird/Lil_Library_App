@@ -50,9 +50,6 @@ Project is intended as a means to learn React Native, and will not be published 
 |:-----------:|:-----------:|:--------------:|:--------------:|
 |<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697583-211df4be-c915-448f-9583-e8b8b02c9462.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697650-ca06e0bb-5bb4-401f-94ca-ae768651da6b.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188710214-3983435a-66c3-44c8-b42b-a173da9da6ad.gif" style="width:200px" alt="user auth workflow"/>       |
 
-![User]()
-
-
 <!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif width="50%") -->
 
 <!-- Demo @ 8/2/22-->

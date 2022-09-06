@@ -42,8 +42,8 @@ const UserProfile = () => {
     const check = validateEmail(newEmail);
     if (check) {
       const credential = EmailAuthProvider.credential(
-        currentEmail,
-        currentPassword
+        currentEmail1,
+        currentPassword1
       )
       setUserEmail(credential, newEmail);
       setModalVisible(false);
@@ -56,8 +56,8 @@ const UserProfile = () => {
     const check = validatePassword(newPassword);
     if (check) {
       const credential = EmailAuthProvider.credential(
-        currentEmail,
-        currentPassword
+        currentEmail2,
+        currentPassword2
       )
       setUserPassword(credential, newEmail);
       setModalVisible(false);

@@ -1,8 +1,8 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useContext, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
 
-import { signOutUser } from '../../services/user';
+import { retrieveUserBookInfo, signOutUser } from '../../services/user';
 import { goHome } from '../../services/navigation';
 import { UserContext } from '../../context/UserContext';
 import { validateEmail, validatePassword} from '../../utils/validations';
@@ -20,6 +20,7 @@ import PressableTextCancel from '../molecules/PressableTextCancel'
 
 const UserProfile = () => {
   const [userInfo, setUserName, setUserEmail, setUserPassword] = useContext(UserContext);
+  const [userBookInfo, setUserBookInfo] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -30,6 +31,46 @@ const UserProfile = () => {
   const [newPassword, setNewPassword] = useState('');
   const [emailErrorState, setEmailErrorState] = useState(false);
   const [passwordErrorState, setPasswordErrorState] = useState(false);
+
+  useEffect(() => {
+    let run = true;
+    const getBookInfoForUser = async () => {
+      setUserBookInfo(await retrieveUserBookInfo());
+    }
+    if (run) getBookInfoForUser();
+
+    return () => run = false;
+  }, [])
+
+  const currentlyReadingList = () => {
+    if (userBookInfo?.reading) {
+      return (
+      userBookInfo.reading.map(book => (
+        <Text key={book.ISBN}>
+          {book.ISBN}
+        </Text>
+      )))
+    } else {
+      return (
+        <Text>You don't have any books checked out right now</Text>
+      )
+    }
+  }
+
+  const historyList = () => {
+    if (userBookInfo?.history) {
+      return (
+      userBookInfo.history.map(book => (
+        <Text key={book.ISBN}>
+          {book.ISBN}
+        </Text>
+      )))
+    } else {
+      return (
+        <Text>You haven't read any books</Text>
+      )
+    }
+  }
 
   const changeName = () => {
     setUserName(newName);
@@ -86,6 +127,9 @@ const UserProfile = () => {
   };
 
 
+  
+
+
   /*************************************************/
 
   return (
@@ -101,11 +145,13 @@ const UserProfile = () => {
       </View>
 
       <View style={styles.currentlyReading}>
-        <Text>Currently Reading</Text>
+        <Text style={{fontSize: 20}}>Currently Reading</Text>
+        {currentlyReadingList()}
       </View>
 
       <View style={styles.history}>
-        <Text>History</Text>
+        <Text style={{fontSize: 20}}>History</Text>
+        {historyList()}
       </View>
 
       <ActionBar
@@ -221,20 +267,25 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   userInfo: {
-    // top: 50,
     width: '90%',
   },
   currentlyReading: {
-    backgroundColor: 'pink',
     width: '90%',
+    borderColor: 'lightgrey',
+    borderWidth: 1,
     borderRadius: 10,
     marginTop: 30,
+    padding: 10,
+    alignItems: 'center',
   },
   history: {
-    backgroundColor: 'white',
     width: '90%',
+    borderColor: 'lightgrey',
+    borderWidth: 1,
     borderRadius: 10,
-    margin: 30,
+    marginTop: 30,
+    padding: 10,
+    alignItems: 'center',
   },
   changeCard: {
     width: "90%",

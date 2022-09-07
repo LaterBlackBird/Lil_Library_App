@@ -1,7 +1,23 @@
 import { Alert } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, getAuth, updateEmail, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 
-import { fireAuth } from './initializaiton';
+import { fireAuth, fireDB } from './initializaiton';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  query,
+  orderBy,
+  startAt,
+  endAt,
+  serverTimestamp,
+  GeoPoint,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove } from 'firebase/firestore';
 
 
 export const login = (email, password) => {
@@ -84,4 +100,15 @@ export const changeUserPassword = async (credential, newPassword) => {
   });
 
   return;
+}
+
+export const retrieveUserBookInfo = async () => {
+  const user = getAuth().currentUser;
+  try {
+    const docRef = doc(fireDB, 'userHistory', user.uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (error) {
+    return null;
+  }
 }

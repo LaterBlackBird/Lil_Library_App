@@ -90,15 +90,22 @@ const UserProfile = () => {
 
   return (
     <View testID="userProfile" style={styles.container}>
-      <View style={{ top: 50 }}>
-        <H1 text={"My Info:"} />
-        <Text>{userInfo.displayName}</Text>
+      <View style={styles.userInfo}>
+        <H1 text={userInfo.displayName} />
         <Text>{userInfo.email}</Text>
         <Link
           icon={true}
           text={"Edit My Info"}
           onPress={() => setModalVisible(true)}
         />
+      </View>
+
+      <View style={styles.currentlyReading}>
+        <Text>Currently Reading</Text>
+      </View>
+
+      <View style={styles.history}>
+        <Text>History</Text>
       </View>
 
       <ActionBar
@@ -211,6 +218,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     backgroundColor: theme.primaryPageBackground,
+    paddingTop: 50,
+  },
+  userInfo: {
+    // top: 50,
+    width: '90%',
+  },
+  currentlyReading: {
+    backgroundColor: 'pink',
+    width: '90%',
+    borderRadius: 10,
+    marginTop: 30,
+  },
+  history: {
+    backgroundColor: 'white',
+    width: '90%',
+    borderRadius: 10,
+    margin: 30,
   },
   changeCard: {
     width: "90%",

@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 import getBookDetails from '../../services/bookAPI'
 
-const BookCardSimple = ({ book }) => {
+const BookCardSimple = ({ book, option }) => {
   const [bookDetails, setBookDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,16 +24,20 @@ const BookCardSimple = ({ book }) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   console.log(bookDetails?.authors);
-  // }, [bookDetails])
-  
-  
-  return (
-    <View>
-      {bookDetails && (
-        <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'space-between', width: '90%' }}>
-          <View style={{ flexDirection: "row", alignItems: 'center', width: "90%" }}>
+  const readingCard = () => {
+    if (bookDetails) {
+      return (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "90%",
+          }}
+        >
+          <View
+            style={{ flexDirection: "row", alignItems: "center", width: "90%" }}
+          >
             {bookDetails.cover && (
               <View>
                 <Image
@@ -42,19 +46,48 @@ const BookCardSimple = ({ book }) => {
                 />
               </View>
             )}
-            <View style={{margin: 10,}}>
-              <Text key={Math.random()}>{bookDetails.title}</Text>
-              <Text key={Math.random()}>{bookDetails.authors[0]?.name}</Text>
+            <View style={{ margin: 10 }}>
+              <Text>{bookDetails.title}</Text>
+              <Text>{bookDetails.authors[0]?.name}</Text>
             </View>
           </View>
-          <TouchableOpacity
-            style={{ alignItems: "center", marginRight: 10 }}
-          >
+          <TouchableOpacity style={{ alignItems: "center", marginRight: 10 }}>
             <FontAwesomeIcon icon={faRightFromBracket} style={styles.icon} />
             <Text>Return</Text>
           </TouchableOpacity>
         </View>
-      )}
+      );
+    }
+  }
+
+  const historyCard = () => {
+    if (bookDetails) {
+      return (
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            margin: 10,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{width: '50%', alignSelf: 'flex-start'}}>{bookDetails.title}</Text>
+          <Text style={{width: '50%', alignItems: "center"}}>{book.dateRead.toDate().toDateString()}</Text>
+        </View>
+      );
+    }
+  }
+  
+  /***********************************************************/
+  
+  return (
+    <View style={{alignItems: 'center'}}>
+      {isLoading &&
+        <ActivityIndicator size={"large"} style={{ flex: 1 }} />
+      }
+      {option === 'reading' && readingCard()}
+      {option === 'history' && historyCard()}
     </View>
   );
 }

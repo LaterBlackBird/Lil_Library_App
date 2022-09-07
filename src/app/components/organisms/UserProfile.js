@@ -45,16 +45,10 @@ const UserProfile = () => {
     return () => run = false;
   }, [])
 
-  const bookDetails = async (ISBN) => {
-    setBookObject(await getBookDetails(ISBN));
-    console.log(bookObject);
-    return;
-  }
-
   const currentReadingList = () => {
     if (userBookInfo?.reading) {
       return userBookInfo.reading.map((book) => (
-        <BookCardSimple key={ Math.random() } book={book} />
+        <BookCardSimple key={ Math.random() } book={book} option='reading'/>
       ));
     } else {
       return (
@@ -65,12 +59,9 @@ const UserProfile = () => {
 
   const historyList = () => {
     if (userBookInfo?.history) {
-      return (
-      userBookInfo.history.map(book => (
-        <Text key={book.ISBN}>
-          {book.ISBN}
-        </Text>
-      )))
+      return userBookInfo.history.map((book) => (
+        <BookCardSimple key={ Math.random() } book={book} option='history'/>
+      ));
     } else {
       return (
         <Text>Books you've returned will appear here</Text>
@@ -300,7 +291,6 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
   },
-  icon: {},
   changeCard: {
     width: "90%",
     alignItems: "center",

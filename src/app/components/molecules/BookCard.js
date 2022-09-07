@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
-import { useEffect, useState, useContext, useReducer } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
-import LibraryReducer from '../../reducer/LibraryReducer';
 import { LibraryContext } from "../../context/LibraryContext";
 import { goToLibraryProfile } from '../../services/navigation';
 import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';

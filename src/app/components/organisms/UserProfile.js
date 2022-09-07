@@ -1,11 +1,12 @@
-import { ScrollView, StyleSheet, Text, View, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
 
 import { retrieveUserBookInfo, signOutUser } from '../../services/user';
 import { goHome } from '../../services/navigation';
 import { UserContext } from '../../context/UserContext';
-import { validateEmail, validatePassword} from '../../utils/validations';
+import { validateEmail, validatePassword } from '../../utils/validations';
+
 
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
@@ -17,10 +18,12 @@ import TextField from '../atoms/TextField';
 import SecureField from '../atoms/SecureField';
 import Button from '../atoms/Button';
 import PressableTextCancel from '../molecules/PressableTextCancel'
+import BookCardSimple from '../molecules/BookCardSimple';
 
 const UserProfile = () => {
   const [userInfo, setUserName, setUserEmail, setUserPassword] = useContext(UserContext);
   const [userBookInfo, setUserBookInfo] = useState({});
+  const [bookObject, setBookObject] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -42,14 +45,17 @@ const UserProfile = () => {
     return () => run = false;
   }, [])
 
-  const currentlyReadingList = () => {
+  const bookDetails = async (ISBN) => {
+    setBookObject(await getBookDetails(ISBN));
+    console.log(bookObject);
+    return;
+  }
+
+  const currentReadingList = () => {
     if (userBookInfo?.reading) {
-      return (
-      userBookInfo.reading.map(book => (
-        <Text key={book.ISBN}>
-          {book.ISBN}
-        </Text>
-      )))
+      return userBookInfo.reading.map((book) => (
+        <BookCardSimple key={ Math.random() } book={book} />
+      ));
     } else {
       return (
         <Text>You don't have any books checked out right now</Text>
@@ -67,7 +73,7 @@ const UserProfile = () => {
       )))
     } else {
       return (
-        <Text>You haven't read any books</Text>
+        <Text>Books you've returned will appear here</Text>
       )
     }
   }
@@ -144,14 +150,18 @@ const UserProfile = () => {
         />
       </View>
 
-      <View style={styles.currentlyReading}>
-        <Text style={{fontSize: 20}}>Currently Reading</Text>
-        {currentlyReadingList()}
-      </View>
+      <View style={{ width: "100%", flex: 1, }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center", }}>
+          <View style={styles.currentlyReading}>
+            <Text style={{ fontSize: 20 }}>Currently Reading</Text>
+            {currentReadingList()}
+          </View>
 
-      <View style={styles.history}>
-        <Text style={{fontSize: 20}}>History</Text>
-        {historyList()}
+          <View style={styles.history}>
+            <Text style={{ fontSize: 20 }}>History</Text>
+            {historyList()}
+          </View>
+        </ScrollView>
       </View>
 
       <ActionBar
@@ -248,7 +258,10 @@ const UserProfile = () => {
               />
             </View>
 
-            <PressableTextCancel onPress={cancelEdit} style={{marginBottom: 30}} />
+            <PressableTextCancel
+              onPress={cancelEdit}
+              style={{ marginBottom: 30 }}
+            />
           </ScrollView>
         </View>
       </ModalInput>
@@ -287,6 +300,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
   },
+  icon: {},
   changeCard: {
     width: "90%",
     alignItems: "center",

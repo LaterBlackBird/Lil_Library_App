@@ -95,12 +95,13 @@ export const changeUserPassword = async (credential, newPassword) => {
       updatePassword(auth.currentUser, newPassword);
     } catch (error) {
       Alert.alert(error.message)
-  }  }).catch((error) => {
+    }
+  }).catch((error) => {
     Alert.alert(error.message)
   });
 
   return;
-}
+};
 
 export const retrieveUserBookInfo = async () => {
   const user = getAuth().currentUser;
@@ -111,4 +112,17 @@ export const retrieveUserBookInfo = async () => {
   } catch (error) {
     return null;
   }
-}
+};
+
+
+export const updateDB_UserHistory_CheckoutBook = async (ISBN, library) => {
+  const userID = getAuth().currentUser.uid
+  const data = { ISBN: ISBN, fromLibrary: library.id }
+  try {
+    const docRef = doc(fireDB, 'userHistory', userID);
+    await updateDoc(docRef, { reading: arrayUnion(data) })
+  } catch (error) {
+    Alert.alert(error.message)
+  }
+  return;
+};

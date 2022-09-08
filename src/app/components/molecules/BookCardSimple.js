@@ -82,7 +82,7 @@ const BookCardSimple = ({ book, option }) => {
   /***********************************************************/
   
   return (
-    <View style={{alignItems: 'center'}}>
+    <View style={{alignItems: 'center', margin: 10,}}>
       {isLoading &&
         <ActivityIndicator size={"large"} style={{ flex: 1 }} />
       }

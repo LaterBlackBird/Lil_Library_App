@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
-import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
 import { LibraryContext } from "../../context/LibraryContext";
 import { goToLibraryProfile } from '../../services/navigation';
 import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';
+import { updateDB_UserHistory_CheckoutBook } from '../../services/user';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
@@ -15,8 +16,7 @@ const BookCard = ({ ISBN, options }) => {
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedLibraryInfo, addBook, removeBook } =
-    useContext(LibraryContext);
+  const { selectedLibraryInfo, addBook, removeBook } = useContext(LibraryContext);
 
   useEffect(() => {
     let run = true;
@@ -111,9 +111,16 @@ const BookCard = ({ ISBN, options }) => {
     } else return null;
   };
 
-  const checkoutBook = () => {
-    //this will change once user profiles are implemented
-    removeBookFromInventory();
+  const checkoutBook = async () => {
+    /*
+    send book to context so we can use it's info on the profile screen
+    add book to user history database -> add to reading array
+    update library inventory database
+    remove book from library inventory in context
+    */
+    await updateDB_UserHistory_CheckoutBook(ISBN, selectedLibraryInfo);
+    await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
+    removeBook(ISBN);
     return;
   };
 

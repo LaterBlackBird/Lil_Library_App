@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { login } from "../../services/user";
+import { login } from "../../services/UserService";
 
 import theme from '../theme'
 

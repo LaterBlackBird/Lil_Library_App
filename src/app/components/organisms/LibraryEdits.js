@@ -2,9 +2,9 @@ import { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native'
 
 import { updateDB_DeleteLibrary, updateDB_RenameLibrary } from '../../services/LibraryServices'
-import { signOutUser } from '../../services/user';
+import { signOutUser } from '../../services/UserService';
 import { LibraryContext } from "../../context/LibraryContext";
-import { goHome, goToLibraryProfile } from '../../services/navigation';
+import { goHome, goToLibraryProfile } from '../../utils/navigation';
 import theme from '../theme';
 
 import Button from '../atoms/Button'

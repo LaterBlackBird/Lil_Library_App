@@ -2,8 +2,8 @@ import { ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 
 import React, { useContext, useState, useEffect } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
 
-import { retrieveUserBookInfo, signOutUser } from '../../services/user';
-import { goHome } from '../../services/navigation';
+import { retrieveUserBookInfo, signOutUser } from '../../services/UserService';
+import { goHome } from '../../utils/navigation';
 import { UserContext } from '../../context/UserContext';
 import { validateEmail, validatePassword } from '../../utils/validations';
 
@@ -21,9 +21,14 @@ import PressableTextCancel from '../molecules/PressableTextCancel'
 import BookCardSimple from '../molecules/BookCardSimple';
 
 const UserProfile = () => {
-  const [userInfo, setUserName, setUserEmail, setUserPassword] = useContext(UserContext);
-  const [userBookInfo, setUserBookInfo] = useState({});
-  const [bookObject, setBookObject] = useState({});
+  const [
+    userInfo,
+    setUserName,
+    setUserEmail,
+    setUserPassword,
+    updateUserReadingList,
+    updateUserHistoryList,
+  ] = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -38,28 +43,30 @@ const UserProfile = () => {
   useEffect(() => {
     let run = true;
     const getBookInfoForUser = async () => {
-      setUserBookInfo(await retrieveUserBookInfo());
-    }
+      const data = await retrieveUserBookInfo();
+      updateUserReadingList(data.reading);
+      updateUserHistoryList(data.history);
+    };
     if (run) getBookInfoForUser();
 
-    return () => run = false;
-  }, [])
+    return () => (run = false);
+  }, []);
 
   const currentReadingList = () => {
-    if (userBookInfo?.reading) {
-      return userBookInfo.reading.map((book) => (
+    if ('reading' in userInfo && userInfo.reading.length > 0) {
+      return userInfo.reading.map((book) => (
         <BookCardSimple key={ Math.random() } book={book} option='reading'/>
       ));
     } else {
       return (
-        <Text>You don't have any books checked out right now</Text>
+        <Text style={{marginVertical: 50,}}>You don't have any books checked out right now</Text>
       )
     }
   }
 
   const historyList = () => {
-    if (userBookInfo?.history) {
-      return userBookInfo.history.map((book) => (
+    if ('history' in userInfo && userInfo.history.length > 0) {
+      return userInfo.history.map((book) => (
         <BookCardSimple key={ Math.random() } book={book} option='history'/>
       ));
     } else {
@@ -123,8 +130,11 @@ const UserProfile = () => {
     return;
   };
 
+  // useEffect(() => {
+  //   console.log(userInfo);
+  //   console.log('``````````````````````````````````')
+  // }, [userInfo])
 
-  
 
 
   /*************************************************/

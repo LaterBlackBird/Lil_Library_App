@@ -8,7 +8,7 @@ import theme from '../app/components/theme'
 
 import BookCard from "../app/components/molecules/BookCard";
 
-const user = require('../app/services/user')
+const user = require('../app/services/UserService')
 user.login = jest.fn(() => { return true })
 
 jest.mock("../app/services/initializaiton", () => jest.fn());

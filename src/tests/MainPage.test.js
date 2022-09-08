@@ -29,7 +29,7 @@ jest.mock('react-native-maps', () => {
   };
 });
 
-const user = require('../app/services/user')
+const user = require('../app/services/UserService')
 
 describe("Main Page", () => {
   const lastKnownLocation = {

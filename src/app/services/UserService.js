@@ -120,9 +120,28 @@ export const updateDB_UserHistory_CheckoutBook = async (ISBN, library) => {
   const data = { ISBN: ISBN, fromLibrary: library.id }
   try {
     const docRef = doc(fireDB, 'userHistory', userID);
-    await updateDoc(docRef, { reading: arrayUnion(data) })
+    await updateDoc(docRef, { reading: arrayUnion(data) });
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
   } catch (error) {
     Alert.alert(error.message)
+    return;
   }
-  return;
 };
+
+
+export const updateDB_UserHistory_ReturnBook = async (book) => {
+  const userID = getAuth().currentUser.uid
+  const data = { ISBN: book.ISBN, dateRead: serverTimestamp()}
+  try {
+    const docRef = doc(fireDB, 'userHistory', userID);
+    await updateDoc(docRef, { reading: arrayRemove(book) });
+    await updateDoc(docRef, { history: arrayUnion(data) });
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (error) {
+    console.error(error.message)
+    Alert.alert(error.message)
+    return;
+  }
+}

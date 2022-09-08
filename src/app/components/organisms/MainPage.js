@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, View, Alert, Animated, Keyboard } from "react-native";
 
-import { getInitialLocation, returnSearchLocation, } from "../../services/location";
+import { getInitialLocation, returnSearchLocation, } from "../../services/LocationService";
 import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
-import { signOutUser } from "../../services/user";
-import { goToUserProfile, goToLibraryProfile } from "../../services/navigation";
+import { signOutUser } from "../../services/UserService";
+import { goToUserProfile, goToLibraryProfile } from "../../utils/navigation";
 import { LocationContext } from "../../context/LocationContext";
 import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";

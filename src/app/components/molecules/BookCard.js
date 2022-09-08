@@ -6,9 +6,10 @@ import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/fr
 
 import getBookDetails from '../../services/bookAPI';
 import { LibraryContext } from "../../context/LibraryContext";
-import { goToLibraryProfile } from '../../services/navigation';
+import { UserContext } from '../../context/UserContext';
+import { goToLibraryProfile } from '../../utils/navigation';
 import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';
-import { updateDB_UserHistory_CheckoutBook } from '../../services/user';
+import { updateDB_UserHistory_CheckoutBook } from '../../services/UserService';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
@@ -17,6 +18,15 @@ const BookCard = ({ ISBN, options }) => {
   const [authors, setAuthors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { selectedLibraryInfo, addBook, removeBook } = useContext(LibraryContext);
+  const [
+    userInfo,
+    setUserName,
+    setUserEmail,
+    setUserPassword,
+    updateUserReadingList,
+    updateUserHistoryList,
+  ] = useContext(UserContext);
+
 
   useEffect(() => {
     let run = true;
@@ -113,12 +123,13 @@ const BookCard = ({ ISBN, options }) => {
 
   const checkoutBook = async () => {
     /*
-    send book to context so we can use it's info on the profile screen
     add book to user history database -> add to reading array
+    send book to context so we can use it's info on the profile screen
     update library inventory database
     remove book from library inventory in context
     */
-    await updateDB_UserHistory_CheckoutBook(ISBN, selectedLibraryInfo);
+    const res = await updateDB_UserHistory_CheckoutBook(ISBN, selectedLibraryInfo);
+    updateUserReadingList(res.reading);
     await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
     removeBook(ISBN);
     return;

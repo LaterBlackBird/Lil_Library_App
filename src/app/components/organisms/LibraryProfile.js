@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { signOutUser } from "../../services/user";
+import { signOutUser } from "../../services/UserService";
 import { LibraryContext } from "../../context/LibraryContext";
-import { goHome, goToBookSearchPage, goToLibraryEditOptions, goToUserProfile } from "../../services/navigation";
+import { goHome, goToBookSearchPage, goToLibraryEditOptions, goToUserProfile } from "../../utils/navigation";
 
 import theme from "../theme";
 

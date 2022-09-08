@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { fireAuth } from "../services/initializaiton";
+import { fireAuth } from "../utils/initializaiton";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { changeUserName, changeUserEmail, changeUserPassword } from "../services/UserService";

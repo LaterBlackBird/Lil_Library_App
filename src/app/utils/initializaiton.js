@@ -12,6 +12,7 @@ export default initialize = () => {
     fireApp = initializeApp(firebaseConfig);
     fireAuth = initializeAuth(fireApp, {
       persistence: getReactNativePersistence(AsyncStorage),
+      experimentalForceLongPolling: true,
     });
   } else {
     fireApp = getApp();

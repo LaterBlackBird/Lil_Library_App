@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./src/app/services/RootNavigation";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import initialize, { fireAuth } from "./src/app/services/initializaiton";
+import initialize, { fireAuth } from "./src/app/utils/initializaiton";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { LibraryProvider } from "./src/app/context/LibraryContext";

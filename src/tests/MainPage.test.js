@@ -10,7 +10,7 @@ import MainPage from "../app/components/organisms/MainPage";
 import Map from "../app/components/molecules/Map";
 
 jest.mock('expo-location', () => jest.fn())
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 jest.mock("../app/context/LibraryContext.js", () => jest.fn());
 

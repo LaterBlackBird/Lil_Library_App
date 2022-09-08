@@ -6,6 +6,7 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import getBookDetails from '../../services/bookAPI'
 import { updateDB_UserHistory_ReturnBook } from '../../services/UserService';
 import { UserContext } from '../../context/UserContext';
+import { LibraryContext } from '../../context/LibraryContext';
 import { updateDB_LibraryInventory_AddBook } from '../../services/LibraryServices';
 
 const BookCardSimple = ({ book, option }) => {
@@ -19,7 +20,7 @@ const BookCardSimple = ({ book, option }) => {
     updateUserReadingList,
     updateUserHistoryList,
   ] = useContext(UserContext);
-
+  const { addBook } = useContext(LibraryContext);
   useEffect(() => {
     let run = true;
     setIsLoading(true);
@@ -58,7 +59,7 @@ const BookCardSimple = ({ book, option }) => {
               </View>
             )}
             <View style={{ margin: 10 }}>
-              <Text style={{width: '60%'}} numberOfLines={1}>{bookDetails.title}</Text>
+              <Text style={{width: '100%'}} numberOfLines={1}>{bookDetails.title}</Text>
               <Text>{bookDetails.authors[0]?.name}</Text>
             </View>
           </View>
@@ -81,31 +82,25 @@ const BookCardSimple = ({ book, option }) => {
           style={{
             flexDirection: "row",
             width: "100%",
-            margin: 10,
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
           <Text style={{width: '50%', alignSelf: 'flex-start'}}>{bookDetails.title}</Text>
-          <Text style={{width: '50%', alignItems: "center"}}>{book.dateRead.toDate().toDateString()}</Text>
+          <Text style={{width: '50%', alignItems: "flex-end"}}>{book.dateRead.toDate().toDateString()}</Text>
         </View>
       );
     }
   }
 
   const returnBook = async () => {
-    /*
-      remove book from userHistory database
-      add book to library
-    */
     const res = await updateDB_UserHistory_ReturnBook(book);
     updateUserHistoryList(res.history);
+    updateUserReadingList(res.reading);
     updateDB_LibraryInventory_AddBook(book.fromLibrary, book.ISBN);
+    addBook(book.ISBN)
     return;
   }
-
-  console.log(new Date.now().toDateString())
-
 
   /***********************************************************/
   

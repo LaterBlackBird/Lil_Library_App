@@ -8,7 +8,7 @@ import SignUpForm from "../app/components/organisms/SignUpForm";
 const user = require('../app/services/UserService')
 user.signUp = jest.fn(() => {return true})
 
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 describe("Sign Up Form", () => {

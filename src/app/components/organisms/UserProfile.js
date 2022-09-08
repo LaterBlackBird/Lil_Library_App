@@ -130,11 +130,6 @@ const UserProfile = () => {
     return;
   };
 
-  // useEffect(() => {
-  //   console.log(userInfo);
-  //   console.log('``````````````````````````````````')
-  // }, [userInfo])
-
 
 
   /*************************************************/

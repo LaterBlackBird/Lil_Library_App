@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, getAuth, updateEmail, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 
-import { fireAuth, fireDB } from './initializaiton';
+import { fireAuth, fireDB } from '../utils/initializaiton';
 import {
   collection,
   doc,
@@ -17,7 +17,8 @@ import {
   deleteDoc,
   updateDoc,
   arrayUnion,
-  arrayRemove } from 'firebase/firestore';
+  arrayRemove, 
+  Timestamp} from 'firebase/firestore';
 
 
 export const login = (email, password) => {
@@ -132,7 +133,7 @@ export const updateDB_UserHistory_CheckoutBook = async (ISBN, library) => {
 
 export const updateDB_UserHistory_ReturnBook = async (book) => {
   const userID = getAuth().currentUser.uid
-  const data = { ISBN: book.ISBN, dateRead: serverTimestamp()}
+  const data = { ISBN: book.ISBN, dateRead: Timestamp.now()}
   try {
     const docRef = doc(fireDB, 'userHistory', userID);
     await updateDoc(docRef, { reading: arrayRemove(book) });

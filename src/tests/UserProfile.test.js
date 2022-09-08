@@ -4,7 +4,7 @@ import theme from '../app/components/theme'
 
 import UserProfile from "../app/components/organisms/UserProfile";
 
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 describe('UserProfile', () => {

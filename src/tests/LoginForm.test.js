@@ -11,7 +11,7 @@ user.login = jest.fn(() => {return true})
 
 // jest.mock("../app/services/UserService", () => jest.fn());
 // jest.mock("../app/services/UserService", () => ({ login: jest.fn() }));
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 describe("Login Form", () => {

@@ -6,6 +6,7 @@ import { navigationRef } from "./src/app/services/RootNavigation";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import initialize, { fireAuth } from "./src/app/utils/initializaiton";
 import { onAuthStateChanged } from "firebase/auth";
+import * as Network from 'expo-network';
 
 import { LibraryProvider } from "./src/app/context/LibraryContext";
 import { LocationProvider } from "./src/app/context/LocationContext";
@@ -45,6 +46,13 @@ export default function App() {
 
     return () => run = false;
   }, [onAuthStateChanged]);
+
+  useEffect(() => {
+    const runThis = async () => {
+      console.log(await Network.getNetworkStateAsync());
+    };
+    runThis();
+  })
 
   return (
     <LibraryProvider>

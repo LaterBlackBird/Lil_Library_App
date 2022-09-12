@@ -32,7 +32,7 @@ export const librariesWithin10km = async (mapCenter, searchArea) => {
 
   if (JSON.stringify(searchArea) === JSON.stringify(bounds)) {
     update = false;
-    libraries = null;
+    // libraries = null;
   } else {
     const db = collection(fireDB, "libraries");
     for (const b of bounds) {

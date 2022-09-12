@@ -21,7 +21,7 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] Book Removal From Library Inventory
 - [X] User Profile
 - [X] User Update/Edit
-- [ ] User Checkout History
+- [X] User Checkout History
 
 
 ## Tech Stack 👨‍💻

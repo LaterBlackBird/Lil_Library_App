@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useState } from "react";
-import { signUp } from "../../services/user";
+import { signUp } from "../../services/UserService";
 
 import Form from "../molecules/Form";
 import TextField from "../atoms/TextField";

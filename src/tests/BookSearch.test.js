@@ -5,7 +5,7 @@ import theme from '../app/components/theme'
 
 import BookSearch from "../app/components/organisms/BookSearch";
 
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 

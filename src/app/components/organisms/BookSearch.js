@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 
 import theme from "../theme";
-import { signOutUser } from "../../services/user";
-import { goHome } from "../../services/navigation";
+import { signOutUser } from "../../services/UserService";
+import { goHome } from "../../utils/navigation";
 
 import TextField from "../atoms/TextField";
 import ActionBar from "../molecules/ActionBar";

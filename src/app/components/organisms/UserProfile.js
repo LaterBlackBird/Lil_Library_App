@@ -1,11 +1,12 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useContext, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
 import { EmailAuthProvider } from 'firebase/auth';
 
-import { signOutUser } from '../../services/user';
-import { goHome } from '../../services/navigation';
+import { retrieveUserBookInfo, signOutUser } from '../../services/UserService';
+import { goHome } from '../../utils/navigation';
 import { UserContext } from '../../context/UserContext';
-import { validateEmail, validatePassword} from '../../utils/validations';
+import { validateEmail, validatePassword } from '../../utils/validations';
+
 
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
@@ -17,9 +18,17 @@ import TextField from '../atoms/TextField';
 import SecureField from '../atoms/SecureField';
 import Button from '../atoms/Button';
 import PressableTextCancel from '../molecules/PressableTextCancel'
+import BookCardSimple from '../molecules/BookCardSimple';
 
 const UserProfile = () => {
-  const [userInfo, setUserName, setUserEmail, setUserPassword] = useContext(UserContext);
+  const [
+    userInfo,
+    setUserName,
+    setUserEmail,
+    setUserPassword,
+    updateUserReadingList,
+    updateUserHistoryList,
+  ] = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -30,6 +39,42 @@ const UserProfile = () => {
   const [newPassword, setNewPassword] = useState('');
   const [emailErrorState, setEmailErrorState] = useState(false);
   const [passwordErrorState, setPasswordErrorState] = useState(false);
+
+  useEffect(() => {
+    let run = true;
+    const getBookInfoForUser = async () => {
+      const data = await retrieveUserBookInfo();
+      updateUserReadingList(data.reading);
+      updateUserHistoryList(data.history);
+    };
+    if (run) getBookInfoForUser();
+
+    return () => (run = false);
+  }, []);
+
+  const currentReadingList = () => {
+    if ('reading' in userInfo && userInfo.reading.length > 0) {
+      return userInfo.reading.map((book) => (
+        <BookCardSimple key={ Math.random() } book={book} option='reading'/>
+      ));
+    } else {
+      return (
+        <Text style={{marginVertical: 50,}}>You don't have any books checked out right now</Text>
+      )
+    }
+  }
+
+  const historyList = () => {
+    if ('history' in userInfo && userInfo.history.length > 0) {
+      return userInfo.history.map((book) => (
+        <BookCardSimple key={ Math.random() } book={book} option='history'/>
+      ));
+    } else {
+      return (
+        <Text>Books you've returned will appear here</Text>
+      )
+    }
+  }
 
   const changeName = () => {
     setUserName(newName);
@@ -86,19 +131,33 @@ const UserProfile = () => {
   };
 
 
+
   /*************************************************/
 
   return (
     <View testID="userProfile" style={styles.container}>
-      <View style={{ top: 50 }}>
-        <H1 text={"My Info:"} />
-        <Text>{userInfo.displayName}</Text>
+      <View style={styles.userInfo}>
+        <H1 text={userInfo.displayName} />
         <Text>{userInfo.email}</Text>
         <Link
           icon={true}
           text={"Edit My Info"}
           onPress={() => setModalVisible(true)}
         />
+      </View>
+
+      <View style={{ width: "100%", flex: 1, }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center", }}>
+          <View style={styles.currentlyReading}>
+            <Text style={{ fontSize: 20 }}>Currently Reading</Text>
+            {currentReadingList()}
+          </View>
+
+          <View style={styles.history}>
+            <Text style={{ fontSize: 20 }}>History</Text>
+            {historyList()}
+          </View>
+        </ScrollView>
       </View>
 
       <ActionBar
@@ -195,7 +254,10 @@ const UserProfile = () => {
               />
             </View>
 
-            <PressableTextCancel onPress={cancelEdit} style={{marginBottom: 30}} />
+            <PressableTextCancel
+              onPress={cancelEdit}
+              style={{ marginBottom: 30 }}
+            />
           </ScrollView>
         </View>
       </ModalInput>
@@ -211,6 +273,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     backgroundColor: theme.primaryPageBackground,
+    paddingTop: 50,
+  },
+  userInfo: {
+    width: '90%',
+  },
+  currentlyReading: {
+    width: '90%',
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 30,
+    padding: 10,
+    alignItems: 'center',
+  },
+  history: {
+    width: '90%',
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 30,
+    padding: 10,
+    alignItems: 'center',
   },
   changeCard: {
     width: "90%",

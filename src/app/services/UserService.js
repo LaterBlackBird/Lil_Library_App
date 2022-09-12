@@ -1,7 +1,24 @@
 import { Alert } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, getAuth, updateEmail, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 
-import { fireAuth } from './initializaiton';
+import { fireAuth, fireDB } from '../utils/initializaiton';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  query,
+  orderBy,
+  startAt,
+  endAt,
+  serverTimestamp,
+  GeoPoint,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove, 
+  Timestamp} from 'firebase/firestore';
 
 
 export const login = (email, password) => {
@@ -79,9 +96,53 @@ export const changeUserPassword = async (credential, newPassword) => {
       updatePassword(auth.currentUser, newPassword);
     } catch (error) {
       Alert.alert(error.message)
-  }  }).catch((error) => {
+    }
+  }).catch((error) => {
     Alert.alert(error.message)
   });
 
   return;
+};
+
+export const retrieveUserBookInfo = async () => {
+  const user = getAuth().currentUser;
+  try {
+    const docRef = doc(fireDB, 'userHistory', user.uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (error) {
+    return null;
+  }
+};
+
+
+export const updateDB_UserHistory_CheckoutBook = async (ISBN, library) => {
+  const userID = getAuth().currentUser.uid
+  const data = { ISBN: ISBN, fromLibrary: library.id }
+  try {
+    const docRef = doc(fireDB, 'userHistory', userID);
+    await updateDoc(docRef, { reading: arrayUnion(data) });
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (error) {
+    Alert.alert(error.message)
+    return;
+  }
+};
+
+
+export const updateDB_UserHistory_ReturnBook = async (book) => {
+  const userID = getAuth().currentUser.uid
+  const data = { ISBN: book.ISBN, dateRead: Timestamp.now()}
+  try {
+    const docRef = doc(fireDB, 'userHistory', userID);
+    await updateDoc(docRef, { reading: arrayRemove(book) });
+    await updateDoc(docRef, { history: arrayUnion(data) });
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  } catch (error) {
+    console.error(error.message)
+    Alert.alert(error.message)
+    return;
+  }
 }

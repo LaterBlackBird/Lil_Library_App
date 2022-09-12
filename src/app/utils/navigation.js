@@ -1,4 +1,4 @@
-import * as RootNavigation from './RootNavigation';
+import * as RootNavigation from '../services/RootNavigation';
 
 export const goHome = () => {
   RootNavigation.popToTop();

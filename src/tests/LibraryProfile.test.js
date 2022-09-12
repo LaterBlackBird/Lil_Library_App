@@ -8,10 +8,10 @@ import theme from '../app/components/theme'
 
 import BookCard from "../app/components/molecules/BookCard";
 
-const user = require('../app/services/user')
+const user = require('../app/services/UserService')
 user.login = jest.fn(() => { return true })
 
-jest.mock("../app/services/initializaiton", () => jest.fn());
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 jest.mock('../app/services/bookAPI', () => jest.fn());
 jest.mock('../app/components/molecules/BookCard', () => jest.fn(() => null))

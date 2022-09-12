@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
-import { useEffect, useState, useContext, useReducer } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookSkull, faCartPlus, faTrash, faBookMedical } from '@fortawesome/free-solid-svg-icons'
-import { useNavigation } from '@react-navigation/native';
 
 import getBookDetails from '../../services/bookAPI';
-import LibraryReducer from '../../reducer/LibraryReducer';
 import { LibraryContext } from "../../context/LibraryContext";
-import { goToLibraryProfile } from '../../services/navigation';
+import { UserContext } from '../../context/UserContext';
+import { goToLibraryProfile } from '../../utils/navigation';
 import { updateDB_LibraryInventory_AddBook, updateDB_LibraryInventory_RemoveBook } from '../../services/LibraryServices';
+import { updateDB_UserHistory_CheckoutBook } from '../../services/UserService';
 
 const BookCard = ({ ISBN, options }) => {
   const navigation = useNavigation();
@@ -16,8 +17,16 @@ const BookCard = ({ ISBN, options }) => {
   const [bookDetails, setBookDetails] = useState();
   const [authors, setAuthors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedLibraryInfo, addBook, removeBook } =
-    useContext(LibraryContext);
+  const { selectedLibraryInfo, addBook, removeBook } = useContext(LibraryContext);
+  const [
+    userInfo,
+    setUserName,
+    setUserEmail,
+    setUserPassword,
+    updateUserReadingList,
+    updateUserHistoryList,
+  ] = useContext(UserContext);
+
 
   useEffect(() => {
     let run = true;
@@ -112,9 +121,17 @@ const BookCard = ({ ISBN, options }) => {
     } else return null;
   };
 
-  const checkoutBook = () => {
-    //this will change once user profiles are implemented
-    removeBookFromInventory();
+  const checkoutBook = async () => {
+    /*
+    add book to user history database -> add to reading array
+    send book to context so we can use it's info on the profile screen
+    update library inventory database
+    remove book from library inventory in context
+    */
+    const res = await updateDB_UserHistory_CheckoutBook(ISBN, selectedLibraryInfo);
+    updateUserReadingList(res.reading);
+    await updateDB_LibraryInventory_RemoveBook(selectedLibraryInfo.id, ISBN);
+    removeBook(ISBN);
     return;
   };
 

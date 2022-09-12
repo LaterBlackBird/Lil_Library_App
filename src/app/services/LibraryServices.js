@@ -17,7 +17,7 @@ import {
   arrayRemove
 } from "firebase/firestore";
 
-import { fireDB } from './initializaiton'
+import { fireDB } from '../utils/initializaiton'
 
 export const librariesWithin10km = async (mapCenter, searchArea) => {
   const searchCenter = [mapCenter.latitude, mapCenter.longitude];

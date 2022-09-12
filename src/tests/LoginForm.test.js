@@ -2,16 +2,16 @@ import * as React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 
 import theme from '../app/components/theme'
-import login from "../app/services/user";
+import login from "../app/services/UserService";
 
 import LoginForm from "../app/components/organisms/LoginForm";
 
-const user = require('../app/services/user')
+const user = require('../app/services/UserService')
 user.login = jest.fn(() => {return true})
 
-// jest.mock("../app/services/user", () => jest.fn());
-// jest.mock("../app/services/user", () => ({ login: jest.fn() }));
-jest.mock("../app/services/initializaiton", () => jest.fn());
+// jest.mock("../app/services/UserService", () => jest.fn());
+// jest.mock("../app/services/UserService", () => ({ login: jest.fn() }));
+jest.mock("../app/utils/initializaiton", () => jest.fn());
 jest.mock("@fortawesome/react-native-fontawesome", () => ({ FontAwesomeIcon: "", }));
 
 describe("Login Form", () => {

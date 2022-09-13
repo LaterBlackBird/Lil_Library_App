@@ -79,7 +79,7 @@ const MainPage = () => {
   useEffect(() => {
     let run = true;
     if (run) {
-      if (selectedLibraryInfo.location !== undefined) {
+      if (selectedLibraryInfo.location !== undefined && lastKnownLocation.latitude !== 0) {
         setLastKnownLocation({
           latitude: selectedLibraryInfo?.location?.latitude,
           longitude: selectedLibraryInfo?.location?.longitude,

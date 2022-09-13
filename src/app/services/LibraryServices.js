@@ -88,8 +88,12 @@ export const updateDB_MoveLibrary = async (library, newLocation) => {
 }
 
 export const updateDB_LibraryInventory_AddBook = async (libraryID, bookISBN) => {
-  const docRef = doc(fireDB, 'libraries', libraryID);
-  await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  try {
+    const docRef = doc(fireDB, 'libraries', libraryID);
+    await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  } catch (error) {
+    console.error(error.message)
+  }
   return;
 }
 

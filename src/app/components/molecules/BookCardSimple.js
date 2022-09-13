@@ -21,19 +21,16 @@ const BookCardSimple = ({ book, option }) => {
     updateUserHistoryList,
   ] = useContext(UserContext);
   const { addBook } = useContext(LibraryContext);
+
   useEffect(() => {
     let run = true;
-    setIsLoading(true);
     const setBookState = async () => {
+      setIsLoading(true);
       setBookDetails(await getBookDetails(book.ISBN));
       setIsLoading(false);
     }
-
     if (run) setBookState();
-    
-    return () => {
-      run = false;
-    }
+    return () => run = false;
   }, [])
 
   const readingCard = () => {
@@ -59,7 +56,7 @@ const BookCardSimple = ({ book, option }) => {
               </View>
             )}
             <View style={{ margin: 10 }}>
-              <Text style={{width: '100%'}} numberOfLines={1}>{bookDetails.title}</Text>
+              <Text style={{width: '70%'}} numberOfLines={1}>{bookDetails.title}</Text>
               <Text>{bookDetails.authors[0]?.name}</Text>
             </View>
           </View>

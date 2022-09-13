@@ -60,21 +60,6 @@ export const signOutUser = () => {
     });
 };
 
-export const checkIfUserIsSignedIn = () => {
-  const user = fireAuth.currentUser;
-  const authorized = new Promise((resolve, reject) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      resolve(true);
-    } else {
-      // User is signed out
-      resolve(false);
-    }
-  });
-  return authorized;
-};
-
 export const changeUserName = async (newName) => {
   const auth = getAuth();
 

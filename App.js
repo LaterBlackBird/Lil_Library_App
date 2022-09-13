@@ -20,12 +20,14 @@ import LibraryProfile from "./src/app/components/organisms/LibraryProfile";
 import LibraryEdits from "./src/app/components/organisms/LibraryEdits";
 import BookSearch from "./src/app/components/organisms/BookSearch";
 import UserProfile from "./src/app/components/organisms/UserProfile";
+import Splash from "./src/app/components/organisms/Splash";
 
 const Stack = createNativeStackNavigator();
 initialize();
 
 export default function App() {
   const [userAuthroized, setUserAuthorized] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   
   // Watch for user Login or Logout
   useEffect(() => {
@@ -46,31 +48,12 @@ export default function App() {
     return () => run = false;
   }, [onAuthStateChanged]);
 
-  // Watch for user Login or Logout
-
-  // useEffect(() => {
-  //   initialize();
-  // }, []);
-
-  // useEffect(() => {
-  //   let run = true;
-  //   const runThis = async () => {
-  //     if (run) setUserAuthorized(await checkIfUserIsSignedIn());
-  //   }
-  //   runThis();
-  //   return () => (run = false);
-  // }, [onAuthStateChanged]);
-
-  // useEffect(() => {
-  //   const runThis = async () => {
-  //     console.log(await Network.getNetworkStateAsync());
-  //   };
-  //   runThis();
-  // });
-
-  // useEffect(() => {
-  //   console.log(userAuthroized);
-  // }, [userAuthroized]);
+  const splashTimeout = () => {
+    setTimeout(() => {
+      setShowSplash(false);
+      return;
+    }, 2000);
+  }
 
   const renderScreensForUnauthorizedUsers = () => {
     return (
@@ -155,8 +138,14 @@ export default function App() {
 
   return (
     <>
-      {!userAuthroized && renderScreensForUnauthorizedUsers()}
-      {userAuthroized && renderAuthorizedUserScreens()}
+      {showSplash && (
+        <>
+          <Splash />
+          {splashTimeout()}
+        </>
+      )}
+      {!userAuthroized && !showSplash && renderScreensForUnauthorizedUsers()}
+      {userAuthroized && !showSplash && renderAuthorizedUserScreens()}
     </>
   );
 }

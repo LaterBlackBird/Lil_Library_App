@@ -1,18 +1,17 @@
-import { useEffect, useState, useMemo, useContext } from "react";
-import { StatusBar } from "expo-status-bar";
+import { useEffect, useState, useRef } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { navigationRef } from "./src/app/services/RootNavigation";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import initialize, { fireAuth } from "./src/app/utils/initializaiton";
 import { onAuthStateChanged } from "firebase/auth";
-import * as Network from 'expo-network';
+import * as Network from "expo-network";
 
+import { navigationRef } from "./src/app/services/RootNavigation";
+import { checkIfUserIsSignedIn, signOutUser } from "./src/app/services/UserService";
 import { LibraryProvider } from "./src/app/context/LibraryContext";
 import { LocationProvider } from "./src/app/context/LocationContext";
 import { CreationAlertProvider } from "./src/app/context/creationAlertContext";
 import { UserProvider } from "./src/app/context/UserContext";
-import { BookProvider } from "./src/app/context/BookContext";
 
 import LoginForm from "./src/app/components/organisms/LoginForm";
 import SignUpForm from "./src/app/components/organisms/SignUpForm";
@@ -21,13 +20,16 @@ import LibraryProfile from "./src/app/components/organisms/LibraryProfile";
 import LibraryEdits from "./src/app/components/organisms/LibraryEdits";
 import BookSearch from "./src/app/components/organisms/BookSearch";
 import UserProfile from "./src/app/components/organisms/UserProfile";
+import Splash from "./src/app/components/organisms/Splash";
 
 const Stack = createNativeStackNavigator();
 initialize();
 
 export default function App() {
   const [userAuthroized, setUserAuthorized] = useState(false);
-
+  const [showSplash, setShowSplash] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState();
+  
   // Watch for user Login or Logout
   useEffect(() => {
     let run = true;
@@ -47,98 +49,115 @@ export default function App() {
     return () => run = false;
   }, [onAuthStateChanged]);
 
-  useEffect(() => {
-    const runThis = async () => {
-      console.log(await Network.getNetworkStateAsync());
-    };
-    runThis();
-  })
 
-  return (
-    <LibraryProvider>
+    useEffect(() => {
+      const runThis = async () => {
+        const connection = await Network.getNetworkStateAsync();
+        if (connection.isInternetReachable) setConnectionStatus(true)
+      };
+      runThis();
+    }, []);
+
+  const splashTimeout = () => {
+    setTimeout(() => {
+      setShowSplash(false);
+      return;
+    }, 2000);
+  }
+
+  const renderScreensForUnauthorizedUsers = () => {
+    return (
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={LoginForm}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpForm}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  };
+
+  const renderAuthorizedUserScreens = () => {
+    return (
       <LocationProvider>
-        <CreationAlertProvider>
-          <UserProvider>
-            <BookProvider>
+        <LibraryProvider>
+          <CreationAlertProvider>
+            <UserProvider>
               <NavigationContainer ref={navigationRef}>
                 <Stack.Navigator>
-                  {userAuthroized === false ? (
-                    <>
-                      <Stack.Screen
-                        name="Login"
-                        component={LoginForm}
-                        options={{
-                          headerShown: false,
-                        }}
-                      />
-
-                      <Stack.Screen
-                        name="SignUp"
-                        component={SignUpForm}
-                        options={{
-                          headerShown: false,
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Stack.Screen
-                        name="Home"
-                        component={MainPage}
-                        options={{
-                          headerShown: false,
-                          animationTypeForReplace: "pop",
-                        }}
-                      />
-                      <Stack.Screen
-                        name="LibraryProfile"
-                        component={LibraryProfile}
-                        options={{
-                          headerShown: false,
-                          animation: "slide_from_right",
-                        }}
-                      />
-                      <Stack.Screen
-                        name="LibraryOptions"
-                        component={LibraryEdits}
-                        options={{
-                          headerShown: false,
-                          animation: "slide_from_right",
-                        }}
-                      />
-                      <Stack.Screen
-                        name="BookSearch"
-                        component={BookSearch}
-                        options={{
-                          headerShown: false,
-                          animation: "slide_from_right",
-                        }}
-                      />
-                      <Stack.Screen
-                        name="UserProfile"
-                        component={UserProfile}
-                        options={{
-                          headerShown: false,
-                          animation: "slide_from_right",
-                        }}
-                      />
-                    </>
-                  )}
+                  <Stack.Screen
+                    name="Home"
+                    component={MainPage}
+                    options={{
+                      headerShown: false,
+                      animationTypeForReplace: "pop",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LibraryProfile"
+                    component={LibraryProfile}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LibraryOptions"
+                    component={LibraryEdits}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="BookSearch"
+                    component={BookSearch}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="UserProfile"
+                    component={UserProfile}
+                    options={{
+                      headerShown: false,
+                      animation: "slide_from_right",
+                    }}
+                  />
                 </Stack.Navigator>
               </NavigationContainer>
-            </BookProvider>
-          </UserProvider>
-        </CreationAlertProvider>
+            </UserProvider>
+          </CreationAlertProvider>
+        </LibraryProvider>
       </LocationProvider>
-    </LibraryProvider>
+    );
+  };
+
+  return (
+    <>
+      {showSplash && (
+        <>
+          <Splash connectionStatus={connectionStatus}/>
+          {connectionStatus && splashTimeout()}
+        </>
+      )}
+      {!userAuthroized && !showSplash && renderScreensForUnauthorizedUsers()}
+      {userAuthroized && !showSplash && renderAuthorizedUserScreens()}
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create({});

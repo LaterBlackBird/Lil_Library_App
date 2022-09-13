@@ -32,7 +32,7 @@ export const librariesWithin10km = async (mapCenter, searchArea) => {
 
   if (JSON.stringify(searchArea) === JSON.stringify(bounds)) {
     update = false;
-    libraries = null;
+    // libraries = null;
   } else {
     const db = collection(fireDB, "libraries");
     for (const b of bounds) {
@@ -88,8 +88,12 @@ export const updateDB_MoveLibrary = async (library, newLocation) => {
 }
 
 export const updateDB_LibraryInventory_AddBook = async (libraryID, bookISBN) => {
-  const docRef = doc(fireDB, 'libraries', libraryID);
-  await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  try {
+    const docRef = doc(fireDB, 'libraries', libraryID);
+    await updateDoc(docRef, { inventory: arrayUnion(bookISBN) })
+  } catch (error) {
+    console.error(error.message)
+  }
   return;
 }
 

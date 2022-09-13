@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
+
 import { login } from "../../services/UserService";
+import { validateEmail, validatePassword } from "../../utils/validations";
 
 import theme from '../theme'
-
 import TextField from "../atoms/TextField";
 import SecureField from "../atoms/SecureField";
 import Form from "../molecules/Form";
@@ -19,29 +20,6 @@ const LoginForm = ({ navigation }) => {
   const [passwordErrorState, setPasswordErrorState] = useState(false);
   const [errors, setErrors] = useState("");
 
-  const validateEmail = () => {
-    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (email.length === 0 || !regex.test(email)) {
-      setErrors((prevErrors) => [...prevErrors, "Invalid Email"]);
-      setEmailErrorState(true);
-      return false;
-    } else {
-      setEmailErrorState(false);
-      return true;
-    }
-  };
-
-  const validatePassword = () => {
-    if (password.length === 0) {
-      setErrors((prevErrors) => [...prevErrors, "Password Required"]);
-      setPasswordErrorState(true);
-      return false;
-    } else {
-      setPasswordErrorState(false);
-      return true;
-    }
-  };
-
   const renderErrors = () => {
     if (errors.length > 0) {
       return errors.map((error) => <ErrorText key={error} text={error} />);
@@ -50,9 +28,19 @@ const LoginForm = ({ navigation }) => {
 
   const handleLogin = () => {
     setErrors([]);
-    const emailCheck = validateEmail();
-    const passwordCheck = validatePassword();
+    const emailCheck = validateEmail(email);
+    const passwordCheck = validatePassword(password);
+    if (!emailCheck) {
+      setErrors((prevErrors) => [...prevErrors, "Invalid Email"]);
+      setEmailErrorState(true);
+    }
+    if (!passwordCheck) {
+      setErrors((prevErrors) => [...prevErrors, "Password Required"]);
+      setPasswordErrorState(true);
+    }
     if (emailCheck && passwordCheck) {
+      setEmailErrorState(false);
+      setPasswordErrorState(false);
       login(email, password);
     }
     return;

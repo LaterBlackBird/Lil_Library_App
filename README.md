@@ -21,7 +21,7 @@ Project is intended as a means to learn React Native, and will not be published 
 - [X] Book Removal From Library Inventory
 - [X] User Profile
 - [X] User Update/Edit
-- [ ] User Checkout History
+- [X] User Checkout History
 
 
 ## Tech Stack 👨‍💻
@@ -46,9 +46,9 @@ Project is intended as a means to learn React Native, and will not be published 
 
 ## Demo 📱
 
-| User Auth | Libraries | Book Search & Inventory | User Profile |
-|:-----------:|:-----------:|:--------------:|:--------------:|
-|<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697583-211df4be-c915-448f-9583-e8b8b02c9462.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697650-ca06e0bb-5bb4-401f-94ca-ae768651da6b.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188710214-3983435a-66c3-44c8-b42b-a173da9da6ad.gif" style="width:200px" alt="user auth workflow"/>       |
+| User Auth | Libraries | Book Search & Inventory | User Profile | Book Checkout |
+|:-----------:|:-----------:|:--------------:|:--------------:|:--------------:|
+|<img src="https://user-images.githubusercontent.com/14840521/188182817-d15ed19d-ff63-4d2c-a87b-18fcaf8d198f.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697583-211df4be-c915-448f-9583-e8b8b02c9462.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188697650-ca06e0bb-5bb4-401f-94ca-ae768651da6b.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/188710214-3983435a-66c3-44c8-b42b-a173da9da6ad.gif" style="width:200px" alt="user auth workflow"/>       |<img src="https://user-images.githubusercontent.com/14840521/189956652-e961f897-27c9-4ba2-bdaf-2c0046dec0cf.gif" style="width:200px" alt="book checkout workflow"/>       |
 
 <!-- ![Demo220714](https://user-images.githubusercontent.com/14840521/179003110-8853cc4b-024e-4ff8-b0af-b8fc64eecca9.gif width="50%") -->
 

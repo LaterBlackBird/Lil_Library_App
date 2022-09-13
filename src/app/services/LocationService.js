@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
 
 import { GOOGLE_MAP_API } from '@env';
+import { Alert } from 'react-native';
 
 
 export const getInitialLocation = async () => {
@@ -9,8 +10,17 @@ export const getInitialLocation = async () => {
     setErrorMsg('Permission to access location was denied');
     return;
   } else {
-    const myLocation = await Location.getCurrentPositionAsync({})
-    return { latitude: myLocation.coords.latitude, longitude: myLocation.coords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.05 }
+    try {
+      const myLocation = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, maximumAge: 10000});
+      return {
+        latitude: myLocation.coords.latitude,
+        longitude: myLocation.coords.longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.05,
+      };
+    } catch (error) {
+      Alert.alert("Location Not Found");
+    }
   }
 };
 

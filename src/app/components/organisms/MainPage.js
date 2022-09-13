@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, View, Alert, Animated, Keyboard } from "react-native";
+import { StyleSheet, View, Alert, Animated, Keyboard, Text } from "react-native";
 
 import { getInitialLocation, returnSearchLocation, } from "../../services/LocationService";
 import { updateDB_AddLibrary, librariesWithin10km, updateDB_MoveLibrary, } from "../../services/LibraryServices";
-import { signOutUser } from "../../services/UserService";
 import { goToUserProfile, goToLibraryProfile } from "../../utils/navigation";
 import { LocationContext } from "../../context/LocationContext";
 import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";
+import * as Network from 'expo-network';
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";
@@ -17,13 +17,14 @@ import PressableTextCancel from "../molecules/PressableTextCancel";
 import ActionBar from "../molecules/ActionBar";
 import ActionButton from "../molecules/ActionButton";
 
-const MainPage = ({ navigation }) => {
+const MainPage = () => {
 
   const [searchCriteria, setSearchCriteria] = useState("");
   const [newMarker, setNewMarker] = useState(false);
   const [newLibraryName, setNewLibraryName] = useState("");
   const [myLocation, setMyLocation] = useState({});
   const [searchArea, setSearchArea] = useState({});
+  const [findingLibrariesStatus, setFindingLibrariesStatus] = useState(false);
 
   const {
     visibleLibrariesList,
@@ -66,18 +67,27 @@ const MainPage = ({ navigation }) => {
   });  
 
   useEffect(() => {
-    setInitialMapCenter();
-    setMyLocation(lastKnownLocation);
+    let run = true;
+    if (run) {
+      setInitialMapCenter();
+      setMyLocation(lastKnownLocation);
+    };
+
+    return () => run = false;
   }, []);
 
   useEffect(() => {
-    if (selectedLibraryInfo.location !== undefined) {
-      setLastKnownLocation({
-        latitude: selectedLibraryInfo?.location?.latitude,
-        longitude: selectedLibraryInfo?.location?.longitude,
-        latitudeDelta: 0.08,
-        longitudeDelta: 0.05,
-      });
+    let run = true;
+    if (run) {
+      if (selectedLibraryInfo.location !== undefined && lastKnownLocation.latitude !== 0) {
+        setLastKnownLocation({
+          latitude: selectedLibraryInfo?.location?.latitude,
+          longitude: selectedLibraryInfo?.location?.longitude,
+          latitudeDelta: 0.08,
+          longitudeDelta: 0.05,
+        });
+      };
+      return () => run = false;
     }
   }, [selectedLibraryInfo]);
 
@@ -90,11 +100,13 @@ const MainPage = ({ navigation }) => {
 
   //Find Libraries within 10km
   const retreiveNearbyLibraries = async () => {
+    setFindingLibrariesStatus(true);
     const { libraries, bounds, update } = await librariesWithin10km(lastKnownLocation, searchArea);
     setSearchArea(bounds);
     if (update) {
       newLibraryList(libraries);
     }
+    setFindingLibrariesStatus(false);
     return;
   };
 
@@ -282,6 +294,14 @@ const MainPage = ({ navigation }) => {
         placeholderTextColor={"white"}
         value={newLibraryName}
       />
+
+      {findingLibrariesStatus && (
+        <Text
+          style={{ position: 'absolute', backgroundColor: 'white', textAlign: "center", bottom: 75, width: '100%'}}
+        >
+          Finding Nearby Libraries...
+        </Text>
+      )}
 
       {!movingFlag && !newMarker && (
         <ActionBar

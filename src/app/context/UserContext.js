@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     let run = true;
-    if (run === true) {
+    if (run) {
       onAuthStateChanged(fireAuth, (user) => {
         if (user) {
           // User is signed in, see docs for a list of available properties

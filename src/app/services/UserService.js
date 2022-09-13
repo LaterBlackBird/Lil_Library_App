@@ -15,10 +15,13 @@ import { fireAuth, fireDB } from "../utils/initializaiton";
 import {
   doc,
   getDoc,
+  addDoc,
   updateDoc,
   arrayUnion,
   arrayRemove,
   Timestamp,
+  collection,
+  setDoc,
 } from "firebase/firestore";
 
 export const login = (email, password) => {
@@ -34,20 +37,16 @@ export const login = (email, password) => {
     });
 };
 
-export const signUp = (email, password, passwordConfirmation) => {
-  if (email) {
-    if (password === passwordConfirmation) {
-      createUserWithEmailAndPassword(fireAuth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          Alert.alert(errorMessage);
-        });
-    } else return;
-  } else return;
+export const signUp = async (email, password, passwordConfirmation) => {
+  createUserWithEmailAndPassword(fireAuth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      Alert.alert(errorMessage);
+    });
 };
 
 export const signOutUser = () => {
@@ -61,10 +60,10 @@ export const signOutUser = () => {
 };
 
 export const changeUserName = async (newName) => {
-  const auth = getAuth();
+  const user = getAuth().currentUser;
 
   try {
-    await updateProfile(auth.currentUser, { displayName: newName });
+    await updateProfile(user, { displayName: newName });
   } catch (error) {
     Alert.alert("didn't update database");
   }
@@ -106,6 +105,17 @@ export const changeUserPassword = async (credential, newPassword) => {
 
   return;
 };
+
+export const createEmptyUserHistory = async () => {
+  const user = getAuth().currentUser;
+  const data = { history: [], reading: [] };
+  try {
+    await setDoc(doc(fireDB, "userHistory", user.uid), data);
+  } catch (error) {
+    Alert.alert(error.message)
+  }
+  return;
+}
 
 export const retrieveUserBookInfo = async () => {
   const user = getAuth().currentUser;

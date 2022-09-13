@@ -17,17 +17,17 @@ export const validatePassword = (password) => {
   }
 };
 
-export const validateConfirmation = () => {
-  // if (passwordConfirmation.length === 0) {
-  //   setErrors((prevErrors) => [...prevErrors, "Confirm Password Required"]);
-  //   setPasswordConfirmationErrorState(true);
-  //   return false;
-  // } else if (passwordConfirmation !== password) {
-  //   setErrors((prevErrors) => [...prevErrors, "Passwords Do Not Match"]);
-  //   setPasswordConfirmationErrorState(true);
-  //   return false;
-  // } else {
-  //   setPasswordConfirmationErrorState(false);
-  //   return true;
-  // }
+export const validateConfirmation = (password) => {
+  if (passwordConfirmation.length === 0) {
+    setErrors((prevErrors) => [...prevErrors, "Confirm Password Required"]);
+    setPasswordConfirmationErrorState(true);
+    return false;
+  } else if (passwordConfirmation !== password) {
+    setErrors((prevErrors) => [...prevErrors, "Passwords Do Not Match"]);
+    setPasswordConfirmationErrorState(true);
+    return false;
+  } else {
+    setPasswordConfirmationErrorState(false);
+    return true;
+  }
 };

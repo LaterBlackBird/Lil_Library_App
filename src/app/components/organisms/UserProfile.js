@@ -6,7 +6,7 @@ import { retrieveUserBookInfo, signOutUser } from '../../services/UserService';
 import { goHome } from '../../utils/navigation';
 import { UserContext } from '../../context/UserContext';
 import { validateEmail, validatePassword } from '../../utils/validations';
-
+import { createEmptyUserHistory } from '../../services/UserService';
 
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
@@ -43,9 +43,13 @@ const UserProfile = () => {
   useEffect(() => {
     let run = true;
     const getBookInfoForUser = async () => {
-      const data = await retrieveUserBookInfo();
-      updateUserReadingList(data.reading);
-      updateUserHistoryList(data.history);
+      try {
+        const data = await retrieveUserBookInfo();
+        updateUserReadingList(data.reading);
+        updateUserHistoryList(data.history);
+      } catch (error) {
+        await createEmptyUserHistory();
+      }
     };
     if (run) getBookInfoForUser();
 

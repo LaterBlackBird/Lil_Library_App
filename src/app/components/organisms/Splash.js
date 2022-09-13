@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import H1 from '../atoms/H1'
 import theme from '../theme'
 
-const Splash = () => {
+const Splash = ({ connectionStatus }) => {
+
+
   return (
     <View style={styles.container}>
-      <H1 text={`Lil Library App 📚`}
-      />
+      <H1 text={`Lil Library App 📚`} />
+      {!connectionStatus && <Text>Connecting...</Text>}
     </View>
   )
 }

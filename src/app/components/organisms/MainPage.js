@@ -7,6 +7,7 @@ import { goToUserProfile, goToLibraryProfile } from "../../utils/navigation";
 import { LocationContext } from "../../context/LocationContext";
 import { LibraryContext } from "../../context/LibraryContext";
 import { creationAlertContext } from "../../context/creationAlertContext";
+import * as Network from 'expo-network';
 
 import MarkerStd from "../atoms/MarkerStd";
 import MarkerNew from "../atoms/MarkerNew";

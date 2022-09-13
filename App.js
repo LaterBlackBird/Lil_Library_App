@@ -28,6 +28,7 @@ initialize();
 export default function App() {
   const [userAuthroized, setUserAuthorized] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState();
   
   // Watch for user Login or Logout
   useEffect(() => {
@@ -47,6 +48,15 @@ export default function App() {
 
     return () => run = false;
   }, [onAuthStateChanged]);
+
+
+    useEffect(() => {
+      const runThis = async () => {
+        const connection = await Network.getNetworkStateAsync();
+        if (connection.isInternetReachable) setConnectionStatus(true)
+      };
+      runThis();
+    }, []);
 
   const splashTimeout = () => {
     setTimeout(() => {
@@ -140,8 +150,8 @@ export default function App() {
     <>
       {showSplash && (
         <>
-          <Splash />
-          {splashTimeout()}
+          <Splash connectionStatus={connectionStatus}/>
+          {connectionStatus && splashTimeout()}
         </>
       )}
       {!userAuthroized && !showSplash && renderScreensForUnauthorizedUsers()}

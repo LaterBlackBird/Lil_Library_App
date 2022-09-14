@@ -58,8 +58,8 @@ const UserProfile = () => {
 
   const currentReadingList = () => {
     if ('reading' in userInfo && userInfo.reading.length > 0) {
-      return userInfo.reading.map((book) => (
-        <BookCardSimple key={ Math.random() } book={book} option='reading'/>
+      return userInfo.reading.map((book, index) => (
+        <BookCardSimple key={ `${book.ISBN}${index}` } book={book} option='reading'/>
       ));
     } else {
       return (
@@ -70,12 +70,12 @@ const UserProfile = () => {
 
   const historyList = () => {
     if ('history' in userInfo && userInfo.history.length > 0) {
-      return userInfo.history.map((book) => (
-        <BookCardSimple key={ Math.random() } book={book} option='history'/>
+      return userInfo.history.map((book, index) => (
+        <BookCardSimple key={ `${book.ISBN}${index}` } book={book} option='history'/>
       ));
     } else {
       return (
-        <Text>Books you've returned will appear here</Text>
+        <Text style={{marginVertical: 50,}}>Books you've returned will appear here</Text>
       )
     }
   }

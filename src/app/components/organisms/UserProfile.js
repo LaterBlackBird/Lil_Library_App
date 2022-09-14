@@ -6,7 +6,7 @@ import { retrieveUserBookInfo, signOutUser } from '../../services/UserService';
 import { goHome } from '../../utils/navigation';
 import { UserContext } from '../../context/UserContext';
 import { validateEmail, validatePassword } from '../../utils/validations';
-
+import { createEmptyUserHistory } from '../../services/UserService';
 
 import theme from '../theme'
 import ActionBar from '../molecules/ActionBar';
@@ -43,9 +43,13 @@ const UserProfile = () => {
   useEffect(() => {
     let run = true;
     const getBookInfoForUser = async () => {
-      const data = await retrieveUserBookInfo();
-      updateUserReadingList(data.reading);
-      updateUserHistoryList(data.history);
+      try {
+        const data = await retrieveUserBookInfo();
+        updateUserReadingList(data.reading);
+        updateUserHistoryList(data.history);
+      } catch (error) {
+        await createEmptyUserHistory();
+      }
     };
     if (run) getBookInfoForUser();
 
@@ -54,8 +58,8 @@ const UserProfile = () => {
 
   const currentReadingList = () => {
     if ('reading' in userInfo && userInfo.reading.length > 0) {
-      return userInfo.reading.map((book) => (
-        <BookCardSimple key={ Math.random() } book={book} option='reading'/>
+      return userInfo.reading.map((book, index) => (
+        <BookCardSimple key={ `${book.ISBN}${index}` } book={book} option='reading'/>
       ));
     } else {
       return (
@@ -66,12 +70,12 @@ const UserProfile = () => {
 
   const historyList = () => {
     if ('history' in userInfo && userInfo.history.length > 0) {
-      return userInfo.history.map((book) => (
-        <BookCardSimple key={ Math.random() } book={book} option='history'/>
+      return userInfo.history.map((book, index) => (
+        <BookCardSimple key={ `${book.ISBN}${index}` } book={book} option='history'/>
       ));
     } else {
       return (
-        <Text>Books you've returned will appear here</Text>
+        <Text style={{marginVertical: 50,}}>Books you've returned will appear here</Text>
       )
     }
   }

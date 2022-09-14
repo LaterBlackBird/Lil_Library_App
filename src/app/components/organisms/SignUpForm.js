@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
 import { useState } from "react";
-import { signUp } from "../../services/UserService";
+
+import { createEmptyUserHistory, signUp } from "../../services/UserService";
+import { validateEmail, validatePassword, validateConfirmation } from "../../utils/validations";
 
 import Form from "../molecules/Form";
 import TextField from "../atoms/TextField";
@@ -19,9 +21,9 @@ const SignUpForm = ({ navigation }) => {
   const [passwordErrorState, setPasswordErrorState] = useState(false);
   const [passwordConfirmationErrorState, setPasswordConfirmationErrorState] = useState(false);
 
-  const validateEmail = () => {
-    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (email.length === 0 || !regex.test(email)) {
+  const runValidateEmail = () => {
+    const validation = validateEmail(email);
+    if (!validation) {
       setErrors((prevErrors) => [...prevErrors, "Invalid Email"]);
       setEmailErrorState(true);
       return false;
@@ -31,7 +33,7 @@ const SignUpForm = ({ navigation }) => {
     }
   };
 
-  const validatePassword = () => {
+  const runValidatePassword = () => {
     if (password.length === 0) {
       setErrors((prevErrors) => [...prevErrors, "Password Required"]);
       setPasswordErrorState(true);
@@ -49,7 +51,7 @@ const SignUpForm = ({ navigation }) => {
     }
   };
 
-  const validateConfirmation = () => {
+  const runValidateConfirmation = () => {
     if (passwordConfirmation.length === 0) {
       setErrors((prevErrors) => [...prevErrors, "Confirm Password Required"]);
       setPasswordConfirmationErrorState(true);
@@ -72,11 +74,11 @@ const SignUpForm = ({ navigation }) => {
 
   const handleSignup = async () => {
     setErrors([]);
-    const emailCheck = validateEmail();
-    const passwordCheck = validatePassword();
-    const confirmationCheck = validateConfirmation();
+    const emailCheck = runValidateEmail();
+    const passwordCheck = runValidatePassword();
+    const confirmationCheck = runValidateConfirmation();
     if ((emailCheck, passwordCheck, confirmationCheck)) {
-      signUp(email, password);
+      await signUp(email, password);
     }
     return;
   };

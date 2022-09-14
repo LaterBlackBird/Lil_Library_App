@@ -26,12 +26,13 @@ const BookCardSimple = ({ book, option }) => {
     let run = true;
     const setBookState = async () => {
       setIsLoading(true);
-      setBookDetails(await getBookDetails(book.ISBN));
+      const data = await getBookDetails(book.ISBN)
+      setBookDetails(data);
       setIsLoading(false);
-    }
+    };
     if (run) setBookState();
-    return () => run = false;
-  }, [])
+    return () => (run = false);
+  }, []);
 
   const readingCard = () => {
     if (bookDetails) {
@@ -115,9 +116,6 @@ const BookCardSimple = ({ book, option }) => {
 export default BookCardSimple
 
 const styles = StyleSheet.create({
-  icon: {
-
-  },
   coverImage: {
     height: 100,
     width: 80,
